@@ -2,4 +2,4 @@
 Said
 Vetle
 Younas
-Radi Halabi
+Radi
