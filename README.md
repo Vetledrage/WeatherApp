@@ -2,5 +2,6 @@
 Said
 Vetle
 Younas
-Radi Halabi
-Johannes
+Radi
+
+Brede
