@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.FrontPage
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.ShowSun
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.theme.IN2000ProsjektoppgaveTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,25 +24,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    FrontPage()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    IN2000ProsjektoppgaveTheme {
-        Greeting("Android")
-    }
-}
