@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -47,20 +48,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext7Dates
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
-
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
 //Skjerm som skal vise været de neste 7 dagene.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherScreen(navController: NavController){
+fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel){
+    val weeklyWeatherData by viewModel.weeklyWeatherUiState.collectAsState()
+    val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -101,25 +100,17 @@ fun WeatherScreen(navController: NavController){
             Spacer(modifier = Modifier.height(20.dp))
 
 
-            val hourlyWeatherData = mutableListOf<HourlyWeather>()
-            for (i in getNext12Hours().indices){
-                val temp = getRandomTemp()
-                hourlyWeatherData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
-            }
+
             TodaysWeatherRow(hourlyWeatherData = hourlyWeatherData)
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            val weeklyWeather = mutableListOf<WeeklyWeather>()
-            for (i in getNext7Dates().indices){
-                val temp = getRandomTemp()
-                weeklyWeather.add(WeeklyWeather(getDay(getNext7Dates()[i]), getNext7Dates()[i], temp, getIconId(temp)))
-            }
+
 
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                WeatherNextWeek(weeklyWeatherData = weeklyWeather)
+                WeatherNextWeek(weeklyWeatherData = weeklyWeatherData)
             }
         }
     }
@@ -237,5 +228,5 @@ fun WeatherNextWeek(weeklyWeatherData: List<WeeklyWeather>){
 @Preview
 @Composable
 fun WeatherScreenPreview(){
-    WeatherScreen(navController = rememberNavController())
+    WeatherScreen(navController = rememberNavController(), viewModel = WeatherViewModel())
 }

@@ -1,38 +1,51 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext7Dates
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
 
 
 
 //Prøvde meg på ViewModel, men ble ikke ferdig. Trengs mer jobbing noen som kan det her, prøv det ut
-class WeatherViewModel() : ViewModel() {
+class WeatherViewModel : ViewModel() {
 
-    private val _weeklyWeatherUiState = MutableStateFlow(
-        WeeklyWeather(
-            weekDay = "",
-            date = "",
-            temperature = 0,
-            weatherIconId = 0
-        )
-    )
+    private val _weeklyWeatherUiState = MutableStateFlow<List<WeeklyWeather>>(emptyList())
+    val weeklyWeatherUiState = _weeklyWeatherUiState.asStateFlow()
 
-    val weeklyWeatherUiState: StateFlow<WeeklyWeather> = _weeklyWeatherUiState.asStateFlow()
+    private val _hourlyWeatherUiState = MutableStateFlow<List<HourlyWeather>>(emptyList())
+    val hourlyWeather = _hourlyWeatherUiState.asStateFlow()
 
-    private fun setWeeklyWeather(weekDay: String, date: String, temperature: Int, weatherIcon: Int){
-        _weeklyWeatherUiState.update { currState ->
-            currState.copy(
-                weekDay = weekDay,
-                date = date,
-                temperature = temperature,
-                weatherIconId = weatherIcon
-            )
+    init {
+        loadWeatherData()
+    }
+
+    private fun loadWeatherData(){
+        viewModelScope.launch {
+            val hourlyData = mutableListOf<HourlyWeather>()
+            for (i in getNext12Hours().indices){
+                val temp = getRandomTemp()
+                hourlyData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
+            }
+            _hourlyWeatherUiState.value = hourlyData
+
+            val weeklyData = mutableListOf<WeeklyWeather>()
+            for (date in getNext7Dates()){
+                val temp = getRandomTemp()
+                weeklyData.add(WeeklyWeather(getDay(date), date, temp, getIconId(temp)))
+            }
+            _weeklyWeatherUiState.value = weeklyData
         }
     }
+
 
 
 }

@@ -23,6 +23,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,18 +43,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
-
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
 //Hjemskjermen hittil.
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController, viewModel: WeatherViewModel){
+    val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
+
     val todaystemp = "14"
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -194,11 +195,8 @@ fun HomeScreen(navController: NavController){
                     }
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    val hourlyWeatherData = mutableListOf<HourlyWeather>()
-                    for (i in getNext12Hours().indices){
-                        val temp = getRandomTemp()
-                        hourlyWeatherData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
-                    }
+
+
 
                     WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
                 }
@@ -265,5 +263,5 @@ fun WeatherInfo(icon : Int, value: String) {
 @Preview(showSystemUi = true)
 @Composable
 fun ShowHomeScreen(){
-    HomeScreen(navController = rememberNavController())
+    HomeScreen(navController = rememberNavController(), viewModel = WeatherViewModel())
 }
