@@ -53,6 +53,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 //Hjemskjermen hittil.
 @Composable
 fun HomeScreen(navController: NavController){
+    val todays_temp = "14"
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -121,7 +122,7 @@ fun HomeScreen(navController: NavController){
                         Spacer(modifier = Modifier.height(60.dp))
 
                         Text(
-                            text = "18°",
+                            text = "$todays_temp°",
                             fontSize = 70.sp,
                             fontWeight = FontWeight.Bold
                         )
