@@ -10,8 +10,32 @@ import kotlin.random.Random
 //Returnerer nåværende dato og tid.
 
 fun getLiveDateTime(): String {
-    val dateFormat = SimpleDateFormat("dd.MMMM.yy hh:mm a", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd.MMMM hh:mm a", Locale.getDefault())
     return dateFormat.format(Calendar.getInstance().time)
+}
+
+fun getNext7Dates(): List<String>{
+    val dateFormat = SimpleDateFormat("dd.MM", Locale.getDefault())
+    val dates = mutableListOf<String>()
+    val calendar = Calendar.getInstance()
+
+    for (i in 0 until 7){
+        dates.add(dateFormat.format(calendar.time))
+        calendar.add(Calendar.DAY_OF_WEEK, 1)
+    }
+    return dates
+}
+
+//hente dag bassert på dato
+fun getDay(date: String): String{
+    val wholeDate = date.split(".")
+    var year = SimpleDateFormat("yyyy", Locale.getDefault()).format(Calendar.getInstance().time)
+
+    val calendar = Calendar.getInstance()
+    calendar.set(year.toInt(), wholeDate[1].toInt() - 1, wholeDate[0].toInt())
+
+    val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+    return dayFormat.format(calendar.time)
 }
 
 

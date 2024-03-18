@@ -45,7 +45,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weatherData.HourlyWeather
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 
 
@@ -192,14 +192,12 @@ fun HomeScreen(navController: NavController){
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-                    val timesList = getNext12Hours()
 
                     val hourlyWeatherData = mutableListOf<HourlyWeather>()
-
-                        for (i in timesList.indices){
-                            val temp = getRandomTemp()
-                            hourlyWeatherData.add(HourlyWeather(timesList[i], temp, getIconId(temp)))
-                        }
+                    for (i in getNext12Hours().indices){
+                        val temp = getRandomTemp()
+                        hourlyWeatherData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
+                    }
 
                     WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
                 }

@@ -47,9 +47,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weatherData.HourlyWeather
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weatherData.WeeklyWeather
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext7Dates
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
 
 
 
@@ -96,32 +100,22 @@ fun WeatherScreen(navController: NavController){
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            val hourlyWeatherData = listOf(
-                HourlyWeather("00 PM", 24, R.drawable.ic_sunny),
-                HourlyWeather("01 PM", 26, R.drawable.ic_sunny),
-                HourlyWeather("02 PM", 27, R.drawable.ic_sunny),
-                HourlyWeather("03 PM", 25, R.drawable.ic_sunnycloudy),
-                HourlyWeather("04 PM", 24, R.drawable.ic_cloudy),
-                HourlyWeather("05 PM", 24, R.drawable.ic_cloudy),
-                HourlyWeather("06 PM", 24, R.drawable.ic_cloudy),
-                HourlyWeather("07 PM", 24, R.drawable.ic_cloudy),
-                HourlyWeather("08 PM", 24, R.drawable.ic_sunny),
-            )
 
+            val hourlyWeatherData = mutableListOf<HourlyWeather>()
+            for (i in getNext12Hours().indices){
+                val temp = getRandomTemp()
+                hourlyWeatherData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
+            }
             TodaysWeatherRow(hourlyWeatherData = hourlyWeatherData)
 
             Spacer(modifier = Modifier.height(20.dp))
-            val weeklyWeather = listOf(
-                WeeklyWeather("Tomorow", "17.08", 16, R.drawable.ic_sunnycloudy),
-                WeeklyWeather("Tuesday", "18.08", 18, R.drawable.ic_sunnycloudy),
-                WeeklyWeather("Wednsday", "19.08", 12, R.drawable.ic_sunnyrainy),
-                WeeklyWeather("Thursday", "20.08", -2, R.drawable.ic_heavysnow),
-                WeeklyWeather("Friday", "21.08", 8, R.drawable.ic_rainythunder),
-                WeeklyWeather("Saturday", "22.08", 24, R.drawable.ic_sunny),
-                WeeklyWeather("Sunday", "23.08", 16, R.drawable.ic_cloudy),
 
-                // Fortsett med resten av uken
-            )
+            val weeklyWeather = mutableListOf<WeeklyWeather>()
+            for (i in getNext7Dates().indices){
+                val temp = getRandomTemp()
+                weeklyWeather.add(WeeklyWeather(getDay(getNext7Dates()[i]), getNext7Dates()[i], temp, getIconId(temp)))
+            }
+
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
