@@ -41,6 +41,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weatherData.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 
@@ -102,7 +106,7 @@ fun HomeScreen(navController: NavController){
                             )
                         }
                         Text(
-                            text = "Today 07:28 PM",
+                            text = getLiveDateTime(),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Light
                         )
@@ -188,18 +192,15 @@ fun HomeScreen(navController: NavController){
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
+                    val timesList = getNext12Hours()
 
-                    val hourlyWeatherData = listOf(
-                        HourlyWeather("00 PM", 24, R.drawable.ic_sunny),
-                        HourlyWeather("01 PM", 26, R.drawable.ic_sunny),
-                        HourlyWeather("02 PM", 27, R.drawable.ic_sunny),
-                        HourlyWeather("03 PM", 25, R.drawable.ic_sunnycloudy),
-                        HourlyWeather("04 PM", 24, R.drawable.ic_cloudy),
-                        HourlyWeather("05 PM", 24, R.drawable.ic_cloudy),
-                        HourlyWeather("06 PM", 24, R.drawable.ic_cloudy),
-                        HourlyWeather("07 PM", 24, R.drawable.ic_cloudy),
-                        HourlyWeather("08 PM", 24, R.drawable.ic_cloudy),
-                    )
+                    val hourlyWeatherData = mutableListOf<HourlyWeather>()
+
+                        for (i in timesList.indices){
+                            val temp = getRandomTemp()
+                            hourlyWeatherData.add(HourlyWeather(timesList[i], temp, getIconId(temp)))
+                        }
+
                     WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
                 }
             }
