@@ -24,25 +24,30 @@ class WeatherViewModel : ViewModel() {
     private val _hourlyWeatherUiState = MutableStateFlow<List<HourlyWeather>>(emptyList())
     val hourlyWeather = _hourlyWeatherUiState.asStateFlow()
 
+    private var isDataLoaded = false
     init {
         loadWeatherData()
     }
 
     private fun loadWeatherData(){
-        viewModelScope.launch {
-            val hourlyData = mutableListOf<HourlyWeather>()
-            for (i in getNext12Hours().indices){
-                val temp = getRandomTemp()
-                hourlyData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
-            }
-            _hourlyWeatherUiState.value = hourlyData
+        if (isDataLoaded == false){
+            viewModelScope.launch {
+                val hourlyData = mutableListOf<HourlyWeather>()
+                for (i in getNext12Hours().indices){
+                    val temp = getRandomTemp()
+                    hourlyData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
+                }
+                _hourlyWeatherUiState.value = hourlyData
 
-            val weeklyData = mutableListOf<WeeklyWeather>()
-            for (date in getNext7Dates()){
-                val temp = getRandomTemp()
-                weeklyData.add(WeeklyWeather(getDay(date), date, temp, getIconId(temp)))
+                val weeklyData = mutableListOf<WeeklyWeather>()
+                for (date in getNext7Dates()){
+                    val temp = getRandomTemp()
+                    weeklyData.add(WeeklyWeather(getDay(date), date, temp, getIconId(temp)))
+                }
+                _weeklyWeatherUiState.value = weeklyData
+
+                isDataLoaded = true
             }
-            _weeklyWeatherUiState.value = weeklyData
         }
     }
 
