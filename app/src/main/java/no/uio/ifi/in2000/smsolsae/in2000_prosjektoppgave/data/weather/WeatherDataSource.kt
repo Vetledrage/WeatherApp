@@ -7,6 +7,7 @@ import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
 import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Resource
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.model.weather.WeatherData
 
 class WeatherDataSource(){
 
@@ -19,9 +20,9 @@ class WeatherDataSource(){
         }
     }
 
-    suspend fun getPartyInfo(): Resource {
+    suspend fun getWeahterInfo(): Resource {
         return try {
-            val response = client.get("weatherapi/")
+            val response = client.get("weatherapi/locationforecast/2.0/compact?lat=59&lon=10") //Husk å endre lat & lon senere.
             if(response.status == HttpStatusCode.OK){
                 val data: WeatherData = response.body()
                 Resource.Success(data.temperature)
@@ -32,5 +33,7 @@ class WeatherDataSource(){
             Resource.Error(e)
         }
     }
+
+
 
 }
