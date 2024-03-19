@@ -36,11 +36,11 @@ class WeatherViewModel : ViewModel() {
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
 
-    fun getWeatherInfo(lat: String, long: String, altitude: String){
+    fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
         viewModelScope.launch {
             try {
                 val locationDeferred = viewModelScope.async (Dispatchers.IO) {
-                    repository.getLocation(latitude = lat, longitude = long, altitude = altitude)
+                    repository.getLocationWeather(latitude = lat, longitude = long, altitude = altitude)
                 }
                 val locationP = locationDeferred.await()
 
@@ -59,6 +59,7 @@ class WeatherViewModel : ViewModel() {
 
     private var isDataLoaded = false
     init {
+        //getWeatherInfo("53", "13", "")
         loadWeatherData()
     }
 

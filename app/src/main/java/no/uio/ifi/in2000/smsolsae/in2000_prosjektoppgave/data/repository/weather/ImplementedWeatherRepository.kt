@@ -10,7 +10,7 @@ class ImplementedWeatherRepository : WeatherRepository {
     private val datasource = WeatherDataSource(baseUrl = "https://gw-uio.intark.uh-it.no/in2000/weatherapi")
 
 
-    override suspend fun getLocation(latitude: String, longitude: String, altitude: String): WeatherLocationInfo {
+    override suspend fun getLocationWeather(latitude: String, longitude: String, altitude: String?): WeatherLocationInfo {
         val locationForecast = datasource.fetchLocationForecastData(latitude, longitude, altitude)
 
         val currentTimeMillis = System.currentTimeMillis()

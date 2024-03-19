@@ -57,7 +57,9 @@ fun HomeScreen(
     viewModel: WeatherViewModel = viewModel()
 ){
     val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
+    //val weatherData by viewModel.appUiState.collectAsState()
 
+    //Log.d("WeatherData", "HomeScreen: ${weatherData}")
     val todaystemp = "14"
 
     Surface(modifier = Modifier.fillMaxSize()) {
