@@ -10,7 +10,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.gson.gson
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Model
 
-class WeatherDataSource(val basePath: String){
+class WeatherDataSource(val baseUrl: String){
 
     //Metode som kaller på data med proxy server.
     private suspend fun serverCall(client: HttpClient, url: String) : HttpResponse{
@@ -36,7 +36,7 @@ class WeatherDataSource(val basePath: String){
             }
         }
 
-        val  url = "$basePath/locationforecast/2.0/complete?$cordinates"
+        val  url = "$baseUrl/locationforecast/2.0/complete?$cordinates"
         return serverCall(client, url).body()
     }
 

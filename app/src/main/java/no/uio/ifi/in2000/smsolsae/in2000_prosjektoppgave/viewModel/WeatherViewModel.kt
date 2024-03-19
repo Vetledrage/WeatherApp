@@ -2,9 +2,15 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.ImplementedWeatherRepository
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.WeatherRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
@@ -12,7 +18,8 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext7D
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
-
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
+import java.io.IOException
 
 
 //Prøvde meg på ViewModel, men ble ikke ferdig. Trengs mer jobbing noen som kan det her, prøv det ut
@@ -23,6 +30,32 @@ class WeatherViewModel : ViewModel() {
 
     private val _hourlyWeatherUiState = MutableStateFlow<List<HourlyWeather>>(emptyList())
     val hourlyWeather = _hourlyWeatherUiState.asStateFlow()
+
+    private val repository: WeatherRepository = ImplementedWeatherRepository()
+
+    private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
+    val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
+
+    fun getWeatherInfo(lat: String, long: String, altitude: String){
+        viewModelScope.launch {
+            try {
+                val locationDeferred = viewModelScope.async (Dispatchers.IO) {
+                    repository.getLocation(latitude = lat, longitude = long, altitude = altitude)
+                }
+                val locationP = locationDeferred.await()
+
+                _appUiState.update {
+                    AppUiState.Success(
+                        locationF = locationP
+                    )
+                }
+            } catch (e: IOException){
+                _appUiState.update {
+                    AppUiState.Error
+                }
+            }
+        }
+    }
 
     private var isDataLoaded = false
     init {
