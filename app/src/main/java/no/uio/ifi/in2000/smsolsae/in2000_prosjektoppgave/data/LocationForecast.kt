@@ -44,7 +44,6 @@ data class Next6(
 )
 
 data class Details(
-
     var time : String?,
     var symbol_code : String?,
     var air_temperature : Float?,
