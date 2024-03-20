@@ -21,8 +21,6 @@ class WeatherDataSource(val baseUrl: String){
         }
     }
 
-
-
     //Fetcher data fra location forecast.
     suspend fun fetchLocationForecastData(lat: String, long: String, altitude: String? = null): Model {
         var cordinates = "lat=${lat}&lon=${long}"

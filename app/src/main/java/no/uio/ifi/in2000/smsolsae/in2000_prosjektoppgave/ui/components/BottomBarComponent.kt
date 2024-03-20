@@ -59,7 +59,7 @@ fun BottomBar(navController: NavController){
         title = "Weather",
         selectedIcon = Icons.Filled.List,
         unselectedIcon = Icons.Outlined.List,
-        route = Screen.Weather.route
+        route = Screen.Weather_api.route
     )
 
     val tabBarItems = listOf(homeTab, alertsTab, settingsTab, moreTab)
