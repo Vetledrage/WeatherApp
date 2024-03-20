@@ -88,18 +88,6 @@ class ImplementedWeatherRepository : WeatherRepository {
             tempNext11 = tempNext11!!,
             tempNext12 = tempNext12!!,
 
-            cloudinessNext1 = cloudinessNext1!!,
-            cloudinessNext2 = cloudinessNext2!!,
-            cloudinessNext3 = cloudinessNext3!!,
-            cloudinessNext4 = cloudinessNext4!!,
-            cloudinessNext5 = cloudinessNext5!!,
-            cloudinessNext6 = cloudinessNext6!!,
-            cloudinessNext7 = cloudinessNext7!!,
-            cloudinessNext8 = cloudinessNext8!!,
-            cloudinessNext9 = cloudinessNext9!!,
-            cloudinessNext10 = cloudinessNext10!!,
-            cloudinessNext11 = cloudinessNext11!!,
-            cloudinessNext12 = cloudinessNext12!!,
 
             temp_day1 = tempDay1!!,
             temp_day2 = tempDay2!!,
