@@ -57,7 +57,7 @@ fun HomeScreen(
     viewModel: WeatherViewModel = viewModel()
 ){
     val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
-    //val weatherData by viewModel.appUiState.collectAsState()
+    val weatherData by viewModel.appUiState.collectAsState()
 
     //Log.d("WeatherData", "HomeScreen: ${weatherData}")
     val todaystemp = "14"
@@ -202,7 +202,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
 
-
+                    //val hourlyWeatherData = (weatherData as AppUiState.Success).weather.tempNext12hrs
 
                     WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
                 }
@@ -228,7 +228,7 @@ fun WeatherItem(weather: HourlyWeather){
             fontWeight = FontWeight.Light
         )
         Image(
-            painter = painterResource(id = weather.weatherIconId),
+            painter = painterResource(id = R.drawable.ic_sunny),
             contentDescription = "icon",
             modifier = Modifier.size(35.dp)
         )
@@ -249,7 +249,7 @@ fun WeatherScrollableRow(hourlyWeatherData: List<HourlyWeather>){
             .background(Color(0xFFF7F7F7), shape = RoundedCornerShape(8.dp)),
     ){
         items(hourlyWeatherData) { weather ->
-            WeatherItem(weather = weather)
+            WeatherItem(weather)
         }
     }
 }

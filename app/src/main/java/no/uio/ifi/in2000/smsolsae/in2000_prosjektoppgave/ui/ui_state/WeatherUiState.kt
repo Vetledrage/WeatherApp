@@ -6,7 +6,7 @@ data class WeatherLocationInfo(
     val weatherCode: String,
 
     val rainL: Float,
-    val tempNext12hrs: MutableList<Int?>,
+    val tempNext12hrs: List<TemperatureNext12Hours>,
     val tempNext9Days: MutableList<Int?>,
     val uvIndex: Float,
     val wind_speed: Float,
@@ -19,7 +19,13 @@ data class WeatherLocationInfo(
     var cloud_area_fraction_medium: Float,*/
 
 
-    )
+)
+
+data class TemperatureNext12Hours(
+    val time: String,
+    val temp: Int?,
+    val iconId: String?,
+)
 
 sealed interface AppUiState {
     data class Success(val weather: WeatherLocationInfo) : AppUiState

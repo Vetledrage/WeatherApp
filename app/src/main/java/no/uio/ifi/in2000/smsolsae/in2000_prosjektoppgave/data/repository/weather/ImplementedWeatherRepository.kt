@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weathe
 
 import android.util.Log
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather.WeatherDataSource
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.WeatherLocationInfo
 import java.util.Calendar
 
@@ -46,10 +47,12 @@ class ImplementedWeatherRepository : WeatherRepository {
         val cloudLow = locationForecast.properties.timeseries.get(0)?.data?.instant?.details?.cloud_area_fraction_low
         val cloudiness = locationForecast.properties.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction*/
 
-        val tempNext12h = mutableListOf<Int?>()
+        val tempNext12h = mutableListOf<TemperatureNext12Hours>()
         for (i in 0 until 12){
             val nextTemp = locationForecast.properties.timeseries[i].data.instant.details.air_temperature.toInt()
-            tempNext12h.add(nextTemp)
+            val time = locationForecast.properties.timeseries[i].time
+            val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary.get("symbol_code")
+            tempNext12h.add(TemperatureNext12Hours(time,nextTemp,iconId))
         }
 
         val tempNext9Days = mutableListOf<Int?>()
