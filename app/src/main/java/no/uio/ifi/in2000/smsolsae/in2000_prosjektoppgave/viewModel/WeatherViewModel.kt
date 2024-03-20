@@ -46,7 +46,7 @@ class WeatherViewModel : ViewModel() {
 
                 _appUiState.update {
                     AppUiState.Success(
-                        locationF = locationP
+                        weather = locationP
                     )
                 }
             } catch (e: IOException){

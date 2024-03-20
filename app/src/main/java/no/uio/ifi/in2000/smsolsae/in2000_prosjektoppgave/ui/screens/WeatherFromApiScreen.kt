@@ -37,7 +37,7 @@ fun WeatherFromApiScreen(navController: NavController, viewModel: WeatherViewMod
                     }
                 }
                 is AppUiState.Success -> {
-                    val a = (weatherData as AppUiState.Success).locationF //Kaller den sånn så får man aksessere dataen vi trenger
+                    val a = (weatherData as AppUiState.Success).weather //Kaller den sånn så får man aksessere dataen vi trenger
                     Text(text = "Success")
                     Text(text = "${a}")
                 }
