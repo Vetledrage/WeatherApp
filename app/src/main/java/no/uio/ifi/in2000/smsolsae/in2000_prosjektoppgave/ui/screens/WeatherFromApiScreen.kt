@@ -37,9 +37,12 @@ fun WeatherFromApiScreen(navController: NavController, viewModel: WeatherViewMod
                     }
                 }
                 is AppUiState.Success -> {
-                    val a = (weatherData as AppUiState.Success).locationF //Kaller den sånn så får man aksessere dataen vi trenger
+                    val a = (weatherData as AppUiState.Success).weather //Kaller den sånn så får man aksessere dataen vi trenger
+                    val timeList = (weatherData as AppUiState.Success).weather.tempNext12hrs
                     Text(text = "Success")
                     Text(text = "${a}")
+
+                    //WeatherScrollableRow1(hourlyWeatherData = timeList)
                 }
                 is AppUiState.Error ->{
                     Text(text = "Error")
@@ -48,5 +51,46 @@ fun WeatherFromApiScreen(navController: NavController, viewModel: WeatherViewMod
 
         }
     }
-
 }
+
+// @Composable
+// fun WeatherScrollableRow1(hourlyWeatherData: List<TemperatureNext12Hours>){
+// LazyRow(
+// contentPadding = PaddingValues(horizontal = 5.dp),
+// modifier = Modifier
+// .fillMaxWidth()
+// .background(Color(0xFFF7F7F7), shape = RoundedCornerShape(8.dp)),
+// ){
+// items(hourlyWeatherData) { weather ->
+// WeatherItem(weather)
+// }
+// }
+// }
+//
+//
+// @Composable
+// fun WeatherItem(weather: TemperatureNext12Hours){
+// Column(
+// horizontalAlignment = Alignment.CenterHorizontally,
+// modifier = Modifier
+// .width(80.dp)
+// .padding(vertical = 5.dp)
+//
+// ) {
+// Text(
+// text = weather.time,
+// fontSize = 14.sp,
+// fontWeight = FontWeight.Light
+// )
+// Image(
+// painter = painterResource(id = R.drawable.ic_sunny),
+// contentDescription = "icon",
+// modifier = Modifier.size(35.dp)
+// )
+// Text(
+// text = "${weather.temp}°",
+// fontSize = 18.sp,
+// fontWeight = FontWeight.Bold
+// )
+// }
+// }

@@ -47,6 +47,9 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -55,159 +58,173 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 fun HomeScreen(
     navController: NavController,
     viewModel: WeatherViewModel = viewModel()
-){
-    val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
-    //val weatherData by viewModel.appUiState.collectAsState()
+) {
+    //val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
+    val weatherData by viewModel.appUiState.collectAsState()
 
     //Log.d("WeatherData", "HomeScreen: ${weatherData}")
     val todaystemp = "14"
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        Scaffold(
-            bottomBar = {
-                BottomBar(navController)
+        when (weatherData) {
+            is AppUiState.Loading -> {
+                LoadingAnimation(text = "Loading Data...")
             }
-        ) { innerPadding ->
+            is AppUiState.Success -> {
+                val data = (weatherData as AppUiState.Success).weather
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .weight(0.7f),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_weather_background),
-                        contentDescription = "background",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(shape = RoundedCornerShape(5)),
-                        contentScale = ContentScale.Crop,
-                    )
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(15.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.location_dot),
-                                contentDescription = "location",
-                                modifier = Modifier
-                                    .padding(horizontal = 2.dp)
-                                    .size(16.dp)
-                            )
-                            Text(
-                                text = "Oslo",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                        Text(
-                            text = getLiveDateTime(),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Light
-                        )
+                Scaffold(
+                    bottomBar = {
+                        BottomBar(navController)
                     }
+                ) { innerPadding ->
 
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                            .fillMaxSize()
+                            .padding(innerPadding)
                     ) {
-                        Spacer(modifier = Modifier.height(60.dp))
-
-                        Text(
-                            text = "$todaystemp°",
-                            fontSize = 70.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "Mostly Clear",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Light
-                        )
-
-                        Spacer(
-                            modifier = Modifier.height(30.dp)
-                        )
-
-                        Row(
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 10.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .padding(16.dp)
+                                .weight(0.7f),
+                            contentAlignment = Alignment.TopCenter
                         ) {
-                            WeatherInfo(R.drawable.ic_sunny, "4 uv")
-                            WeatherInfo(R.drawable.ic_drop, "58%")
-                            WeatherInfo(R.drawable.ic_wind, "22km/h")
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_weather_background),
+                                contentDescription = "background",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(shape = RoundedCornerShape(5)),
+                                contentScale = ContentScale.Crop,
+                            )
+
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(15.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.location_dot),
+                                        contentDescription = "location",
+                                        modifier = Modifier
+                                            .padding(horizontal = 2.dp)
+                                            .size(16.dp)
+                                    )
+                                    Text(
+                                        text = "Oslo",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                                Text(
+                                    text = getLiveDateTime(),
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Light
+                                )
+                            }
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Spacer(modifier = Modifier.height(60.dp))
+
+                                Text(
+                                    text = "${data.temperature}°",
+                                    fontSize = 70.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "${data.weatherCode}",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Light
+                                )
+
+                                Spacer(
+                                    modifier = Modifier.height(30.dp)
+                                )
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 10.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
+                                    WeatherInfo(R.drawable.ic_drop, "${data.rain}%")
+                                    WeatherInfo(R.drawable.ic_wind, "${data.humidity}m/s")
+                                }
+                            }
+                        }
+
+                        val annotedstring = buildAnnotatedString {
+                            val text = "Next 7 days"
+                            append(text)
+                        }
+                        //Nedre delen av skjermen. Tar 40% av skjermen.
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .weight(0.3f)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "Today",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight(600)
+                                )
+
+                                ClickableText(
+                                    text = annotedstring,
+                                    style = TextStyle(
+                                        fontWeight = FontWeight(400),
+                                        fontSize = 15.sp,
+                                        color = Color.Blue
+                                    ),
+                                    modifier = Modifier
+                                        .drawBehind {
+                                            val strokeWidth = 1.dp.toPx()
+                                            val y = size.height - strokeWidth / 2
+                                            drawLine(
+                                                color = Color.Blue,
+                                                start = Offset(0f, y),
+                                                end = Offset(size.width, y),
+                                                strokeWidth = strokeWidth
+                                            )
+                                        },
+                                    onClick = {
+                                        navController.navigate(Screen.Weather.route)
+                                    }
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            val hourlyWeatherData = data.tempNext12hrs
+
+                            WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
                         }
                     }
                 }
-                val annotedstring = buildAnnotatedString {
-                    val text = "Next 7 days"
-                    append(text)
-                }
-                //Nedre delen av skjermen. Tar 40% av skjermen.
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .weight(0.3f)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Today",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight(600)
-                        )
+            }
 
-                        ClickableText(
-                            text = annotedstring,
-                            style = TextStyle(
-                                fontWeight = FontWeight(400),
-                                fontSize = 15.sp,
-                                color = Color.Blue
-                            ),
-                            modifier = Modifier
-                                .drawBehind {
-                                    val strokeWidth = 1.dp.toPx()
-                                    val y = size.height - strokeWidth / 2
-                                    drawLine(
-                                        color = Color.Blue,
-                                        start = Offset(0f, y),
-                                        end = Offset(size.width, y),
-                                        strokeWidth = strokeWidth
-                                    )
-                                },
-                            onClick = {
-                                navController.navigate(Screen.Weather.route)
-                            }
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
-
-
-
-
-                    WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
-                }
+            is AppUiState.Error -> {
+                Text(text = "Error in getting data")
             }
         }
+
     }
 }
 
@@ -228,7 +245,7 @@ fun WeatherItem(weather: HourlyWeather){
             fontWeight = FontWeight.Light
         )
         Image(
-            painter = painterResource(id = weather.weatherIconId),
+            painter = painterResource(id = R.drawable.ic_sunny),
             contentDescription = "icon",
             modifier = Modifier.size(35.dp)
         )
@@ -241,7 +258,34 @@ fun WeatherItem(weather: HourlyWeather){
 }
 
 @Composable
-fun WeatherScrollableRow(hourlyWeatherData: List<HourlyWeather>){
+fun WeatherItem(weather: TemperatureNext12Hours){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .width(80.dp)
+            .padding(vertical = 5.dp)
+
+    ) {
+        Text(
+            text = weather.time,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Light
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_sunny),
+            contentDescription = "icon",
+            modifier = Modifier.size(35.dp)
+        )
+        Text(
+            text = "${weather.temp}°",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun WeatherScrollableRow(hourlyWeatherData: List<TemperatureNext12Hours>){
     LazyRow(
         contentPadding = PaddingValues(horizontal = 5.dp),
         modifier = Modifier
@@ -249,7 +293,7 @@ fun WeatherScrollableRow(hourlyWeatherData: List<HourlyWeather>){
             .background(Color(0xFFF7F7F7), shape = RoundedCornerShape(8.dp)),
     ){
         items(hourlyWeatherData) { weather ->
-            WeatherItem(weather = weather)
+            WeatherItem(weather)
         }
     }
 }

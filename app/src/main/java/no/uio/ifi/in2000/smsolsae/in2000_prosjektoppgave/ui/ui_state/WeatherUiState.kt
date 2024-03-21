@@ -1,38 +1,34 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state
 
 data class WeatherLocationInfo(
-    val temperatureL: Int,
-    val fog_area_fractionL: Float,
+
+    val temperature: Int,
+    val weatherCode: String,
+
+    val rain: Float,
+    val tempNext12hrs: List<TemperatureNext12Hours>,
+    val tempNext9Days: MutableList<Int?>,
+    val uvIndex: Float,
+    val wind_speed: Float,
+    val humidity: Int, //Luft fuktighet. I prosent.
+
+    /*val fog_area_fractionL: Float,
     val cloud_area_fraction: Float,
     var cloud_area_fraction_high: Float,
     var cloud_area_fraction_low: Float,
-    var cloud_area_fraction_medium: Float,
-    val rainL: Float,
-    val tempNext1: Int,
-    val tempNext2: Int,
-    val tempNext3: Int,
-    val tempNext4: Int,
-    val tempNext5: Int,
-    val tempNext6: Int,
-    val tempNext7: Int,
-    val tempNext8: Int,
-    val tempNext9: Int,
-    val tempNext10: Int,
-    val tempNext11: Int,
-    val tempNext12: Int,
+    var cloud_area_fraction_medium: Float,*/
 
-    val temp_day1: Int,
-    val temp_day2: Int,
-    val temp_day3: Int,
-    val temp_day4: Int,
-    val cloud_day1: Float,
-    val cloud_day2: Float,
-    val cloud_day3: Float,
-    val cloud_day4: Float,
+
+)
+
+data class TemperatureNext12Hours(
+    val time: String,
+    val temp: Int?,
+    val iconId: String?,
 )
 
 sealed interface AppUiState {
-    data class Success(val locationF: WeatherLocationInfo) : AppUiState
+    data class Success(val weather: WeatherLocationInfo) : AppUiState
     object Error : AppUiState
     object Loading : AppUiState
 }

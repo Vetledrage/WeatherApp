@@ -1,9 +1,10 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather.WeatherDataSource
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.WeatherLocationInfo
-import java.text.SimpleDateFormat
-import java.util.Date
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatTime
+import java.util.Calendar
 
 
 class ImplementedWeatherRepository : WeatherRepository {
@@ -13,90 +14,99 @@ class ImplementedWeatherRepository : WeatherRepository {
     override suspend fun getLocationWeather(latitude: String, longitude: String, altitude: String?): WeatherLocationInfo {
         val locationForecast = datasource.fetchLocationForecastData(latitude, longitude, altitude)
 
-        val currentTimeMillis = System.currentTimeMillis()
-        val date = Date(currentTimeMillis)
-        val dateFormat = SimpleDateFormat("HH")
-        val tidspunkt = dateFormat.format(date)
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
-        val timeDay1 = 24-tidspunkt.toInt()+12
-        val timeDay2 = 24-tidspunkt.toInt()+12+24
-        val timeDay3 = 24-tidspunkt.toInt()+12+48
+        //Log.d("IMPLEMENTED REPOSITORY", "getLocationWeather Tidspunkt: ${currentHour}")
 
-        val temp = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.air_temperature?.toInt()
-        val airfog = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.fog_area_fraction
-        val rain = locationForecast.properties?.timeseries?.get(0)?.data?.next_1_hours?.details?.precipitation_amount
-        val cloudHigh = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_high
+
+        val timeDay1 = 24 - currentHour
+        val timeDay2 = timeDay1 + 24
+        val timeDay3 = timeDay2 + 19 // Dag to har bare frem til 18:00 derfor ta + 19 timer til 3 dagen kl 00:00
+        val timeDay4 = timeDay3 + 4 //Etter dag 3 så er det kun 4 målinger på dagen så for å få neste dag ta + 4 for hver gang.
+        val timeDay5 = timeDay4 + 4
+        val timeDay6 = timeDay5 + 4
+        val timeDay7 = timeDay6 + 4
+        val timeDay8 = timeDay7 + 4
+
+
+
+        //Alle spm tegn må vekk fra under her!
+        val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
+        val weatherCode = locationForecast.properties.timeseries[0].data.next_6_hours.summary.get("symbol_code") //Dagens weahter code / description
+        val windspeed = locationForecast.properties.timeseries[0].data.instant.details.wind_speed
+        val humidity = locationForecast.properties.timeseries[0].data.instant.details.relative_humidity.toInt()
+        val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount
+        val uvIndex = locationForecast.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky
+
+
+        //Tror ikke vi trenger disse her
+        /*val airfog = locationForecast.properties.timeseries.get(0)?.data?.instant?.details?.fog_area_fraction
+        val cloudHigh = locationForecast.properties.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_high
         val cloudMid = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_medium
-        val cloudLow = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_low
-        val cloudiness = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction
+        val cloudLow = locationForecast.properties.timeseries.get(0)?.data?.instant?.details?.cloud_area_fraction_low
+        val cloudiness = locationForecast.properties.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction*/
 
-        val tempNext1 = locationForecast.properties?.timeseries?.get(1)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext2 = locationForecast.properties?.timeseries?.get(2)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext3 = locationForecast.properties?.timeseries?.get(3)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext4 = locationForecast.properties?.timeseries?.get(4)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext5 = locationForecast.properties?.timeseries?.get(5)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext6 = locationForecast.properties?.timeseries?.get(6)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext7 = locationForecast.properties?.timeseries?.get(7)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext8 = locationForecast.properties?.timeseries?.get(8)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext9 = locationForecast.properties?.timeseries?.get(9)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext10 = locationForecast.properties?.timeseries?.get(10)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext11 = locationForecast.properties?.timeseries?.get(11)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempNext12 = locationForecast.properties?.timeseries?.get(12)?.data?.instant?.details?.air_temperature?.toInt()
+        val tempNext12h = mutableListOf<TemperatureNext12Hours>()
+        for (i in 0 until 12){
+            val nextTemp = locationForecast.properties.timeseries[i].data.instant.details.air_temperature.toInt()
+            val time = locationForecast.properties.timeseries[i].time
+            val timeFormatted = formatTime(time)
+            val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary.get("symbol_code")
+            tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
+        }
 
-        val cloudinessNext1 = locationForecast.properties?.timeseries?.get(1)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext2 = locationForecast.properties?.timeseries?.get(2)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext3 = locationForecast.properties?.timeseries?.get(3)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext4 = locationForecast.properties?.timeseries?.get(4)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext5 = locationForecast.properties?.timeseries?.get(5)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext6 = locationForecast.properties?.timeseries?.get(6)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext7 = locationForecast.properties?.timeseries?.get(7)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext8 = locationForecast.properties?.timeseries?.get(8)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext9 = locationForecast.properties?.timeseries?.get(9)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext10 = locationForecast.properties?.timeseries?.get(10)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext11 = locationForecast.properties?.timeseries?.get(11)?.data?.instant?.details?.cloud_area_fraction
-        val cloudinessNext12 = locationForecast.properties?.timeseries?.get(12)?.data?.instant?.details?.cloud_area_fraction
+        val tempNext9Days = mutableListOf<Int?>()
 
-        val tempDay1 = locationForecast.properties?.timeseries?.get(timeDay1)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempDay2 = locationForecast.properties?.timeseries?.get(timeDay2)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempDay3 = locationForecast.properties?.timeseries?.get(timeDay3)?.data?.instant?.details?.air_temperature?.toInt()
-        val tempDay4 = locationForecast.properties?.timeseries?.get(timeDay3)?.data?.instant?.details?.air_temperature?.toInt()
+        val tempDay1: Int = locationForecast.properties.timeseries[timeDay1].data.instant.details.air_temperature.toInt()
+        val tempDay2: Int = locationForecast.properties.timeseries[timeDay2].data.instant.details.air_temperature.toInt()
+        val tempDay3: Int = locationForecast.properties.timeseries[timeDay3].data.instant.details.air_temperature.toInt()
+        val tempDay4: Int = locationForecast.properties.timeseries[timeDay4].data.instant.details.air_temperature.toInt()
+        val tempDay5: Int = locationForecast.properties.timeseries[timeDay5].data.instant.details.air_temperature.toInt()
+        val tempDay6: Int = locationForecast.properties.timeseries[timeDay6].data.instant.details.air_temperature.toInt()
+        val tempDay7: Int = locationForecast.properties.timeseries[timeDay7].data.instant.details.air_temperature.toInt()
+        val tempDay8: Int = locationForecast.properties.timeseries[timeDay8].data.instant.details.air_temperature.toInt()
 
-        val cloudDay1 = locationForecast.properties?.timeseries?.get(timeDay1)?.data?.instant?.details?.cloud_area_fraction
-        val cloudDay2 = locationForecast.properties?.timeseries?.get(timeDay2)?.data?.instant?.details?.cloud_area_fraction
-        val cloudDay3 = locationForecast.properties?.timeseries?.get(timeDay3)?.data?.instant?.details?.cloud_area_fraction
-        val cloudDay4 = locationForecast.properties?.timeseries?.get(timeDay3)?.data?.instant?.details?.cloud_area_fraction
+        tempNext9Days.addAll(listOf(
+            tempDay1,
+            tempDay2,
+            tempDay3,
+            tempDay4,
+            tempDay5,
+            tempDay6,
+            tempDay7,
+            tempDay8)
+        )
+
+        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1]
+        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2]
+        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3]
+        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4]
+        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5]
+        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6]
+        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7]
+        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8]
+
+
+
+
+
 
         return WeatherLocationInfo(
-            temperatureL = temp!!,
+            temperature = temp!!,
+            wind_speed = windspeed!!,
+            rain = rain!!,
+            weatherCode = weatherCode!!,
+            tempNext12hrs = tempNext12h,
+            tempNext9Days = tempNext9Days ,
+            uvIndex = uvIndex!!,
+            humidity = humidity!!,
+            /*
             fog_area_fractionL = airfog!!,
-            rainL = rain!!,
             cloud_area_fraction_high = cloudHigh!!,
             cloud_area_fraction_medium = cloudMid!!,
             cloud_area_fraction_low = cloudLow!!,
-            cloud_area_fraction = cloudiness!!,
+            cloud_area_fraction = cloudiness!!,*/
 
-            tempNext1 = tempNext1!!,
-            tempNext2 = tempNext2!!,
-            tempNext3 = tempNext3!!,
-            tempNext4 = tempNext4!!,
-            tempNext5 = tempNext5!!,
-            tempNext6 = tempNext6!!,
-            tempNext7 = tempNext7!!,
-            tempNext8 = tempNext8!!,
-            tempNext9 = tempNext9!!,
-            tempNext10 = tempNext10!!,
-            tempNext11 = tempNext11!!,
-            tempNext12 = tempNext12!!,
-
-
-            temp_day1 = tempDay1!!,
-            temp_day2 = tempDay2!!,
-            temp_day3 = tempDay3!!,
-            temp_day4 = tempDay4!!,
-            cloud_day1 = cloudDay1!!,
-            cloud_day2 = cloudDay2!!,
-            cloud_day3 = cloudDay3!!,
-            cloud_day4 = cloudDay4!!,
         )
     }
 }
