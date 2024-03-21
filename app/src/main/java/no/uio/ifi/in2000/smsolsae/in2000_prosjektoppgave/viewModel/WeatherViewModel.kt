@@ -21,7 +21,6 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWea
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import java.io.IOException
 
-
 //Prøvde meg på ViewModel, men ble ikke ferdig. Trengs mer jobbing noen som kan det her, prøv det ut
 class WeatherViewModel : ViewModel() {
 
@@ -59,7 +58,7 @@ class WeatherViewModel : ViewModel() {
 
     private var isDataLoaded = false
     init {
-        getWeatherInfo("53", "13")
+        getWeatherInfo("59.9139", "10.7522")
         loadWeatherData()
     }
 
