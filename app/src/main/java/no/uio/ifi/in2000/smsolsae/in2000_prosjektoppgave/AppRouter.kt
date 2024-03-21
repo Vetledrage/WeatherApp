@@ -6,10 +6,12 @@ private object Route{
     const val WEATHER = "weather"
     const val HOME = "home"
     const val WEATHER_API = "api_weather"
+    const val ALERTS = "alerts"
 }
 
 sealed class Screen(val route: String){
     object Weather: Screen(Route.WEATHER)
     object Home: Screen(Route.HOME)
-    object Weather_api: Screen(Route.WEATHER_API)
+    object Alerts: Screen(Route.ALERTS)
+
 }

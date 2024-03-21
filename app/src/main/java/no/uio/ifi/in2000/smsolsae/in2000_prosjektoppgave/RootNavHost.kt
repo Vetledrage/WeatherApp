@@ -5,8 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.AlertsScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.HomeScreen
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.WeatherFromApiScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.WeatherScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
@@ -26,9 +26,9 @@ fun RootNavHost(navController: NavHostController){
         composable(route = Screen.Weather.route){
             WeatherScreen(navController = navController, viewModel = viewModel)
         }
-
-        composable(route = Screen.Weather_api.route){
-            WeatherFromApiScreen(navController = navController, viewModel = viewModel)
+        
+        composable(route = Screen.Alerts.route){
+            AlertsScreen(navController = navController, viewModel = viewModel)
         }
     }
 }
