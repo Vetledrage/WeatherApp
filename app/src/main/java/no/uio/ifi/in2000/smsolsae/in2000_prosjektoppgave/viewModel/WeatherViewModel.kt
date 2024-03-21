@@ -63,6 +63,7 @@ class WeatherViewModel : ViewModel() {
         loadWeatherData()
     }
 
+    //Dummydata
     fun loadWeatherData(){
         if (isDataLoaded == false){
             viewModelScope.launch {
