@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -46,71 +47,95 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
 //Skjerm som skal vise været de neste 7 dagene.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel){
+fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
     val weeklyWeatherData by viewModel.weeklyWeatherUiState.collectAsState()
-    val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = "Oslo",
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back"
+    val weatherData by viewModel.appUiState.collectAsState()
+    val data = (weatherData as AppUiState.Success).weather
+
+
+    Surface(modifier = Modifier.fillMaxSize()) {
+        when (weatherData){
+            is AppUiState.Loading -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    LoadingAnimation(text = "Loading Data...")
+                }
+            }
+            is AppUiState.Success ->{
+                Scaffold(
+                    topBar = {
+                        CenterAlignedTopAppBar(
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.background,
+                                titleContentColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            title = {
+                                Text(
+                                    text = "Oslo",
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = { navController.popBackStack() }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.ArrowBack,
+                                        contentDescription = "Back"
+                                    )
+                                }
+                            }
                         )
+                    },
+                ) {innerPadding ->
+                    Column(modifier = Modifier
+                        .padding(innerPadding)
+                        .padding(16.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Today",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight(400)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        val hourlyWeatherData = data.tempNext12hrs
+                        TodaysWeatherRow(hourlyWeatherData = hourlyWeatherData)
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            WeatherNextWeek(weeklyWeatherData = weeklyWeatherData)
+                        }
                     }
                 }
-            )
-        },
-    ) {innerPadding ->
-        Column(modifier = Modifier
-            .padding(innerPadding)
-            .padding(16.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Today",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight(400)
-                )
             }
-            Spacer(modifier = Modifier.height(20.dp))
-
-
-
-            TodaysWeatherRow(hourlyWeatherData = hourlyWeatherData)
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-
-
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                WeatherNextWeek(weeklyWeatherData = weeklyWeatherData)
+            is AppUiState.Error ->{
+                Text(text = "Error in getting the data...")
             }
         }
     }
@@ -118,7 +143,7 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel){
 
 
 @Composable
-fun TodaysWeatherRow(hourlyWeatherData: List<HourlyWeather>){
+fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     LazyRow(
@@ -160,14 +185,14 @@ fun TodaysWeatherRow(hourlyWeatherData: List<HourlyWeather>){
 
                             )
                         Image(
-                            painter = painterResource(id = weather.weatherIconId),
+                            painter = painterResource(id = R.drawable.ic_sunny),
                             contentDescription = "icon",
                             modifier = Modifier
                                 .padding(10.dp)
                                 .size(35.dp)
                         )
                         Text(
-                            text = "${weather.temperature}°",
+                            text = "${weather.temp}°",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )

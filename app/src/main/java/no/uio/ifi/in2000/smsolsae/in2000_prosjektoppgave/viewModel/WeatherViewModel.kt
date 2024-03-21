@@ -59,11 +59,11 @@ class WeatherViewModel : ViewModel() {
 
     private var isDataLoaded = false
     init {
-        //getWeatherInfo("53", "13", "")
+        getWeatherInfo("53", "13")
         loadWeatherData()
     }
 
-    private fun loadWeatherData(){
+    fun loadWeatherData(){
         if (isDataLoaded == false){
             viewModelScope.launch {
                 val hourlyData = mutableListOf<HourlyWeather>()

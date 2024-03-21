@@ -20,7 +20,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun WeatherFromApiScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
-    viewModel.getWeatherInfo("59", "10")
+    //viewModel.getWeatherInfo("59", "10")
     val weatherData by viewModel.appUiState.collectAsState()
 
 

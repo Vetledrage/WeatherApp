@@ -45,7 +45,6 @@ import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
@@ -59,16 +58,19 @@ fun HomeScreen(
     navController: NavController,
     viewModel: WeatherViewModel = viewModel()
 ) {
-    //val hourlyWeatherData by viewModel.hourlyWeather.collectAsState()
     val weatherData by viewModel.appUiState.collectAsState()
-
     //Log.d("WeatherData", "HomeScreen: ${weatherData}")
-    val todaystemp = "14"
 
     Surface(modifier = Modifier.fillMaxSize()) {
         when (weatherData) {
             is AppUiState.Loading -> {
-                LoadingAnimation(text = "Loading Data...")
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    LoadingAnimation(text = "Loading Data...")
+                }
             }
             is AppUiState.Success -> {
                 val data = (weatherData as AppUiState.Success).weather
@@ -144,7 +146,7 @@ fun HomeScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    text = "${data.weatherCode}",
+                                    text = data.weatherCode,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Light
                                 )
@@ -160,8 +162,8 @@ fun HomeScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
-                                    WeatherInfo(R.drawable.ic_drop, "${data.rain}%")
-                                    WeatherInfo(R.drawable.ic_wind, "${data.humidity}m/s")
+                                    WeatherInfo(R.drawable.ic_drop, "${data.humidity}%")
+                                    WeatherInfo(R.drawable.ic_wind, "${data.wind_speed}m/s")
                                 }
                             }
                         }
@@ -225,35 +227,6 @@ fun HomeScreen(
             }
         }
 
-    }
-}
-
-//Dummy data class
-
-@Composable
-fun WeatherItem(weather: HourlyWeather){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(80.dp)
-            .padding(vertical = 5.dp)
-
-    ) {
-        Text(
-            text = weather.time,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Light
-        )
-        Image(
-            painter = painterResource(id = R.drawable.ic_sunny),
-            contentDescription = "icon",
-            modifier = Modifier.size(35.dp)
-        )
-        Text(
-            text = "${weather.temperature}°",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
-        )
     }
 }
 
