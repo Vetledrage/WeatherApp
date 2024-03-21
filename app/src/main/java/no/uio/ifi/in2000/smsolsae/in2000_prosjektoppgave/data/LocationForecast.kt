@@ -61,7 +61,7 @@ data class Details(
     var probability_of_precipitation: Float,
     var probability_of_thunder: Float,
     var relative_humidity: Float,
-    var ultraviolet_index_clear_sky_max : Float,
+    var ultraviolet_index_clear_sky: Float,
     var wind_from_direction: Float,
     var wind_speed: Float,
     var wind_speed_of_gust: Float

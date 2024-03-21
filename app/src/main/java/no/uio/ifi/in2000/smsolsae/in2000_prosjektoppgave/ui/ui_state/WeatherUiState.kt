@@ -5,7 +5,7 @@ data class WeatherLocationInfo(
     val temperature: Int,
     val weatherCode: String,
 
-    val rainL: Float,
+    val rain: Float,
     val tempNext12hrs: List<TemperatureNext12Hours>,
     val tempNext9Days: MutableList<Int?>,
     val uvIndex: Float,

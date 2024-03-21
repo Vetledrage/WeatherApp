@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather
 
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -35,6 +36,7 @@ class WeatherDataSource(val baseUrl: String){
         }
 
         val  url = "$baseUrl/locationforecast/2.0/complete?$cordinates"
+        Log.d("FETCHING FORECAST", "Fetcher forecast data nå ")
         return serverCall(client, url).body()
     }
 

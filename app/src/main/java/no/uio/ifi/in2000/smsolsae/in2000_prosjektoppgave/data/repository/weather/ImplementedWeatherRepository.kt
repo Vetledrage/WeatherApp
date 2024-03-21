@@ -1,9 +1,9 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 
-import android.util.Log
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather.WeatherDataSource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.WeatherLocationInfo
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatTime
 import java.util.Calendar
 
 
@@ -15,10 +15,9 @@ class ImplementedWeatherRepository : WeatherRepository {
         val locationForecast = datasource.fetchLocationForecastData(latitude, longitude, altitude)
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        Log.d("IMPLEMENTED REPOSITORY", "getLocationWeather Tidspunkt: ${currentHour}")
 
+        //Log.d("IMPLEMENTED REPOSITORY", "getLocationWeather Tidspunkt: ${currentHour}")
 
-        val hoursToMidnight = 24 - currentHour
 
         val timeDay1 = 24 - currentHour
         val timeDay2 = timeDay1 + 24
@@ -29,7 +28,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         val timeDay7 = timeDay6 + 4
         val timeDay8 = timeDay7 + 4
 
-        Log.d("IMPLEMENTED REPOSITORY", "getLocationWeather timeDay3: ${timeDay1}")
+
 
         //Alle spm tegn må vekk fra under her!
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
@@ -37,7 +36,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         val windspeed = locationForecast.properties.timeseries[0].data.instant.details.wind_speed
         val humidity = locationForecast.properties.timeseries[0].data.instant.details.relative_humidity.toInt()
         val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount
-        val uvIndex = locationForecast.properties.timeseries[0].data.next_1_hours.details.ultraviolet_index_clear_sky_max
+        val uvIndex = locationForecast.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky
 
 
         //Tror ikke vi trenger disse her
@@ -51,8 +50,9 @@ class ImplementedWeatherRepository : WeatherRepository {
         for (i in 0 until 12){
             val nextTemp = locationForecast.properties.timeseries[i].data.instant.details.air_temperature.toInt()
             val time = locationForecast.properties.timeseries[i].time
+            val timeFormatted = formatTime(time)
             val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary.get("symbol_code")
-            tempNext12h.add(TemperatureNext12Hours(time,nextTemp,iconId))
+            tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
         val tempNext9Days = mutableListOf<Int?>()
@@ -94,7 +94,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         return WeatherLocationInfo(
             temperature = temp!!,
             wind_speed = windspeed!!,
-            rainL = rain!!,
+            rain = rain!!,
             weatherCode = weatherCode!!,
             tempNext12hrs = tempNext12h,
             tempNext9Days = tempNext9Days ,
