@@ -4,6 +4,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.random.Random
 
 
@@ -28,17 +29,17 @@ fun getNext7Dates(): List<String>{
 
 //hente dag bassert på dato
 fun getDay(date: String): String{
-    val wholeDate = date.split(".")
-    var year = wholeDate[0].toInt()
-    var month = wholeDate[1].toInt()-1
-    var day = wholeDate[2].toInt()
+    val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US) // Bruker Locale.US for engelsk
+    format.timeZone = TimeZone.getTimeZone("UTC") // Sørger for at tiden tolkes som UTC
+    val date = format.parse(date) ?: return "Unknown"
 
     val calendar = Calendar.getInstance()
-    calendar.set(year, month, day)
+    calendar.time = date
 
-    val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+    // Bruker SimpleDateFormat igjen for å utlede dagen i uken på engelsk
+    val dayFormat = SimpleDateFormat("EEEE", Locale.US) // 'EEEE' representerer fullstendig navn på ukedagen
 
-    return dayFormat.format(calendar.time)
+    return dayFormat.format(date)
 }
 
 
