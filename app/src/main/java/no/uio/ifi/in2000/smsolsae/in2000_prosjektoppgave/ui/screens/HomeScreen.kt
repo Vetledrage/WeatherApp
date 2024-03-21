@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens
 
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -49,6 +51,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -165,6 +168,22 @@ fun HomeScreen(
                                     WeatherInfo(R.drawable.ic_drop, "${data.humidity}%")
                                     WeatherInfo(R.drawable.ic_wind, "${data.wind_speed}m/s")
                                 }
+
+                                Spacer(modifier = Modifier.height(50.dp))
+                                Column(
+                                ) {
+                                    Button(
+                                        onClick = { navController.navigate(Screen.Alerts.route)}
+                                    ) {
+                                        Text(text = "See weather warnings")
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.triangle_exclamation_solid),
+                                            contentDescription = "Warining",
+                                            modifier = Modifier.padding(14.dp).size(20.dp)
+                                        )
+                                    }
+
+                                }
                             }
                         }
 
@@ -245,7 +264,7 @@ fun WeatherItem(weather: TemperatureNext12Hours){
             fontWeight = FontWeight.Light
         )
         Image(
-            painter = painterResource(id = R.drawable.ic_sunny),
+            painter = painterResource(id = getWeatherIcon(weather.iconId)),
             contentDescription = "icon",
             modifier = Modifier.size(35.dp)
         )

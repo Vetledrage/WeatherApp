@@ -49,17 +49,17 @@ fun BottomBar(navController: NavController){
         badgeAmount = 7,
         route = Screen.Alerts.route
     )
-    val settingsTab = TabBarItem(
-        title = "Settings",
-        selectedIcon = Icons.Filled.Settings,
-        unselectedIcon = Icons.Outlined.Settings,
-        route = Screen.Home.route
-    )
     val moreTab = TabBarItem(
         title = "Weather",
         selectedIcon = Icons.Filled.List,
         unselectedIcon = Icons.Outlined.List,
         route = Screen.Home.route
+    )
+    val settingsTab = TabBarItem(
+        title = "Settings",
+        selectedIcon = Icons.Filled.Settings,
+        unselectedIcon = Icons.Outlined.Settings,
+        route = Screen.Settings.route
     )
 
     val tabBarItems = listOf(homeTab, alertsTab, settingsTab, moreTab)

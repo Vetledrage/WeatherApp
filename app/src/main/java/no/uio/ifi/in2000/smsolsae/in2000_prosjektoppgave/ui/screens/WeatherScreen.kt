@@ -57,6 +57,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatDate
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -188,7 +189,7 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
 
                             )
                         Image(
-                            painter = painterResource(id = R.drawable.ic_sunny),
+                            painter = painterResource(id = getWeatherIcon(weather.iconId)),
                             contentDescription = "icon",
                             modifier = Modifier
                                 .padding(10.dp)
@@ -244,7 +245,7 @@ fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext9Days>){
                     )
                 }
                 Image(
-                    painter = painterResource(id = R.drawable.ic_sunny),
+                    painter = painterResource(id = getWeatherIcon(weather.iconId)),
                     contentDescription = "weather icon",
                     modifier = Modifier.size(38.dp)
                 )
