@@ -11,7 +11,7 @@ import kotlin.random.Random
 //Returnerer nåværende dato og tid.
 
 fun getLiveDateTime(): String {
-    val dateFormat = SimpleDateFormat("dd.MMMM hh:mm a", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd.MMMM HH:mm", Locale.getDefault())
     return dateFormat.format(Calendar.getInstance().time)
 }
 

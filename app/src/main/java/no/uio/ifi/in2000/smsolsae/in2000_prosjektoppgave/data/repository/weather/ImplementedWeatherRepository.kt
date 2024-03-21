@@ -41,6 +41,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         val uvIndex = locationForecast.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky
 
 
+
         //Tror ikke vi trenger disse her
         /*val airfog = locationForecast.properties.timeseries.get(0)?.data?.instant?.details?.fog_area_fraction
         val cloudHigh = locationForecast.properties.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_high
@@ -54,6 +55,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             val time = locationForecast.properties.timeseries[i].time
             val timeFormatted = formatTime(time)
             val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary.get("symbol_code")
+            Log.d("WEATHERCODE", "getLocationWeather: $iconId")
             tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
@@ -79,24 +81,24 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         Log.d("TAG", "getLocationWeather: $time1 $time2 $time3 $time5")
 
-        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data.next_12_hours.summary.get("symbol_code")
-        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data.next_12_hours.summary.get("symbol_code")
-        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5].data.next_12_hours.summary.get("symbol_code")
-        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6].data.next_12_hours.summary.get("symbol_code")
-        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7].data.next_12_hours.summary.get("symbol_code")
-        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8].data?.next_12_hours?.summary?.get("symbol_code")
 
         tempNext9Days.addAll(listOf(
-            TemperatureNext9Days(time1,tempDay1,"symbolCodeWeather"),
-            TemperatureNext9Days(time2,tempDay2,"symbolCodeWeather"),
-            TemperatureNext9Days(time3,tempDay3,"symbolCodeWeather"),
-            TemperatureNext9Days(time4,tempDay4,"symbolCodeWeather"),
-            TemperatureNext9Days(time5,tempDay5,"symbolCodeWeather"),
-            TemperatureNext9Days(time6,tempDay6,"symbolCodeWeather"),
-            TemperatureNext9Days(time7,tempDay7,"symbolCodeWeather"),
-            TemperatureNext9Days(time8,tempDay8,"symbolCodeWeather"),
+            TemperatureNext9Days(time1,tempDay1, symbolCodeWeather),
+            TemperatureNext9Days(time2,tempDay2,symbolCodeWeather2),
+            TemperatureNext9Days(time3,tempDay3,symbolCodeWeather3),
+            TemperatureNext9Days(time4,tempDay4,symbolCodeWeather4),
+            TemperatureNext9Days(time5,tempDay5,symbolCodeWeather5),
+            TemperatureNext9Days(time6,tempDay6,symbolCodeWeather6),
+            TemperatureNext9Days(time7,tempDay7,symbolCodeWeather7),
+            TemperatureNext9Days(time8,tempDay8,symbolCodeWeather8),
             )
         )
 
