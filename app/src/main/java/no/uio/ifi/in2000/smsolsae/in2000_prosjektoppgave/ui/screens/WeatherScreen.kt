@@ -51,10 +51,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatDate
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -62,7 +64,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
-    val weeklyWeatherData by viewModel.weeklyWeatherUiState.collectAsState()
+    //val weeklyWeatherData by viewModel.weeklyWeatherUiState.collectAsState()
 
     val weatherData by viewModel.appUiState.collectAsState()
     val data = (weatherData as AppUiState.Success).weather
@@ -129,12 +131,13 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                         Column(
                             modifier = Modifier.fillMaxWidth()
                         ) {
+                            val weeklyWeatherData = data.tempNext9Days
                             WeatherNextWeek(weeklyWeatherData = weeklyWeatherData)
                         }
                     }
                 }
             }
-            is AppUiState.Error ->{
+            is AppUiState.Error -> {
                 Text(text = "Error in getting the data...")
             }
         }
@@ -204,7 +207,7 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
 }
 
 @Composable
-fun WeatherNextWeek(weeklyWeatherData: List<WeeklyWeather>){
+fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext9Days>){
     LazyColumn{
         items(weeklyWeatherData){weather ->
             Row(
@@ -217,14 +220,16 @@ fun WeatherNextWeek(weeklyWeatherData: List<WeeklyWeather>){
                 Column(
                     modifier = Modifier.weight(0.5f)
                 ) {
+                    val weekDay = getDay(weather.time)
+
                     Text(
-                        text = weather.weekDay,
+                        text = weekDay,
                         fontSize = 15.sp,
                         fontWeight = FontWeight(700)
                     )
 
                     Text(
-                        text = weather.date,
+                        text = formatDate(weather.time),
                         fontWeight = FontWeight(300)
                     )
                 }
@@ -233,13 +238,13 @@ fun WeatherNextWeek(weeklyWeatherData: List<WeeklyWeather>){
                     modifier = Modifier.weight(0.5f)
                 ) {
                     Text(
-                        text = "${weather.temperature}°",
+                        text = "${weather.temp}°",
                         fontSize = 24.sp,
                         fontWeight = FontWeight(600)
                     )
                 }
                 Image(
-                    painter = painterResource(id = weather.weatherIconId),
+                    painter = painterResource(id = R.drawable.ic_sunny),
                     contentDescription = "weather icon",
                     modifier = Modifier.size(38.dp)
                 )
