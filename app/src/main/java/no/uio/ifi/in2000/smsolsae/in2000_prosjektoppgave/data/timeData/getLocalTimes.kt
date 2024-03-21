@@ -62,13 +62,13 @@ fun getRandomTemp(): Int{
 }
 
 fun getIconId(temp: Int): Int{
-    if (temp <= 0){
-        return R.drawable.ic_snowy
+    return if (temp <= 0){
+        R.drawable.ic_snowy
     }else if(temp in 0..12){
-        return R.drawable.ic_rainy
+        R.drawable.ic_rainy
     } else if(temp in 12 .. 24){
-        return R.drawable.ic_sunnycloudy
+        R.drawable.ic_sunnycloudy
     } else{
-        return R.drawable.ic_sunny
+        R.drawable.ic_sunny
     }
 }

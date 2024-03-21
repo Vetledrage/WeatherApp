@@ -104,7 +104,7 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                                 }
                             }
                         )
-                    },
+                    }
                 ) {innerPadding ->
                     Column(modifier = Modifier
                         .padding(innerPadding)
