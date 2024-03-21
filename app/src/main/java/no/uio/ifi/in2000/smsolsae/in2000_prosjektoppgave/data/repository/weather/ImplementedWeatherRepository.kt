@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 
+import android.util.Log
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather.WeatherDataSource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
@@ -76,14 +77,16 @@ class ImplementedWeatherRepository : WeatherRepository {
         val time7 = locationForecast.properties.timeseries[timeDay7].time
         val time8 = locationForecast.properties.timeseries[timeDay8].time
 
-        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7].data.next_1_hours.summary.get("symbol_code")
-        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8].data.next_1_hours.summary.get("symbol_code")
+        Log.d("TAG", "getLocationWeather: $time1 $time2 $time3 $time5")
+
+        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7].data.next_12_hours.summary.get("symbol_code")
+        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8].data.next_12_hours.summary.get("symbol_code")
 
         tempNext9Days.addAll(listOf(
             TemperatureNext9Days(time1,tempDay1,weatherCode),

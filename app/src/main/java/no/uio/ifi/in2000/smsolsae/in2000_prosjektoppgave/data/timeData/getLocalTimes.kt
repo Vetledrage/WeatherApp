@@ -28,7 +28,7 @@ fun getNext7Dates(): List<String>{
 
 //hente dag bassert på dato
 fun getDay(date: String): String{
-    val wholeDate = date.split("-")
+    val wholeDate = date.split(".")
     var year = wholeDate[0].toInt()
     var month = wholeDate[1].toInt()-1
     var day = wholeDate[2].toInt()
