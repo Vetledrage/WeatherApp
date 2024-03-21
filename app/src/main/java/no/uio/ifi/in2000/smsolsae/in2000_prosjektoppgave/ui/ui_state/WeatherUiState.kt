@@ -7,7 +7,7 @@ data class WeatherLocationInfo(
 
     val rain: Float,
     val tempNext12hrs: List<TemperatureNext12Hours>,
-    val tempNext9Days: MutableList<Int?>,
+    val tempNext9Days: List<TemperatureNext9Days>,
     val uvIndex: Float,
     val wind_speed: Float,
     val humidity: Int, //Luft fuktighet. I prosent.
@@ -21,10 +21,18 @@ data class WeatherLocationInfo(
 
 )
 
+
+//Data klasse for å ha temperaturer for de neste 12 timene i en liste.
 data class TemperatureNext12Hours(
     val time: String,
     val temp: Int?,
     val iconId: String?,
+)
+
+data class TemperatureNext9Days(
+    val time: String,
+    val temp: Int?,
+    val iconId: String?
 )
 
 sealed interface AppUiState {

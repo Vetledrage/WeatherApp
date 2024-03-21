@@ -42,8 +42,6 @@ data class Alert(
 
 
 
-
-
 @Composable
 fun AlertsBox(alert: List<Alert>){
     var expanded by remember { mutableStateOf(false) }
@@ -62,6 +60,7 @@ fun AlertsBox(alert: List<Alert>){
             ) {
                 Text(
                     text = selectedLocation,
+                    fontSize = 22.sp,
                     modifier = Modifier
                         .clickable { expanded = true }
                         .padding(4.dp)
@@ -80,7 +79,12 @@ fun AlertsBox(alert: List<Alert>){
             ) {
                 alert.distinctBy { it.location }.forEach{ alert ->
                     DropdownMenuItem(
-                        text = { Text(text = alert.location) },
+                        text = {
+                            Text(
+                                text = alert.location,
+                                fontSize = 22.sp
+                            )
+                        },
                         onClick = {
                             selectedLocation = alert.location
                             expanded = false

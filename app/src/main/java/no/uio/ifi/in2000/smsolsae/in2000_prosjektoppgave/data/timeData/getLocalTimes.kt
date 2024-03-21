@@ -28,13 +28,16 @@ fun getNext7Dates(): List<String>{
 
 //hente dag bassert på dato
 fun getDay(date: String): String{
-    val wholeDate = date.split(".")
-    var year = SimpleDateFormat("yyyy", Locale.getDefault()).format(Calendar.getInstance().time)
+    val wholeDate = date.split("-")
+    var year = wholeDate[0].toInt()
+    var month = wholeDate[1].toInt()-1
+    var day = wholeDate[2].toInt()
 
     val calendar = Calendar.getInstance()
-    calendar.set(year.toInt(), wholeDate[1].toInt() - 1, wholeDate[0].toInt())
+    calendar.set(year, month, day)
 
     val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+
     return dayFormat.format(calendar.time)
 }
 

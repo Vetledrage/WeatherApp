@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weathe
 
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather.WeatherDataSource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.WeatherLocationInfo
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatTime
 import java.util.Calendar
@@ -55,7 +56,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
-        val tempNext9Days = mutableListOf<Int?>()
+        val tempNext9Days = mutableListOf<TemperatureNext9Days>()
 
         val tempDay1: Int = locationForecast.properties.timeseries[timeDay1].data.instant.details.air_temperature.toInt()
         val tempDay2: Int = locationForecast.properties.timeseries[timeDay2].data.instant.details.air_temperature.toInt()
@@ -66,40 +67,47 @@ class ImplementedWeatherRepository : WeatherRepository {
         val tempDay7: Int = locationForecast.properties.timeseries[timeDay7].data.instant.details.air_temperature.toInt()
         val tempDay8: Int = locationForecast.properties.timeseries[timeDay8].data.instant.details.air_temperature.toInt()
 
+        val time1 = locationForecast.properties.timeseries[timeDay1].time
+        val time2 = locationForecast.properties.timeseries[timeDay2].time
+        val time3 = locationForecast.properties.timeseries[timeDay3].time
+        val time4 = locationForecast.properties.timeseries[timeDay4].time
+        val time5 = locationForecast.properties.timeseries[timeDay5].time
+        val time6 = locationForecast.properties.timeseries[timeDay6].time
+        val time7 = locationForecast.properties.timeseries[timeDay7].time
+        val time8 = locationForecast.properties.timeseries[timeDay8].time
+
+        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7].data.next_1_hours.summary.get("symbol_code")
+        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8].data.next_1_hours.summary.get("symbol_code")
+
         tempNext9Days.addAll(listOf(
-            tempDay1,
-            tempDay2,
-            tempDay3,
-            tempDay4,
-            tempDay5,
-            tempDay6,
-            tempDay7,
-            tempDay8)
+            TemperatureNext9Days(time1,tempDay1,weatherCode),
+            TemperatureNext9Days(time2,tempDay2,weatherCode),
+            TemperatureNext9Days(time3,tempDay3,weatherCode),
+            TemperatureNext9Days(time4,tempDay4,weatherCode),
+            TemperatureNext9Days(time5,tempDay5,weatherCode),
+            TemperatureNext9Days(time6,tempDay6,weatherCode),
+            TemperatureNext9Days(time7,tempDay7,weatherCode),
+            TemperatureNext9Days(time8,tempDay8,weatherCode),
+            )
         )
 
-        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1]
-        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2]
-        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3]
-        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4]
-        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5]
-        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6]
-        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7]
-        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8]
-
-
-
-
-
-
         return WeatherLocationInfo(
-            temperature = temp!!,
-            wind_speed = windspeed!!,
-            rain = rain!!,
+            temperature = temp,
+            wind_speed = windspeed,
+            rain = rain,
             weatherCode = weatherCode!!,
             tempNext12hrs = tempNext12h,
             tempNext9Days = tempNext9Days ,
-            uvIndex = uvIndex!!,
-            humidity = humidity!!,
+            uvIndex = uvIndex,
+            humidity = humidity,
+
+
             /*
             fog_area_fractionL = airfog!!,
             cloud_area_fraction_high = cloudHigh!!,
