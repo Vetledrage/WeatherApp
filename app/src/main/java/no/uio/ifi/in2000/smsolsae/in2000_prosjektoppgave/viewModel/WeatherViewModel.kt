@@ -42,7 +42,6 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-
     init {
         getWeatherInfo("59.9139", "10.7522") //Henter vær data til Oslo. Senere må byttes om til at man henter fra location på tlf.
     }
