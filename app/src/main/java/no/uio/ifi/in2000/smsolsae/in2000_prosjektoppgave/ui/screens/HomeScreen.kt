@@ -1,8 +1,8 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,20 +52,24 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DisplayImage
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
-//Hjemskjermen hittil.
+
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: WeatherViewModel = viewModel()
 ) {
     val weatherData by viewModel.appUiState.collectAsState()
-    //Log.d("WeatherData", "HomeScreen: ${weatherData}")
+    var showSearchBox by remember { mutableStateOf(false) }
+    var location by remember { mutableStateOf("Oslo") } //Default er satt til Oslo (Dummy data til nå)
 
     Surface(modifier = Modifier.fillMaxSize()) {
         when (weatherData) {
@@ -114,6 +121,8 @@ fun HomeScreen(
                             ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .clickable { showSearchBox = true }
                                 ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.location_dot),
@@ -123,11 +132,22 @@ fun HomeScreen(
                                             .size(16.dp)
                                     )
                                     Text(
-                                        text = "Oslo",
+                                        text = location,
                                         fontSize = 20.sp,
                                         fontWeight = FontWeight.SemiBold
                                     )
                                 }
+
+                                if(showSearchBox){
+                                    SearchLocationDialog(
+                                        onDismiss = { showSearchBox = false },
+                                        onSearch = {query ->
+                                            location = query.replaceFirstChar { it.uppercase() }
+                                            showSearchBox = false
+                                        }
+                                    )
+                                }
+
                                 Text(
                                     text = getLiveDateTime(),
                                     fontSize = 14.sp,
@@ -171,6 +191,8 @@ fun HomeScreen(
 
                                 Spacer(modifier = Modifier.height(50.dp))
                                 Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Button(
                                         onClick = { navController.navigate(Screen.Alerts.route)}
@@ -179,9 +201,17 @@ fun HomeScreen(
                                         Icon(
                                             painter = painterResource(id = R.drawable.triangle_exclamation_solid),
                                             contentDescription = "Warining",
-                                            modifier = Modifier.padding(14.dp).size(20.dp)
+                                            modifier = Modifier
+                                                .size(20.dp)
                                         )
                                     }
+                                    
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                    
+                                    Row{
+                                        DisplayImage(bear = pickBear(data.temperature))
+                                    }
+                                    
 
                                 }
                             }

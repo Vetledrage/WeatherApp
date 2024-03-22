@@ -11,25 +11,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.ImplementedWeatherRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.WeatherRepository
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getIconId
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext12Hours
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getNext7Dates
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getRandomTemp
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.HourlyWeather
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.uiStates.WeeklyWeather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import java.io.IOException
 
-//Prøvde meg på ViewModel, men ble ikke ferdig. Trengs mer jobbing noen som kan det her, prøv det ut
+
 class WeatherViewModel : ViewModel() {
-
-    private val _weeklyWeatherUiState = MutableStateFlow<List<WeeklyWeather>>(emptyList())
-    val weeklyWeatherUiState = _weeklyWeatherUiState.asStateFlow()
-
-    private val _hourlyWeatherUiState = MutableStateFlow<List<HourlyWeather>>(emptyList())
-    val hourlyWeather = _hourlyWeatherUiState.asStateFlow()
-
     private val repository: WeatherRepository = ImplementedWeatherRepository()
 
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
@@ -56,35 +42,14 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-    private var isDataLoaded = false
+
     init {
         getWeatherInfo("59.9139", "10.7522") //Henter vær data til Oslo. Senere må byttes om til at man henter fra location på tlf.
-        //loadWeatherData()
     }
 
-    //Dummydata
-    fun loadWeatherData(){
-        if (isDataLoaded == false){
-            viewModelScope.launch {
-                val hourlyData = mutableListOf<HourlyWeather>()
-                for (i in getNext12Hours().indices){
-                    val temp = getRandomTemp()
-                    hourlyData.add(HourlyWeather(getNext12Hours()[i], temp, getIconId(temp)))
-                }
-                _hourlyWeatherUiState.value = hourlyData
-
-                val weeklyData = mutableListOf<WeeklyWeather>()
-                for (date in getNext7Dates()){
-                    val temp = getRandomTemp()
-                    weeklyData.add(WeeklyWeather(getDay(date), date, temp, getIconId(temp)))
-                }
-                _weeklyWeatherUiState.value = weeklyData
-
-                isDataLoaded = true
-            }
-        }
+    fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
+        getWeatherInfo(lat, long, altitude)
     }
-
 
 
 }
