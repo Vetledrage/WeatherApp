@@ -4,7 +4,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 
 fun getWeatherIcon(symbol_code: String?): Int {
     return when (symbol_code) {
-        "clearsky", "fair", "partlycloudy" -> R.drawable.ic_sunny // Anta at ic_sunny er ikonet for solfylt vær
+        "clearsky", "fair", "partlycloudy" -> R.drawable.ic_sunny
         "cloudy" -> R.drawable.ic_cloudy
         "fog" -> R.drawable.ic_cloudy
         "heavyrain", "heavyrainandthunder", "heavyrainshowers", "heavyrainshowersandthunder" -> R.drawable.ic_rainy

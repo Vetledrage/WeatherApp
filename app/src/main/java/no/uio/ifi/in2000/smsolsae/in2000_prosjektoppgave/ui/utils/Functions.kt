@@ -17,6 +17,8 @@ fun formatTime(time: String): String{
     return outputFormat.format(date)
 }
 
+
+//Funksjon for å fomatere dato fra Api til mer leselig og kortere versjon.
 fun formatDate(date: String) : String{
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
     inputFormat.timeZone = TimeZone.getTimeZone("UTC")

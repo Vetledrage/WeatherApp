@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 
 //Returns a string with bear-type based Temperature (Double)
-fun pickBear(temp: Double) : String{
+fun pickBear(temp: Int) : String{
     return if (temp > 20) "pandaBear"
     else if (temp < 0) "polarBear"
     else "brownBear"
@@ -53,16 +53,18 @@ fun DisplayImage(bear: String) {
         )
     }
 }
+
+//Trengs ikke, vi kan gjøre dette med å gi den faktiske temp.
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MVPDemo(){
-    var unitInput: Double by remember { mutableDoubleStateOf(0.0) }
+    var unitInput by remember { mutableIntStateOf(0) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column {
         TextField(
             value = "$unitInput",
-            onValueChange = { unitInput = it.toDouble()},
+            onValueChange = { unitInput = it.toInt()},
             label = { Text("Amount (Integer) to convert:") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
