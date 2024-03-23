@@ -160,11 +160,11 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .width(80.dp)
-                    .height(120.dp)
+                    .height(150.dp)
                     .clip(RoundedCornerShape(20))
                     .clickable(onClick = { selectedIndex = index })
                     .background(
-                        if (index == selectedIndex) Color.Blue else Color.Transparent
+                        if (index == selectedIndex) Color.LightGray else Color.Transparent
                     )
                     .padding(8.dp),
             ) {
