@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.datasource
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -7,6 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.gson.gson
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Build
 
 class MetAlertsDataSource(val baseUrl: String) {
     private val client = HttpClient{
@@ -25,9 +27,9 @@ class MetAlertsDataSource(val baseUrl: String) {
         }
     }
 
-    suspend fun fetchMetAlerts(lat: String, long: String) : no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Build {
+    suspend fun fetchMetAlerts(lat: String, long: String) : Build {
         val coordinates = "lat=$lat&lon=$long"
-
-        return proxyCall("$baseUrl/metalerts/1.1/.json?$coordinates").body()
+        Log.d("FETCHING METALERTS", "Fetcher METALERTS data nå ")
+        return proxyCall("$baseUrl/metalerts/2.0/all.json?$coordinates").body()
     }
 }

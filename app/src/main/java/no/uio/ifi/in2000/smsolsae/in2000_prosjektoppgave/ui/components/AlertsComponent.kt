@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 
 
 data class Alert(
@@ -43,10 +44,10 @@ data class Alert(
 
 
 @Composable
-fun AlertsBox(alert: List<Alert>){
+fun AlertsBox(alert: MutableList<AlertInfo>){
     var expanded by remember { mutableStateOf(false) }
-    var selectedLocation by remember { mutableStateOf(alert.first().location) }
-    val selectedAlert = alert.firstOrNull {it.location == selectedLocation}
+    var selectedLocation by remember { mutableStateOf(alert.first().areaA) }
+    val selectedAlert = alert.firstOrNull {it.areaA == selectedLocation}
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,16 +78,16 @@ fun AlertsBox(alert: List<Alert>){
                 onDismissRequest = { expanded = false},
                 properties = PopupProperties(focusable = false)
             ) {
-                alert.distinctBy { it.location }.forEach{ alert ->
+                alert.distinctBy { it.areaA }.forEach{ alert ->
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = alert.location,
+                                text = alert.areaA,
                                 fontSize = 22.sp
                             )
                         },
                         onClick = {
-                            selectedLocation = alert.location
+                            selectedLocation = alert.areaA
                             expanded = false
                         }
                     )
@@ -96,7 +97,7 @@ fun AlertsBox(alert: List<Alert>){
         Spacer(modifier = Modifier.height(50.dp))
 
         selectedAlert?.let { alert ->
-            val backgroundColor = getBackgroundColorForDangerScale(alert.dangerScale)
+            val backgroundColor = getBackgroundColorForDangerScale(alert.alertLevelA.split(";")[1].trim())
             Card(
                 modifier = Modifier
                     .padding(8.dp)
@@ -108,16 +109,16 @@ fun AlertsBox(alert: List<Alert>){
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Varsel: ${alert.dangerScale}",
+                        text = "Danger level: ${alert.alertLevelA.split(";")[0]}",
                         fontWeight = FontWeight(700),
                         fontSize = 28.sp
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(7.dp))
 
-                    Text("Beskrivelse: ${alert.description}")
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("Description: ${alert.descriptionA}")
+                    Spacer(modifier = Modifier.height(7.dp))
 
-                    Text("Sted: ${alert.location}")
+                    Text("Location: ${alert.areaA}")
                 }
             }
         }
@@ -127,9 +128,9 @@ fun AlertsBox(alert: List<Alert>){
 // Funksjon for å hente farge basert på dangerScale
 fun getBackgroundColorForDangerScale(dangerScale: String): Color {
     return when (dangerScale) {
-        "Rød" -> Color.Red
-        "Gul" -> Color.Yellow
-        "Oransje" -> Color(0xFFFFA500) // RGBA verdi for oransje
+        "red" -> Color.Red
+        "yellow" -> Color.Yellow
+        "orange" -> Color(0xFFFFA500) // RGBA verdi for oransje
         else -> Color.LightGray // Standardfarge hvis ingen kriterier møtes
     }
 }

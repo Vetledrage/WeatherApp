@@ -26,8 +26,8 @@ class ImplementedAlertsRepository : AlertsRepository {
             cons = prop?.consequences
             rec = prop?.instruction
             desc = prop?.description
-            alertType = prop?.awarenessType
-            alertLevel = prop?.awarenessLevel
+            alertType = prop?.awareness_type
+            alertLevel = prop?.awareness_level
             timeIntervalA = it.tid?.interval
 
             val alertF = AlertInfo(
@@ -47,4 +47,3 @@ class ImplementedAlertsRepository : AlertsRepository {
     }
 }
 
-}

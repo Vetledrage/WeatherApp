@@ -32,7 +32,7 @@ data class TemperatureNext9Days(
     val temp: Int?,
     val iconId: String?
 )
-
+//Change the variable names under AlertInfo and fix to let them be more understandable!!!!
 data class AlertInfo(
     val areaA: String,
     val typeA: String,
@@ -51,4 +51,5 @@ sealed interface AppUiState {
     ) : AppUiState
     object Error : AppUiState
     object Loading : AppUiState
+
 }
