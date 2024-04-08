@@ -1,7 +1,7 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 
 import android.util.Log
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather.WeatherDataSource
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.datasource.WeatherDataSource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.WeatherLocationInfo
@@ -79,7 +79,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         val time7 = locationForecast.properties.timeseries[timeDay7].time
         val time8 = locationForecast.properties.timeseries[timeDay8].time
 
-        Log.d("TAG", "getLocationWeather: $time1 $time2 $time3 $time5")
+        //Log.d("TAG", "getLocationWeather: $time1 $time2 $time3 $time5")
 
         val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data?.next_12_hours?.summary?.get("symbol_code")
         val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data?.next_12_hours?.summary?.get("symbol_code")
@@ -104,7 +104,7 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         return WeatherLocationInfo(
             temperature = temp,
-            wind_speed = windspeed,
+            windSpeed = windspeed,
             rain = rain,
             weatherCode = weatherCode!!,
             tempNext12hrs = tempNext12h,
