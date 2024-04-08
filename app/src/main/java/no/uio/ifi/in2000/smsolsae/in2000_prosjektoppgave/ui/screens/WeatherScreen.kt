@@ -50,13 +50,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getDay
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatDate
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getDay
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
@@ -81,6 +80,9 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                 ){
                     LoadingAnimation(text = "Loading Data...")
                 }
+            }
+            is AppUiState.Error -> {
+                Text(text = "Error in getting the data...")
             }
             is AppUiState.Success ->{
                 Scaffold(
@@ -138,9 +140,7 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                     }
                 }
             }
-            is AppUiState.Error -> {
-                Text(text = "Error in getting the data...")
-            }
+
         }
     }
 }

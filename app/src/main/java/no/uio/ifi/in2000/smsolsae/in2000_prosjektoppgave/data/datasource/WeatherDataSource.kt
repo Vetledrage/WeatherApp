@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.weather
+package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.datasource
 
 
 import android.util.Log
@@ -39,7 +39,5 @@ class WeatherDataSource(val baseUrl: String){
         Log.d("FETCHING FORECAST", "Fetcher forecast data nå ")
         return serverCall(client, url).body()
     }
-
-
 
 }

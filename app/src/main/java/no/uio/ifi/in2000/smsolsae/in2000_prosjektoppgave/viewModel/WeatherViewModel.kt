@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metalerts.AlertsRepository
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metalerts.ImplementedAlertsRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.ImplementedWeatherRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.WeatherRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
@@ -17,9 +19,12 @@ import java.io.IOException
 
 class WeatherViewModel : ViewModel() {
     private val repository: WeatherRepository = ImplementedWeatherRepository()
+    private val metRepository : AlertsRepository = ImplementedAlertsRepository()
 
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
+
+
 
     fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
         viewModelScope.launch {
@@ -29,9 +34,15 @@ class WeatherViewModel : ViewModel() {
                 }
                 val locationP = locationDeferred.await()
 
+                val alertsDeffered = viewModelScope.async(Dispatchers.IO) {
+                    metRepository.getAlertsInfo(lat, long)
+                }
+                val alerts = alertsDeffered.await()
+
                 _appUiState.update {
                     AppUiState.Success(
-                        weather = locationP
+                        weather = locationP,
+                        alerts = alerts
                     )
                 }
             } catch (e: IOException){

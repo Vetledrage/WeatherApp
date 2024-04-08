@@ -9,7 +9,7 @@ data class WeatherLocationInfo(
     val tempNext12hrs: List<TemperatureNext12Hours>,
     val tempNext9Days: List<TemperatureNext9Days>,
     val uvIndex: Float,
-    val wind_speed: Float,
+    val windSpeed: Float,
     val humidity: Int, //Luft fuktighet. I prosent.
 
     /*val fog_area_fractionL: Float,
@@ -17,8 +17,6 @@ data class WeatherLocationInfo(
     var cloud_area_fraction_high: Float,
     var cloud_area_fraction_low: Float,
     var cloud_area_fraction_medium: Float,*/
-
-
 )
 
 
@@ -34,9 +32,24 @@ data class TemperatureNext9Days(
     val temp: Int?,
     val iconId: String?
 )
+//Change the variable names under AlertInfo and fix to let them be more understandable!!!!
+data class AlertInfo(
+    val areaA: String,
+    val typeA: String,
+    val consequenseA: String,
+    val recomendationA : String,
+    val descriptionA : String,
+    val alertTypeA: String,
+    val alertLevelA: String,
+    val timeIntervalA: List<String?>?
+)
 
 sealed interface AppUiState {
-    data class Success(val weather: WeatherLocationInfo) : AppUiState
+    data class Success(
+        val weather: WeatherLocationInfo,
+        val alerts: MutableList<AlertInfo>
+    ) : AppUiState
     object Error : AppUiState
     object Loading : AppUiState
+
 }

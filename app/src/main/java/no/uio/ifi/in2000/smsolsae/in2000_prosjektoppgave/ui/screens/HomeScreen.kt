@@ -49,13 +49,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.timeData.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DisplayImage
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
@@ -186,7 +186,7 @@ fun HomeScreen(
                                 ) {
                                     WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
                                     WeatherInfo(R.drawable.ic_drop, "${data.humidity}%")
-                                    WeatherInfo(R.drawable.ic_wind, "${data.wind_speed}m/s")
+                                    WeatherInfo(R.drawable.ic_wind, "${data.windSpeed}m/s")
                                 }
 
                                 Spacer(modifier = Modifier.height(50.dp))
