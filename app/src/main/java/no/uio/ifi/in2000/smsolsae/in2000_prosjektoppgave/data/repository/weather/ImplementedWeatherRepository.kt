@@ -32,9 +32,9 @@ class ImplementedWeatherRepository : WeatherRepository {
 
 
 
-        //Alle spm tegn må vekk fra under her!
+
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
-        val weatherCode = locationForecast.properties.timeseries[0].data.next_6_hours.summary.get("symbol_code") //Dagens weahter code / description
+        val weatherCode = locationForecast.properties.timeseries[0].data.next_6_hours.summary.get("symbol_code")
         val windspeed = locationForecast.properties.timeseries[0].data.instant.details.wind_speed
         val humidity = locationForecast.properties.timeseries[0].data.instant.details.relative_humidity.toInt()
         val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount

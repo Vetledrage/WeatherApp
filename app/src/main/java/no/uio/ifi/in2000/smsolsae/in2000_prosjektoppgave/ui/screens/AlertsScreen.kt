@@ -61,7 +61,9 @@ fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = vie
                     Column(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        AlertsBox(alertsList)
+                        if (alertsList.isNotEmpty()){
+                            AlertsBox(alertsList)
+                        }
                         val backgroundImage = painterResource(id = R.drawable.ic_icebear_background)
 
                         CustomBox(

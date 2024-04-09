@@ -33,14 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 
-
-data class Alert(
-    val description: String,
-    val dangerScale: String,
-    val icon: Int,
-    val location: String,
-)
-
 @Composable
 fun AlertsBox(alert: MutableList<AlertInfo>){
     var expanded by remember { mutableStateOf(false) }
@@ -117,6 +109,22 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                     Spacer(modifier = Modifier.height(7.dp))
 
                     Text("Location: ${alert.areaA}")
+
+                    Spacer(modifier = Modifier.height(7.dp))
+
+                    Text("Consequense: ${alert.consequenseA}")
+
+                    Spacer(modifier = Modifier.height(7.dp))
+
+                    Text("Alert Type: ${alert.alertTypeA}")
+
+                    Spacer(modifier = Modifier.height(7.dp))
+
+                    Text("Recomendation: ${alert.recomendationA}")
+
+                    Spacer(modifier = Modifier.height(7.dp))
+
+                    Text("Time interval: ${alert.timeIntervalA}")
                 }
             }
         }
