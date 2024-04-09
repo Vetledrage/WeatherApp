@@ -41,8 +41,6 @@ data class Alert(
     val location: String,
 )
 
-
-
 @Composable
 fun AlertsBox(alert: MutableList<AlertInfo>){
     var expanded by remember { mutableStateOf(false) }
