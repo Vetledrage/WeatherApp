@@ -83,7 +83,7 @@ dependencies {
 
 
 tasks.dokkaHtml {
-outputDirectory.set(layout.buildDirectory.dir("documentation/html"))
+    outputDirectory.set(layout.buildDirectory.dir("documentation/html"))
 }
 
 tasks.dokkaGfm {
