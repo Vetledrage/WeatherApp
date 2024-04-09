@@ -29,6 +29,12 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAn
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
+
+/**
+ * Composable function for the alerts screen. Will show colored alert icons based on the grade of danger.
+ * @param navController for standard navigation
+ * @param viewModel the weather view model
+ */
 @Composable
 fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
     val alertsData by viewModel.appUiState.collectAsState()

@@ -60,7 +60,12 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
-//Skjerm som skal vise været de neste 7 dagene.
+
+/**
+ * Screen that shows the weather for the next 7 days
+ * @param navController Navcontroller. Standard for navigation.
+ * @param viewModel The weather view model that the displayed data depends on
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
@@ -146,6 +151,10 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
 }
 
 
+/**
+ * Row with todays weather
+ * @param hourlyWeatherData A list of TemperatureNext12Hours-objects.
+ */
 @Composable
 fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
     var selectedIndex by remember { mutableIntStateOf(0) }
@@ -207,6 +216,10 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
     }
 }
 
+/**
+ * Shows the weather for the next week.
+ * @param weeklyWeatherData A list of TemperatureNext9Days-objects
+ */
 @Composable
 fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext9Days>){
     LazyColumn{

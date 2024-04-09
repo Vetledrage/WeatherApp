@@ -61,7 +61,15 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
-
+/**
+ *
+ *
+ *
+ * Function for the homescreen
+ * @param navController for standard navigation
+ * @param viewModel Weather view model that displayed data depends on.
+ *
+ */
 @Composable
 fun HomeScreen(
     navController: NavController,

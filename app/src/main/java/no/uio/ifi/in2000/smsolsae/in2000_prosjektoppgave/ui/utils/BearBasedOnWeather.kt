@@ -21,14 +21,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 
-//Returns a string with bear-type based Temperature (Double)
+/**
+ * Function for returning a string with bear-type based on temperature.
+ *
+ * @param temp representation of the temperature
+ * @return if temp > 20: returns pandabear. If below 0: returns polarbear. In other cases: brown bear
+ */
 fun pickBear(temp: Int) : String{
     return if (temp > 20) "pandaBear"
     else if (temp < 0) "polarBear"
     else "brownBear"
 }
 
-//Displays image based on strig input
+/**
+ * Composable function for displaying the bear image.
+ * @param bear The string representing the bear to be displayed.
+ */
 @Composable
 fun DisplayImage(bear: String) {
     var bearImage = painterResource(R.drawable.brown_bear) //default

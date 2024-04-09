@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
+/**
+ * Composable function for showing the loading animation
+ */
 @Composable
 fun LoadingAnimation(
         modifier: Modifier = Modifier,

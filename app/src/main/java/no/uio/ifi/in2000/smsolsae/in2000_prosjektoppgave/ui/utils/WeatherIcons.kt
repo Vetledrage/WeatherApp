@@ -1,7 +1,11 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils
 
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
-
+/**
+ * Gets a weather icon based on string input
+ * @param symbol_code The
+ * @return The weather icon corresponding to the string. If none of the symbol names match, a default value, sunny, is returned.
+ */
 fun getWeatherIcon(symbol_code: String?): Int {
     return when (symbol_code) {
         "clearsky", "fair", "partlycloudy" -> R.drawable.ic_sunny

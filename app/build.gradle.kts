@@ -3,6 +3,7 @@ val ktor_version= "2.3.9"
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.dokka") version "1.9.20" //Adding Dokka plugin for comments
 }
 
 android {
@@ -78,4 +79,13 @@ dependencies {
 
     //Something we added
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+}
+
+
+tasks.dokkaHtml {
+outputDirectory.set(layout.buildDirectory.dir("documentation/html"))
+}
+
+tasks.dokkaGfm {
+outputDirectory.set(layout.buildDirectory.dir("documentation/markdown"))
 }

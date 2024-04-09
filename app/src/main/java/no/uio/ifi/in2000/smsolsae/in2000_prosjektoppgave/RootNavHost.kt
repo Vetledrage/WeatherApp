@@ -12,7 +12,10 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.WeatherScree
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
-//Klasse som tar hånd om navigasjon mellom forskjellige sidene.
+/**
+ * Manages the navigation between the different screens.
+ * @param navController: The navhostcontroller. (For more information on navigation: please see the Android documentation)
+ */
 @Composable
 fun RootNavHost(navController: NavHostController){
     val viewModel: WeatherViewModel = viewModel()

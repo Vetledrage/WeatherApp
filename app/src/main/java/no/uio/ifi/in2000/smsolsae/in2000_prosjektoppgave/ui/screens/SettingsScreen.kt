@@ -7,6 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
+
+/**
+ * Screen for the settings
+ * @param navController For standard navigation.
+ */
 @Composable
 fun SettingsScreen(navController: NavController){
     Column(

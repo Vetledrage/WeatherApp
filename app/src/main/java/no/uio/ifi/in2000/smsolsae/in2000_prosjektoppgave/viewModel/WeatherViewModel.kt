@@ -16,7 +16,11 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import java.io.IOException
 
-
+/**
+ * Weather view model. This class fetches weather data based on the user's location. It extends the ViewModel class. (More information to be added)
+ *
+ *
+ */
 class WeatherViewModel : ViewModel() {
     private val repository: WeatherRepository = ImplementedWeatherRepository()
     private val metRepository : AlertsRepository = ImplementedAlertsRepository()
@@ -25,7 +29,12 @@ class WeatherViewModel : ViewModel() {
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
 
 
-
+    /**
+     * Updates the ui state with new weather info (more information to be added)
+     * @param lat latitude
+     * @param long longitude
+     * @param altitude altitude
+     */
     fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
         viewModelScope.launch {
             try {
@@ -56,7 +65,13 @@ class WeatherViewModel : ViewModel() {
     init {
         getWeatherInfo("59.9139", "10.7522") //Henter vær data til Oslo. Senere må byttes om til at man henter fra location på tlf.
     }
-
+    
+    /**
+     * Updates already existing UI state.
+     * @param lat latitude
+     * @param long longitude
+     * @param altitude altitude
+     */
     fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
         getWeatherInfo(lat, long, altitude)
     }

@@ -9,6 +9,9 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatTime
 import java.util.Calendar
 
 
+/**
+ * Repository for weather data (More information to be added)
+ */
 class ImplementedWeatherRepository : WeatherRepository {
     private val datasource = WeatherDataSource(baseUrl = "https://gw-uio.intark.uh-it.no/in2000/weatherapi")
 

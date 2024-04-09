@@ -21,6 +21,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+
+
+/**
+ * Composable function used mainly for showing fun facts (More information to be added)
+ * @param text The text to show
+ */
 @Composable
 fun CustomBox(
     modifier: Modifier = Modifier,

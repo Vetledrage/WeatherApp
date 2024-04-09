@@ -6,7 +6,12 @@ import java.util.Locale
 import java.util.TimeZone
 
 
-//Funksjon for å formattere tiden vi får fra api til å vise bare timer og min
+/**
+ * Function for formatting the time we get from the API to show only hours and minutes.
+ *
+ * @param time The time expressed as a string
+ * @return the time showing only hours and minutes
+ */
 fun formatTime(time: String): String{
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
     inputFormat.timeZone = TimeZone.getTimeZone("UTC")
@@ -19,7 +24,11 @@ fun formatTime(time: String): String{
 }
 
 
-//Funksjon for å fomatere dato fra Api til mer leselig og kortere versjon.
+/**
+ * Function for formatting data from API to be shorter and more readable
+ * @param date The date
+ * @return The date in a shorter and more readable format
+ */
 fun formatDate(date: String) : String{
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
     inputFormat.timeZone = TimeZone.getTimeZone("UTC")

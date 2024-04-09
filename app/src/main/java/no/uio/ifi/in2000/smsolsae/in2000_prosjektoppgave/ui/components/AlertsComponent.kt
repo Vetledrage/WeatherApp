@@ -33,6 +33,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 
+/**
+ * Composable function for showing an box with alerts on the screen (More information to be added)
+ * @param alert A list containting Alert objects.
+ */
 @Composable
 fun AlertsBox(alert: MutableList<AlertInfo>){
     var expanded by remember { mutableStateOf(false) }
@@ -131,7 +135,13 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
     }
 }
 
-// Funksjon for å hente farge basert på dangerScale
+
+/**
+ * Function for fetching color based on dangerScale, which is passed into the function as
+ * an argument.
+ * @param dangerScale a string expressing the grade of danger. Name of a color.
+ * @return The correct Color object corresponding to the dangerScale string.
+ */
 fun getBackgroundColorForDangerScale(dangerScale: String): Color {
     return when (dangerScale) {
         "red" -> Color.Red

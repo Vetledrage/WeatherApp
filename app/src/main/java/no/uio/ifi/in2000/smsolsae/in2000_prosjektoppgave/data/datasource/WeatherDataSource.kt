@@ -11,9 +11,17 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.gson.gson
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Model
 
+/**
+ * Data source for Weather data
+ * @param baseUrl url to fetch weather data from
+ */
 class WeatherDataSource(val baseUrl: String){
-
-    //Metode som kaller på data med proxy server.
+    /**
+     * Method that calls on the data with a proxy server
+     * @param client the httpclient to use
+     * @param url The url to use
+     * @return result of a get request on the url (More information to be added)
+     */
     private suspend fun serverCall(client: HttpClient, url: String) : HttpResponse{
         return client.get(url){
             headers{
@@ -22,7 +30,14 @@ class WeatherDataSource(val baseUrl: String){
         }
     }
 
-    //Fetcher data fra location forecast.
+    /**
+     * Fetches location forecast based on position
+     * @param lat latitude
+     * @param long longitude
+     * @param altitude altitude
+     * @return Model object with result of requesting weather data to the server based on location
+     *
+     */
     suspend fun fetchLocationForecastData(lat: String, long: String, altitude: String? = null): Model {
         var cordinates = "lat=${lat}&lon=${long}"
         if (altitude != null) {

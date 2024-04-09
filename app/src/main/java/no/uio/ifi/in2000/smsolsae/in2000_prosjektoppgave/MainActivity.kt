@@ -13,6 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.theme.IN2000ProsjektoppgaveTheme
 
+/**
+ * The MainActivity class is the entrypoint of the app. The main()-method. (More information to be added)
+ */
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {

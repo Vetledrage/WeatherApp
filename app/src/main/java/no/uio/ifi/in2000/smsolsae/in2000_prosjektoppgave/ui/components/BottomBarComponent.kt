@@ -23,6 +23,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 
+/**
+ * A general class for a tab item. Currently used on the bottom of the screen.
+ * @property title the title of the tab
+ * @property selectedIcon Icon when selected
+ * @property unselectedIcon Icon when unselected
+ * @property badgeAmount Amount of badges (More information to be added)
+ * @property route Route to the screen we come to by clicking on this TabBarItem
+ */
 data class TabBarItem(
     val title: String,
     val selectedIcon: ImageVector,
@@ -32,8 +40,10 @@ data class TabBarItem(
 )
 
 
-//Komponent som skal brukes gjennom hele appen (kan brukes)
-//Om flere slike komponenter lag klasse i komponent package for bedre struktur!
+/**
+ * Component that will be used throughout the whole app. Displays the bottombar
+ * @param navController navcontroller for standard navigation
+ */
 @Composable
 fun BottomBar(navController: NavController){
     val homeTab = TabBarItem(
@@ -67,6 +77,12 @@ fun BottomBar(navController: NavController){
 
     TabView(barItems = tabBarItems, navController = navController)
 }
+
+/**
+ * Helper method for BottomBar. (More information to be added)
+ * @param barItems a list of tab bar items
+ * @param navController navcontroller for standard navigation
+ */
 @Composable
 fun TabView(barItems: List<TabBarItem>, navController: NavController){
     var selectedTabIndex by remember { mutableIntStateOf(0) }

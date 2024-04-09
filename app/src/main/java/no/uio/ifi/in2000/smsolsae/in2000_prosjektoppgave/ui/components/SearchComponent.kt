@@ -65,6 +65,11 @@ val citites = listOf(
     "Stockholm, Sweden"
 )
 
+/**
+ * Function for searching for a location. (More information to be added)
+ *
+ */
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchLocationDialog(onDismiss : () -> Unit, onSearch: (String) -> Unit){
