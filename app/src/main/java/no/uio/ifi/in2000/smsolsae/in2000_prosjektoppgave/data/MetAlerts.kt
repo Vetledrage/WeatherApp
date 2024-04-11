@@ -11,7 +11,7 @@ data class Build (
 )
 
 data class Features(
-    val geometry : GeometryAlert?,
+    val geometry : GeometryAlert,
     val properties: PropertiesAlert?,
     val type : String?,
     @SerializedName("when") val tid : WhenMet?,
@@ -50,6 +50,6 @@ data class Resources(
 )
 
 data class GeometryAlert(
-    val coordinates : List<List<List<Float>>?>?,
+    val coordinates : List<List<List<Double>>>,
     val type : String?
 )

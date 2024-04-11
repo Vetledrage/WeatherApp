@@ -30,6 +30,6 @@ class MetAlertsDataSource(val baseUrl: String) {
     suspend fun fetchMetAlerts(lat: String, long: String) : Build {
         val coordinates = "lat=$lat&lon=$long"
         Log.d("FETCHING METALERTS", "Fetcher METALERTS data nå ")
-        return proxyCall("$baseUrl/metalerts/2.0/current.json?$coordinates&lang=en").body()
+        return proxyCall("$baseUrl/metalerts/2.0/all.json?$coordinates&lang=en").body()
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -70,7 +68,6 @@ val citites = listOf(
  *
  */
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchLocationDialog(onDismiss : () -> Unit, onSearch: (String) -> Unit){
     var searchText by remember { mutableStateOf("") }
@@ -126,7 +123,6 @@ fun SearchLocationDialog(onDismiss : () -> Unit, onSearch: (String) -> Unit){
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
-                        Divider()
                     }
                 }
             }
