@@ -14,6 +14,7 @@ import androidx.navigation.NavController
  */
 @Composable
 fun SettingsScreen(navController: NavController){
+    LocationScreen()
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

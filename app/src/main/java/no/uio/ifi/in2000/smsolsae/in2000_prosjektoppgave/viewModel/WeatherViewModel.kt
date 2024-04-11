@@ -1,7 +1,12 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,6 +69,7 @@ class WeatherViewModel : ViewModel() {
 
     init {
         getWeatherInfo("59.9139", "10.7522") //Henter vær data til Oslo. Senere må byttes om til at man henter fra location på tlf.
+
     }
 
     /**
@@ -74,6 +80,31 @@ class WeatherViewModel : ViewModel() {
      */
     fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
         getWeatherInfo(lat, long, altitude)
+    }
+
+    fun hasLocationPermission(context: Context): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentLocation(context: Context, callback: (Double, Double) -> Unit) {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    val lat = location.latitude
+                    val long = location.longitude
+                    callback(lat, long)
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle location retrieval failure
+                exception.printStackTrace()
+            }
     }
 
 

@@ -1,5 +1,7 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,6 +39,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -78,8 +81,25 @@ fun HomeScreen(
     val weatherData by viewModel.appUiState.collectAsState()
     var showSearchBox by remember { mutableStateOf(false) }
     var location by remember { mutableStateOf("Oslo") } //Default er satt til Oslo (Dummy data til nå)
+    val context = LocalContext.current
+
+    // Create a permission launcher
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted: Boolean ->
+                if (isGranted) {
+                    // Permission granted, update the location
+                    viewModel.getCurrentLocation(context) { lat, long ->
+                        location = "Lat: $lat, Long: $long"
+                    }
+                }
+            }
+        )
+
 
     Surface(modifier = Modifier.fillMaxSize()) {
+
         when (weatherData) {
             is AppUiState.Loading -> {
                 Column(
@@ -274,6 +294,24 @@ fun HomeScreen(
                             val hourlyWeatherData = data.tempNext12hrs
 
                             WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
+
+                            Spacer(modifier = Modifier.height(30.dp))
+
+                            Button(onClick = {
+                                if (viewModel.hasLocationPermission(context)){
+                                    viewModel.getCurrentLocation(context) { lat, long ->
+                                        viewModel.updateWeatherInfo(
+                                            lat = lat.toString(),
+                                            long = long.toString()
+                                        )
+                                        location = lat.toString() + long.toString()
+                                    }
+                                } else{
+                                    requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                                }
+                            }) {
+                                Text(text = "Get my posision")
+                            }
                         }
                     }
                 }
