@@ -27,11 +27,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatAlertsDate
 
 /**
  * Composable function for showing an box with alerts on the screen (More information to be added)
@@ -120,15 +120,16 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
 
                     Spacer(modifier = Modifier.height(7.dp))
 
-                    Text("Alert Type: ${alert.alertTypeA}")
 
                     Spacer(modifier = Modifier.height(7.dp))
 
                     Text("Recomendation: ${alert.recomendationA}")
 
                     Spacer(modifier = Modifier.height(7.dp))
+                    val startTime = formatAlertsDate(alert.timeIntervalA!![0]!!)
+                    val endTime = formatAlertsDate(alert.timeIntervalA[1]!!)
 
-                    Text("Time interval: ${alert.timeIntervalA}")
+                    Text("Time interval: $startTime - $endTime")
                 }
             }
         }
@@ -149,10 +150,4 @@ fun getBackgroundColorForDangerScale(dangerScale: String): Color {
         "orange" -> Color(0xFFFFA500) // RGBA verdi for oransje
         else -> Color.LightGray // Standardfarge hvis ingen kriterier møtes
     }
-}
-
-@Preview
-@Composable
-fun AlertBoxPreview(){
-
 }

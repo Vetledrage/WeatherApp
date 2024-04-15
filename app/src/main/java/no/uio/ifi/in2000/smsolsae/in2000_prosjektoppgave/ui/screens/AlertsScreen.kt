@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,7 +40,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @Composable
 fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
     val alertsData by viewModel.appUiState.collectAsState()
-
+    val scrollState = rememberScrollState()
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -65,7 +67,9 @@ fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = vie
                 ) { innerPadding ->
 
                     Column(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .verticalScroll(state = scrollState),
                     ) {
                         if (alertsList.isNotEmpty()){
                             AlertsBox(alertsList)
