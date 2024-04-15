@@ -41,6 +41,24 @@ fun formatDate(date: String) : String{
     return outputFormat.format(date)
 }
 
+/**
+ * Function for formatting data from metalerts API to be shorter and more readable
+ * @param date The date
+ * @return The date in a shorter and more readable format
+ */
+
+fun formatAlertsDate(date: String) : String{
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
+    inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+    val date = inputFormat.parse(date)
+
+    val outputFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    outputFormat.timeZone = TimeZone.getDefault()
+
+    return outputFormat.format(date)
+}
+
 //hente dag bassert på dato
 fun getDay(date: String): String{
     val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US) // Bruker Locale.US for engelsk
