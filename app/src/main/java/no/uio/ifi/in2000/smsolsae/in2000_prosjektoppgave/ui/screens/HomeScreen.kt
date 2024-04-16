@@ -80,8 +80,8 @@ fun HomeScreen(
 ) {
     val weatherData by viewModel.appUiState.collectAsState()
     var showSearchBox by remember { mutableStateOf(false) }
-    var location by remember { mutableStateOf("Oslo") } //Default er satt til Oslo (Dummy data til nå)
     val context = LocalContext.current
+    val locationName by viewModel.locationName.collectAsState()
 
     // Create a permission launcher
     val requestPermissionLauncher =
@@ -90,9 +90,7 @@ fun HomeScreen(
             onResult = { isGranted: Boolean ->
                 if (isGranted) {
                     // Permission granted, update the location
-                    viewModel.getCurrentLocation(context) { lat, long ->
-                        location = "Lat: $lat, Long: $long"
-                    }
+                    viewModel.getCurrentLocation(context)
                 }
             }
         )
@@ -160,7 +158,7 @@ fun HomeScreen(
                                             .size(16.dp)
                                     )
                                     Text(
-                                        text = location,
+                                        text = locationName,
                                         fontSize = 20.sp,
                                         fontWeight = FontWeight.SemiBold
                                     )
@@ -170,7 +168,8 @@ fun HomeScreen(
                                     SearchLocationDialog(
                                         onDismiss = { showSearchBox = false },
                                         onSearch = {query ->
-                                            location = query.replaceFirstChar { it.uppercase() }
+                                            val loc = query.replaceFirstChar { it.uppercase() }
+                                            viewModel.setLocationName(loc)
                                             showSearchBox = false
                                         }
                                     )
@@ -298,20 +297,16 @@ fun HomeScreen(
                             Spacer(modifier = Modifier.height(30.dp))
 
                             Button(onClick = {
-                                if (viewModel.hasLocationPermission(context)){
-                                    viewModel.getCurrentLocation(context) { lat, long ->
-                                        viewModel.updateWeatherInfo(
-                                            lat = lat.toString(),
-                                            long = long.toString()
-                                        )
-                                        location = lat.toString() + long.toString()
-                                    }
-                                } else{
+                                if (viewModel.hasLocationPermission(context)) {
+                                    viewModel.getCurrentLocation(context)
+                                    println(locationName)
+                                } else {
                                     requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
                                 }
                             }) {
-                                Text(text = "Get my posision")
+                                Text("Update my location")
                             }
+
                         }
                     }
                 }

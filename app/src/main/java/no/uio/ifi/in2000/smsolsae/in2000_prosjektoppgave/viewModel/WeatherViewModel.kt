@@ -3,6 +3,7 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.WeatherRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import java.io.IOException
+import java.util.Locale
 
 /**
  * Weather view model. This class fetches weather data based on the user's location. It extends the ViewModel class. (More information to be added)
@@ -33,6 +35,11 @@ class WeatherViewModel : ViewModel() {
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
 
+    private val _currentLocation = MutableStateFlow<Pair<Double, Double>?>(null)
+    val currentLocation: StateFlow<Pair<Double, Double>?> = _currentLocation.asStateFlow()
+
+    private val _locationName = MutableStateFlow("Oslo, Norway")
+    val locationName: StateFlow<String> = _locationName.asStateFlow()
 
     /**
      * Updates the ui state with new weather info (more information to be added)
@@ -89,16 +96,22 @@ class WeatherViewModel : ViewModel() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * Get current location from user and updates the location in the app.
+     * @param context Context
+     */
     @SuppressLint("MissingPermission")
-    fun getCurrentLocation(context: Context, callback: (Double, Double) -> Unit) {
+    fun getCurrentLocation(context: Context) {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-
+        println("Kaller på getCurrentLocation --> $fusedLocationClient")
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
                     val lat = location.latitude
                     val long = location.longitude
-                    callback(lat, long)
+                    _currentLocation.value = Pair(lat, long)
+                    updateWeatherInfo(lat.toString(), long.toString())
+                    updateLocationName(context, lat, long)
                 }
             }
             .addOnFailureListener { exception ->
@@ -107,5 +120,27 @@ class WeatherViewModel : ViewModel() {
             }
     }
 
+    fun updateLocationName(context: Context, latitude: Double, longitude: Double) {
+        println("Er inne i updateLocationName: $latitude $longitude")
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val geocoder = Geocoder(context, Locale.getDefault())
+                val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+                if (addresses!!.isNotEmpty()) {
+                    val address = addresses.first()
+                    val locality = address.locality ?: "Unknown location"
+                    _locationName.value = locality
+                } else {
+                    _locationName.value = "Location not found!"
+                }
+            } catch (e: IOException) {
+                _locationName.value = "Error in getting location"
+            }
+        }
+    }
+
+    fun setLocationName(newLocation: String){
+        _locationName.value = newLocation
+    }
 
 }
