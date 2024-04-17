@@ -42,7 +42,6 @@ fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = vie
     val alertsData by viewModel.appUiState.collectAsState()
     val scrollState = rememberScrollState()
 
-
     Surface(modifier = Modifier.fillMaxSize()) {
         when (alertsData){
             is AppUiState.Loading -> {

@@ -75,7 +75,7 @@ class WeatherViewModel : ViewModel() {
     }
 
     init {
-        getWeatherInfo("59.9139", "10.7522") //Henter vær data til Oslo. Senere må byttes om til at man henter fra location på tlf.
+        getWeatherInfo("59.9139", "10.7522") //Fetches weather data in Oslo as default, to begin with, change this to current location afterwards!
 
     }
 
@@ -103,7 +103,6 @@ class WeatherViewModel : ViewModel() {
     @SuppressLint("MissingPermission")
     fun getCurrentLocation(context: Context) {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        println("Kaller på getCurrentLocation --> $fusedLocationClient")
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
@@ -121,7 +120,7 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun updateLocationName(context: Context, latitude: Double, longitude: Double) {
-        println("Er inne i updateLocationName: $latitude $longitude")
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val geocoder = Geocoder(context, Locale.getDefault())
