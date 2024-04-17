@@ -79,6 +79,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.1.0")
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("com.airbnb.android:lottie-compose:4.0.0")
 }
 
 
