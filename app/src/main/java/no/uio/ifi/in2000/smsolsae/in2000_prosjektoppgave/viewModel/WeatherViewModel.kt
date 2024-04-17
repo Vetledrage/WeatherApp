@@ -120,7 +120,6 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun updateLocationName(context: Context, latitude: Double, longitude: Double) {
-
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val geocoder = Geocoder(context, Locale.getDefault())
@@ -134,6 +133,26 @@ class WeatherViewModel : ViewModel() {
                 }
             } catch (e: IOException) {
                 _locationName.value = "Error in getting location"
+            }
+        }
+    }
+
+    fun updateAlerts(lat: String, long: String){
+        viewModelScope.launch {
+            try {
+                val alertsDeferred = viewModelScope.async(Dispatchers.IO) {
+                    metRepository.getAlertsInfo(lat, long)
+                }
+                val alerts = alertsDeferred.await()
+
+                _appUiState.update { currentState ->
+                    when (currentState) {
+                        is AppUiState.Success -> currentState.copy(alerts = alerts)
+                        else -> currentState
+                    }
+                }
+            } catch (e: IOException) {
+                _appUiState.update { AppUiState.Error }
             }
         }
     }

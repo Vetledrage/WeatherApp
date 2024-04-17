@@ -5,11 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -42,6 +44,7 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
     var expanded by remember { mutableStateOf(false) }
     var selectedLocation by remember { mutableStateOf(alert.first().areaA) }
     val selectedAlert = alert.firstOrNull {it.areaA == selectedLocation}
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,10 +58,10 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
             ) {
                 Text(
                     text = selectedLocation,
-                    fontSize = 22.sp,
+                    fontSize = 18.sp,
                     modifier = Modifier
                         .clickable { expanded = true }
-                        .padding(4.dp)
+                        .padding(8.dp)
                 )
 
                 Icon(
@@ -68,22 +71,23 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                 )
             }
 
-            DropdownMenu(expanded = expanded,
+            DropdownMenu(
+                expanded = expanded,
                 onDismissRequest = { expanded = false},
-                properties = PopupProperties(focusable = false)
             ) {
                 alert.distinctBy { it.areaA }.forEach{ alert ->
                     DropdownMenuItem(
                         text = {
                             Text(
                                 text = alert.areaA,
-                                fontSize = 22.sp
+                                fontSize = 18.sp
                             )
                         },
                         onClick = {
                             selectedLocation = alert.areaA
                             expanded = false
-                        }
+                        },
+
                     )
                 }
             }
