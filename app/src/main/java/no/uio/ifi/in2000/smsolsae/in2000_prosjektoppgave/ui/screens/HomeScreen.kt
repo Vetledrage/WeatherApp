@@ -51,6 +51,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
@@ -132,7 +136,6 @@ fun HomeScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                                 .height(550.dp),
-
                             contentAlignment = Alignment.TopCenter
                         ) {
                             Image(
@@ -143,6 +146,7 @@ fun HomeScreen(
                                     .clip(shape = RoundedCornerShape(5)),
                                 contentScale = ContentScale.Crop,
                             )
+
 
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -222,15 +226,23 @@ fun HomeScreen(
                                     WeatherInfo(R.drawable.ic_wind, "${data.windSpeed}m/s")
                                 }
 
-                                Spacer(modifier = Modifier.height(50.dp))
                                 Column(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
 
-                                    Row{
+                                    Row(
+                                        modifier = Modifier.size(200.dp)
+                                    ){
+                                        WeatherAnimation(weahter = "sunny_rain") //Weather animations, add changes based on the weather code, also add more animations!!
+                                    }
+
+                                    Row(
+                                        modifier = Modifier.size(50.dp)
+                                    ){
                                         DisplayImage(bear = pickBear(data.temperature))
                                     }
+
 
                                 }
                             }
@@ -364,6 +376,31 @@ fun WeatherInfo(icon : Int, value: String) {
         Image(painter = painterResource(id = icon), contentDescription = value, modifier = Modifier.size(18.dp))
         Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.Normal)
     }
+}
+
+@Composable
+fun WeatherAnimation(weahter: String){
+    val animationSpec = when(weahter) {
+        "sunny" -> R.raw.sunny_anim
+        "rainy" -> R.raw.rainy_anim
+        "snowing" -> R.raw.snowing_anim
+        "to_hot" -> R.raw.to_hot_anim
+        "sunny_rain" -> R.raw.sunny_rain_anim
+        else -> R.raw.sunny_anim
+    }
+
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(
+            resId = animationSpec
+        )
+    )
+    LottieAnimation(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+        modifier = Modifier
+
+            .fillMaxWidth()
+    )
 }
 
 
