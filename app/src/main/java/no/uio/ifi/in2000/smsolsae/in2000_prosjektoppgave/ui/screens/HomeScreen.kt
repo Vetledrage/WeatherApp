@@ -19,9 +19,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.Button
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -53,6 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.CustomBox
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
@@ -82,8 +84,9 @@ fun HomeScreen(
     var showSearchBox by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val locationName by viewModel.locationName.collectAsState()
+    val scrollState = rememberScrollState()
 
-    // Create a permission launcher
+    // Create a permission launcher for requesting current location
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestPermission(),
@@ -114,19 +117,22 @@ fun HomeScreen(
                 Scaffold(
                     bottomBar = {
                         BottomBar(navController)
-                    }
+                    },
+
                 ) { innerPadding ->
 
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
+                            .verticalScroll(state = scrollState),
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)
-                                .weight(0.7f),
+                                .height(550.dp),
+
                             contentAlignment = Alignment.TopCenter
                         ) {
                             Image(
@@ -221,24 +227,10 @@ fun HomeScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Button(
-                                        onClick = { navController.navigate(Screen.Alerts.route)}
-                                    ) {
-                                        Text(text = "See weather warnings")
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.triangle_exclamation_solid),
-                                            contentDescription = "Warining",
-                                            modifier = Modifier
-                                                .size(20.dp)
-                                        )
-                                    }
-                                    
-                                    Spacer(modifier = Modifier.height(20.dp))
-                                    
+
                                     Row{
                                         DisplayImage(bear = pickBear(data.temperature))
                                     }
-                                    
 
                                 }
                             }
@@ -248,11 +240,9 @@ fun HomeScreen(
                             val text = "Next 7 days"
                             append(text)
                         }
-                        //Nedre delen av skjermen. Tar 40% av skjermen.
                         Column(
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
-                                .weight(0.3f)
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -296,7 +286,7 @@ fun HomeScreen(
 
                             Spacer(modifier = Modifier.height(30.dp))
 
-                            Button(onClick = {
+                            /*Button(onClick = {
                                 if (viewModel.hasLocationPermission(context)) {
                                     viewModel.getCurrentLocation(context)
                                     println(locationName)
@@ -305,7 +295,11 @@ fun HomeScreen(
                                 }
                             }) {
                                 Text("Update my location")
-                            }
+                            }*/
+
+                            CustomBox(
+                                context = context
+                            )
 
                         }
                     }
