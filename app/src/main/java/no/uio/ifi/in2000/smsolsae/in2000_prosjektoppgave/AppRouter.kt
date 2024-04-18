@@ -17,6 +17,7 @@ private object Route{
     const val HOME = "home"
     const val SETTINGS = "settings"
     const val ALERTS = "alerts"
+    const val INFO = "info"
 }
 
 /**
@@ -30,5 +31,6 @@ sealed class Screen(val route: String){
     object Home: Screen(Route.HOME)
     object Settings: Screen(Route.SETTINGS)
     object Alerts: Screen(Route.ALERTS)
+    object Info: Screen(Route.INFO)
 
 }
