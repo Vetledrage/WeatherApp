@@ -7,8 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.AlertsScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.HomeScreen
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.InformationScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.SettingsScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens.WeatherScreen
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.SettingsViewModel
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -19,6 +21,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @Composable
 fun RootNavHost(navController: NavHostController){
     val viewModel: WeatherViewModel = viewModel()
+    val settingsViewmodel: SettingsViewModel = viewModel()
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
@@ -36,7 +39,11 @@ fun RootNavHost(navController: NavHostController){
         }
 
         composable(route = Screen.Settings.route){
-            SettingsScreen(navController = navController)
+            SettingsScreen(navController = navController, viewModel = settingsViewmodel)
+        }
+
+        composable(route = Screen.Info.route){
+            InformationScreen(navController = navController)
         }
     }
 }

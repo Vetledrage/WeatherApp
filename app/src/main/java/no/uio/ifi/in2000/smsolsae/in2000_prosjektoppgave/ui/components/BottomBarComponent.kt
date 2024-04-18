@@ -3,10 +3,12 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components
 import androidx.compose.material.icons.Icons
 
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
@@ -47,7 +49,7 @@ data class TabBarItem(
 @Composable
 fun BottomBar(navController: NavController){
     val homeTab = TabBarItem(
-        title = "home",
+        title = "Home",
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
         route = Screen.Home.route
@@ -59,11 +61,11 @@ fun BottomBar(navController: NavController){
         badgeAmount = 7,
         route = Screen.Alerts.route
     )
-    val moreTab = TabBarItem(
-        title = "Weather",
-        selectedIcon = Icons.Filled.List,
-        unselectedIcon = Icons.Outlined.List,
-        route = Screen.Home.route
+    val infoTab = TabBarItem(
+        title = "Info",
+        selectedIcon = Icons.Filled.Info,
+        unselectedIcon = Icons.Outlined.Info,
+        route = Screen.Info.route
     )
     val settingsTab = TabBarItem(
         title = "Settings",
@@ -72,7 +74,7 @@ fun BottomBar(navController: NavController){
         route = Screen.Settings.route
     )
 
-    val tabBarItems = listOf(homeTab, alertsTab, settingsTab, moreTab)
+    val tabBarItems = listOf(homeTab, alertsTab, settingsTab, infoTab)
 
 
     TabView(barItems = tabBarItems, navController = navController)
