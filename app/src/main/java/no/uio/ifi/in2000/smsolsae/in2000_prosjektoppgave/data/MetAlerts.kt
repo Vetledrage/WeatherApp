@@ -50,6 +50,6 @@ data class Resources(
 )
 
 data class GeometryAlert(
-    val coordinates : List<List<List<Double>>>,
+    val coordinates : List<List<Any>>,
     val type : String?
 )
