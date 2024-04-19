@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -37,7 +35,7 @@ fun Header(label: String, icon: ImageVector){
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Settings",
+            text = label,
             fontSize = 22.sp,
             fontWeight = FontWeight(600)
         )
