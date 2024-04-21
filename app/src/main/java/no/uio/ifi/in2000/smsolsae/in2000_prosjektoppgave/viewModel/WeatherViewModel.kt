@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.MapBox.ImplementedMapBoxRepository
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.MapBox.MapBoxRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metalerts.AlertsRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metalerts.ImplementedAlertsRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.ImplementedWeatherRepository
@@ -31,6 +33,7 @@ import java.util.Locale
 class WeatherViewModel : ViewModel() {
     private val repository: WeatherRepository = ImplementedWeatherRepository()
     private val metRepository : AlertsRepository = ImplementedAlertsRepository()
+    private val mapRepository: MapBoxRepository = ImplementedMapBoxRepository()
 
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
@@ -41,15 +44,21 @@ class WeatherViewModel : ViewModel() {
     private val _locationName = MutableStateFlow("Oslo, Norway")
     val locationName: StateFlow<String> = _locationName.asStateFlow()
 
+    private val _coordinatesState = MutableStateFlow<Pair<Double, Double>?>(null)
+    val coordinatesState: StateFlow<Pair<Double, Double>?> = _coordinatesState.asStateFlow()
+
     /**
      * Updates the ui state with new weather info (more information to be added)
      * @param lat latitude
      * @param long longitude
      * @param altitude altitude
      */
-    fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
+    private fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
         viewModelScope.launch {
             try {
+                _appUiState.update {
+                    AppUiState.Loading
+                }
                 val locationDeferred = viewModelScope.async (Dispatchers.IO) {
                     repository.getLocationWeather(latitude = lat, longitude = long, altitude = altitude)
                 }
@@ -74,9 +83,20 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    fun getCoordinates(city: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = mapRepository.getCoordinatesForAddress(city)
+
+            if (result != null){
+                println("${result.first} ${result.second} getcordinates res ---!!---")
+                _coordinatesState.value = Pair(result.first, result.second)
+                updateWeatherInfo(result.first.toString(),  result.second.toString())
+            }
+        }
+    }
+
     init {
         getWeatherInfo("59.9139", "10.7522") //Fetches weather data in Oslo as default, to begin with, change this to current location afterwards!
-
     }
 
     /**

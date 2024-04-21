@@ -89,6 +89,7 @@ fun HomeScreen(
     var showSearchBox by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val locationName by viewModel.locationName.collectAsState()
+    val coordinates by viewModel.coordinatesState.collectAsState()
     val scrollState = rememberScrollState()
 
     // Create a permission launcher for requesting current location
@@ -181,6 +182,8 @@ fun HomeScreen(
                                         onSearch = {query ->
                                             val loc = query.replaceFirstChar { it.uppercase() }
                                             viewModel.setLocationName(loc)
+
+                                            viewModel.getCoordinates(city = loc)
                                             showSearchBox = false
                                         }
                                     )
@@ -298,6 +301,12 @@ fun HomeScreen(
                             WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
 
                             Spacer(modifier = Modifier.height(30.dp))
+
+                            if(coordinates != null){
+                                Text(
+                                    text = "${coordinates!!.first} , ${coordinates!!.second}"
+                                )
+                            }
 
                             /*Button(onClick = {
                                 if (viewModel.hasLocationPermission(context)) {

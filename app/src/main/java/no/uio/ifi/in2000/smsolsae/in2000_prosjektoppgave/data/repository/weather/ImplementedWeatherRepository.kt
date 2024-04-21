@@ -21,13 +21,11 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
-        //Log.d("IMPLEMENTED REPOSITORY", "getLocationWeather Tidspunkt: ${currentHour}")
-
 
         val timeDay1 = 24 - currentHour
         val timeDay2 = timeDay1 + 24
-        val timeDay3 = timeDay2 + 19 // Dag to har bare frem til 18:00 derfor ta + 19 timer til 3 dagen kl 00:00
-        val timeDay4 = timeDay3 + 4 //Etter dag 3 så er det kun 4 målinger på dagen så for å få neste dag ta + 4 for hver gang.
+        val timeDay3 = timeDay2 + 19 // Day 2 has just until 18:00 therefore + 19
+        val timeDay4 = timeDay3 + 4 //After day 3, then it is just 4 temps in a day therefore + 4
         val timeDay5 = timeDay4 + 4
         val timeDay6 = timeDay5 + 4
         val timeDay7 = timeDay6 + 4

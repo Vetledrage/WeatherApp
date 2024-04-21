@@ -12,7 +12,6 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state
  * @property humidity the humidity in percentage
  */
 data class WeatherLocationInfo(
-
     val temperature: Int,
     val weatherCode: String,
 
@@ -21,7 +20,7 @@ data class WeatherLocationInfo(
     val tempNext9Days: List<TemperatureNext9Days>,
     val uvIndex: Float,
     val windSpeed: Float,
-    val humidity: Int, //Luft fuktighet. I prosent.
+    val humidity: Int,
 
     /*val fog_area_fractionL: Float,
     val cloud_area_fraction: Float,

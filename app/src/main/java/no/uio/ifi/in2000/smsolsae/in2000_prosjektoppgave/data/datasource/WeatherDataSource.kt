@@ -51,7 +51,7 @@ class WeatherDataSource(val baseUrl: String){
         }
 
         val  url = "$baseUrl/locationforecast/2.0/complete?$cordinates"
-        Log.d("FETCHING FORECAST", "Fetcher forecast data nå ")
+        Log.d("FETCHING FORECAST", "Fetcher forecast data nå for koordinatene: $cordinates")
         return serverCall(client, url).body()
     }
 
