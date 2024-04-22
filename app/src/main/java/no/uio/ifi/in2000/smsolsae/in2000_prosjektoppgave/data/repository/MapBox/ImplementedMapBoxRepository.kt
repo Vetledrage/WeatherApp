@@ -20,8 +20,4 @@ class ImplementedMapBoxRepository : MapBoxRepository {
 
         return Pair(coordinates[0], coordinates[1])
     }
-
-
-
-
 }
