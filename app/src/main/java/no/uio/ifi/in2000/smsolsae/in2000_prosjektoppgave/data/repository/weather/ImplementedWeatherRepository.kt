@@ -24,14 +24,14 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         val timeDay1 = 24 - currentHour
         val timeDay2 = timeDay1 + 24
-        val timeDay3 = timeDay2 + 19 // Day 2 has just until 18:00 therefore + 19
+        val timeDay3 = timeDay2 + 24
         val timeDay4 = timeDay3 + 4 //After day 3, then it is just 4 temps in a day therefore + 4
         val timeDay5 = timeDay4 + 4
         val timeDay6 = timeDay5 + 4
         val timeDay7 = timeDay6 + 4
         val timeDay8 = timeDay7 + 4
 
-
+        Log.d("TAG TIMEDAY3", "getLocationWeather: $timeDay1")
 
 
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()

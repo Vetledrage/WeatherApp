@@ -19,7 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,7 +61,6 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
-
 /**
  * Screen that shows the weather for the next 7 days
  * @param navController Navcontroller. Standard for navigation.
@@ -70,7 +70,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @Composable
 fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
     //val weeklyWeatherData by viewModel.weeklyWeatherUiState.collectAsState()
-
+    val locationName by viewModel.locationName.collectAsState()
     val weatherData by viewModel.appUiState.collectAsState()
     val data = (weatherData as AppUiState.Success).weather
 
@@ -99,14 +99,14 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                             ),
                             title = {
                                 Text(
-                                    text = "Oslo",
+                                    text = locationName,
                                     overflow = TextOverflow.Ellipsis
                                 )
                             },
                             navigationIcon = {
                                 IconButton(onClick = { navController.popBackStack() }) {
                                     Icon(
-                                        imageVector = Icons.Filled.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         contentDescription = "Back"
                                     )
                                 }
@@ -145,7 +145,6 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                     }
                 }
             }
-
         }
     }
 }
@@ -158,7 +157,7 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
 @Composable
 fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
     var selectedIndex by remember { mutableIntStateOf(0) }
-
+    val context = LocalContext.current
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -198,7 +197,7 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
 
                             )
                         Image(
-                            painter = painterResource(id = getWeatherIcon(weather.iconId)),
+                            painter = painterResource(id = getWeatherIcon(context, weather.iconId)),
                             contentDescription = "icon",
                             modifier = Modifier
                                 .padding(10.dp)
@@ -222,6 +221,7 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
  */
 @Composable
 fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext9Days>){
+    val context = LocalContext.current
     LazyColumn{
         items(weeklyWeatherData){weather ->
             Row(
@@ -258,7 +258,7 @@ fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext9Days>){
                     )
                 }
                 Image(
-                    painter = painterResource(id = getWeatherIcon(weather.iconId)),
+                    painter = painterResource(id = getWeatherIcon(context, weather.iconId)),
                     contentDescription = "weather icon",
                     modifier = Modifier.size(38.dp)
                 )

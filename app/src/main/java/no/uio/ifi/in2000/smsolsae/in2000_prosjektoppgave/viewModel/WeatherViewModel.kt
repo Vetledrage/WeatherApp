@@ -88,9 +88,9 @@ class WeatherViewModel : ViewModel() {
             val result = mapRepository.getCoordinatesForAddress(city)
 
             if (result != null){
-                println("${result.first} ${result.second} getcordinates res ---!!---")
-                _coordinatesState.value = Pair(result.first, result.second)
-                updateWeatherInfo(result.first.toString(),  result.second.toString())
+                println("${result.first.toString()} ${result.second.toString()} getcordinates res ---!!---")
+                _coordinatesState.value = Pair(result.second, result.first)
+                updateWeatherInfo(result.second.toString(),  result.first.toString())
             }
         }
     }

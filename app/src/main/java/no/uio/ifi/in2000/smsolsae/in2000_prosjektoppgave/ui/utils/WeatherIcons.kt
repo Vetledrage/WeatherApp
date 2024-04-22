@@ -1,26 +1,26 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils
 
+import android.content.Context
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
+
 /**
  * Gets a weather icon based on string input
- * @param symbol_code The
+ * @param symbolCode The weather id we get
+ * @param context The Context of the app.
  * @return The weather icon corresponding to the string. If none of the symbol names match, a default value, sunny, is returned.
  */
-fun getWeatherIcon(symbol_code: String?): Int {
-    return when (symbol_code) {
-        "clearsky", "fair", "partlycloudy" -> R.drawable.ic_sunny
-        "cloudy" -> R.drawable.ic_cloudy
-        "fog" -> R.drawable.ic_cloudy
-        "heavyrain", "heavyrainandthunder", "heavyrainshowers", "heavyrainshowersandthunder" -> R.drawable.ic_rainy
-        "heavysleet", "heavysleetandthunder", "heavysleetshowers", "heavysleetshowersandthunder" -> R.drawable.ic_thunder
-        "heavysnow", "heavysnowandthunder", "heavysnowshowers", "heavysnowshowersandthunder" -> R.drawable.ic_snowy
-        "lightrain", "lightrainandthunder", "lightrainshowers", "lightrainshowersandthunder" -> R.drawable.ic_rainshower
-        "lightsleet", "lightsleetandthunder", "lightsleetshowers" -> R.drawable.ic_rainshower
-        "lightsnow", "lightsnowandthunder", "lightsnowshowers", "lightssleetshowersandthunder", "lightssnowshowersandthunder" -> R.drawable.ic_snowy
-        "rain", "rainandthunder", "rainshowers", "rainshowersandthunder" -> R.drawable.ic_rainy
-        "sleet", "sleetandthunder", "sleetshowers", "sleetshowersandthunder" -> R.drawable.ic_thunder
-        "snow", "snowandthunder", "snowshowers", "snowshowersandthunder" -> R.drawable.ic_snowy
-        else -> R.drawable.ic_sunny
+fun getWeatherIcon(context: Context, symbolCode: String?): Int {
+    var resName = symbolCode
+    if (resName == null){
+        resName = "lightsnow"
+    }
+
+    val resId = context.resources.getIdentifier(resName, "drawable", context.packageName)
+    println(symbolCode)
+    return if (resId != 0){
+        resId
+    }else{
+        R.drawable.clearsky_day
     }
 }
 

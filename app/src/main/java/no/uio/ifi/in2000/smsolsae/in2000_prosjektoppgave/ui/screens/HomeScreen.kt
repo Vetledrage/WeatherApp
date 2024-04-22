@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens
 
+import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -23,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -106,7 +106,6 @@ fun HomeScreen(
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
-
         when (weatherData) {
             is AppUiState.Loading -> {
                 Column(
@@ -298,7 +297,7 @@ fun HomeScreen(
 
                             val hourlyWeatherData = data.tempNext12hrs
 
-                            WeatherScrollableRow(hourlyWeatherData = hourlyWeatherData)
+                            WeatherScrollableRow(context, hourlyWeatherData = hourlyWeatherData)
 
                             Spacer(modifier = Modifier.height(30.dp))
 
@@ -337,7 +336,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun WeatherItem(weather: TemperatureNext12Hours){
+fun WeatherItem(context: Context, weather: TemperatureNext12Hours){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -351,7 +350,7 @@ fun WeatherItem(weather: TemperatureNext12Hours){
             fontWeight = FontWeight.Light
         )
         Image(
-            painter = painterResource(id = getWeatherIcon(weather.iconId)),
+            painter = painterResource(id = getWeatherIcon(context, weather.iconId)),
             contentDescription = "icon",
             modifier = Modifier.size(35.dp)
         )
@@ -364,7 +363,7 @@ fun WeatherItem(weather: TemperatureNext12Hours){
 }
 
 @Composable
-fun WeatherScrollableRow(hourlyWeatherData: List<TemperatureNext12Hours>){
+fun WeatherScrollableRow(context: Context, hourlyWeatherData: List<TemperatureNext12Hours>){
     LazyRow(
         contentPadding = PaddingValues(horizontal = 5.dp),
         modifier = Modifier
@@ -372,7 +371,7 @@ fun WeatherScrollableRow(hourlyWeatherData: List<TemperatureNext12Hours>){
             .background(Color(0xFFF7F7F7), shape = RoundedCornerShape(8.dp)),
     ){
         items(hourlyWeatherData) { weather ->
-            WeatherItem(weather)
+            WeatherItem(context, weather)
         }
     }
 }
