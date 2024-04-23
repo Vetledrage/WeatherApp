@@ -243,7 +243,7 @@ fun HomeScreen(
                                     Row(
                                         modifier = Modifier.size(50.dp)
                                     ){
-                                        DisplayImage(bear = pickBear(data.temperature))
+                                        DisplayImage(bear = pickBear(temperature = data.temperature, humidity = data.humidity, weatherCode = data.weatherCode))
                                     }
 
 
