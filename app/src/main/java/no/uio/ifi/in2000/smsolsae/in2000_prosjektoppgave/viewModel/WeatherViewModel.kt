@@ -41,7 +41,7 @@ class WeatherViewModel : ViewModel() {
     private val _currentLocation = MutableStateFlow<Pair<Double, Double>?>(null)
     val currentLocation: StateFlow<Pair<Double, Double>?> = _currentLocation.asStateFlow()
 
-    private val _locationName = MutableStateFlow("Oslo, Norway")
+    private val _locationName = MutableStateFlow("Oslo")
     val locationName: StateFlow<String> = _locationName.asStateFlow()
 
     private val _coordinatesState = MutableStateFlow<Pair<Double, Double>?>(null)
@@ -65,7 +65,7 @@ class WeatherViewModel : ViewModel() {
                 val locationP = locationDeferred.await()
 
                 val alertsDeffered = viewModelScope.async(Dispatchers.IO) {
-                    metRepository.getAlertsInfo(lat, long)
+                    metRepository.getAlertsInfo()
                 }
                 val alerts = alertsDeffered.await()
 
@@ -88,7 +88,6 @@ class WeatherViewModel : ViewModel() {
             val result = mapRepository.getCoordinatesForAddress(city)
 
             if (result != null){
-                println("${result.first.toString()} ${result.second.toString()} getcordinates res ---!!---")
                 _coordinatesState.value = Pair(result.second, result.first)
                 updateWeatherInfo(result.second.toString(),  result.first.toString())
             }
@@ -157,11 +156,11 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-    fun updateAlerts(lat: String, long: String){
+    fun updateAlerts(){
         viewModelScope.launch {
             try {
                 val alertsDeferred = viewModelScope.async(Dispatchers.IO) {
-                    metRepository.getAlertsInfo(lat, long)
+                    metRepository.getAlertsInfo()
                 }
                 val alerts = alertsDeferred.await()
 
