@@ -95,6 +95,7 @@ class WeatherViewModel : ViewModel() {
     }
 
     init {
+        //if (viewModel.hasLocationPermission(context))
         getWeatherInfo("59.9139", "10.7522") //Fetches weather data in Oslo as default, to begin with, change this to current location afterwards!
     }
 

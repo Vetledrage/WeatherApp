@@ -1,5 +1,8 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components
 
+import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,12 +87,29 @@ val citites = listOf(
  */
 
 @Composable
-fun SearchLocationDialog(viewModel: WeatherViewModel = viewModel(), onDismiss : () -> Unit, onSearch: (String) -> Unit){
+fun SearchLocationDialog(
+    viewModel: WeatherViewModel = viewModel(),
+    onDismiss : () -> Unit,
+    onSearch: (String) -> Unit,
+    context: Context
+){
     var searchText by remember { mutableStateOf("") }
     val filteredCities = remember(searchText){
         citites.filter { it.lowercase().contains(searchText.lowercase()) }
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    // Create a permission launcher for requesting current location
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted: Boolean ->
+                if (isGranted) {
+                    // Permission granted, update the location
+                    viewModel.getCurrentLocation(context)
+                }
+            }
+        )
 
     var showCitiesList by remember { mutableStateOf(true) }
 
@@ -165,7 +184,14 @@ fun SearchLocationDialog(viewModel: WeatherViewModel = viewModel(), onDismiss : 
                             Text(text = "Search Address", fontSize = 14.sp)
                         }
 
-                        TextButton(onClick = { /*TODO*/ }) {
+                        TextButton(onClick = {
+                            if (viewModel.hasLocationPermission(context)) {
+                                viewModel.getCurrentLocation(context)
+                                onDismiss()
+                            } else {
+                                requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            }
+                        }) {
                             Text(text = "Use my location", fontSize = 14.sp)
                         }
 

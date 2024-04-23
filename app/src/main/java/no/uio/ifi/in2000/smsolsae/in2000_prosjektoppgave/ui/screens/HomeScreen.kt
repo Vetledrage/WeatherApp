@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens
 
 import android.content.Context
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -89,20 +87,9 @@ fun HomeScreen(
     var showSearchBox by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val locationName by viewModel.locationName.collectAsState()
-    val coordinates by viewModel.coordinatesState.collectAsState()
     val scrollState = rememberScrollState()
 
-    // Create a permission launcher for requesting current location
-    val requestPermissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission(),
-            onResult = { isGranted: Boolean ->
-                if (isGranted) {
-                    // Permission granted, update the location
-                    viewModel.getCurrentLocation(context)
-                }
-            }
-        )
+
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -185,7 +172,8 @@ fun HomeScreen(
                                             viewModel.getCoordinates(city = loc)
                                             showSearchBox = false
                                         },
-                                        viewModel = viewModel
+                                        viewModel = viewModel,
+                                        context = context
                                     )
                                 }
 
@@ -246,8 +234,6 @@ fun HomeScreen(
                                     ){
                                         DisplayImage(bear = pickBear(temperature = data.temperature, humidity = data.humidity, weatherCode = data.weatherCode))
                                     }
-
-
                                 }
                             }
                         }
@@ -301,23 +287,6 @@ fun HomeScreen(
                             WeatherScrollableRow(context, hourlyWeatherData = hourlyWeatherData)
 
                             Spacer(modifier = Modifier.height(30.dp))
-
-                            if(coordinates != null){
-                                Text(
-                                    text = "${coordinates!!.first} , ${coordinates!!.second}"
-                                )
-                            }
-
-                            /*Button(onClick = {
-                                if (viewModel.hasLocationPermission(context)) {
-                                    viewModel.getCurrentLocation(context)
-                                    println(locationName)
-                                } else {
-                                    requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                                }
-                            }) {
-                                Text("Update my location")
-                            }*/
 
                             CustomBox(
                                 context = context
