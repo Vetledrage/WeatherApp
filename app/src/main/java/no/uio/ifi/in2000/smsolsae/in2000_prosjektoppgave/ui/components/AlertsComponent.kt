@@ -92,7 +92,7 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                 }
             }
         }
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         selectedAlert?.let { alert ->
             val backgroundColor = getBackgroundColorForDangerScale(alert.alertLevelA.split(";")[1].trim())

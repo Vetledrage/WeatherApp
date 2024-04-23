@@ -3,6 +3,6 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metale
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 
 interface AlertsRepository {
-    suspend fun getAlertsInfo(lat: String, long: String): MutableList<AlertInfo>
+    suspend fun getAlertsInfo(): MutableList<AlertInfo>
 
 }

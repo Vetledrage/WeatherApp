@@ -5,8 +5,8 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 
 class ImplementedAlertsRepository : AlertsRepository {
     private val dataSource = MetAlertsDataSource(baseUrl = "https://gw-uio.intark.uh-it.no/in2000/weatherapi")
-    override suspend fun getAlertsInfo(lat: String, long: String): MutableList<AlertInfo> {
-        val alert = dataSource.fetchMetAlerts(lat, long)
+    override suspend fun getAlertsInfo(): MutableList<AlertInfo> {
+        val alert = dataSource.fetchMetAlerts()
 
         val alertList : MutableList<AlertInfo> = mutableListOf()
         var area : String?

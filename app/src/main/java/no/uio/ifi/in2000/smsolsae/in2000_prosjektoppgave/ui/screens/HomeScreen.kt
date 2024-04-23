@@ -180,11 +180,12 @@ fun HomeScreen(
                                         onDismiss = { showSearchBox = false },
                                         onSearch = {query ->
                                             val loc = query.replaceFirstChar { it.uppercase() }
-                                            viewModel.setLocationName(loc)
+                                            viewModel.setLocationName(loc.split(",")[0])
 
                                             viewModel.getCoordinates(city = loc)
                                             showSearchBox = false
-                                        }
+                                        },
+                                        viewModel = viewModel
                                     )
                                 }
 
