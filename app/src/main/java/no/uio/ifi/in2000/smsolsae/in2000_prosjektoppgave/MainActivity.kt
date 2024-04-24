@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity() {
             if (weatherViewModel.hasLocationPermission(this)){
                 weatherViewModel.getCurrentLocation(this)
             }else{
-
                 weatherViewModel.getWeatherInfo("59.9139", "10.7522")
             }
         }
