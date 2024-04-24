@@ -53,7 +53,7 @@ class WeatherViewModel : ViewModel() {
      * @param long longitude
      * @param altitude altitude
      */
-    private fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
+    fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
         viewModelScope.launch {
             try {
                 _appUiState.update {
@@ -96,7 +96,7 @@ class WeatherViewModel : ViewModel() {
 
     init {
         //if (viewModel.hasLocationPermission(context))
-        getWeatherInfo("59.9139", "10.7522") //Fetches weather data in Oslo as default, to begin with, change this to current location afterwards!
+        //getWeatherInfo("59.9139", "10.7522") //Fetches weather data in Oslo as default, to begin with, change this to current location afterwards!
     }
 
     /**

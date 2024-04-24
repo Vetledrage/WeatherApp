@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="PreviewBearImage">
+      <entry key="DataSourceTest">
         <State />
       </entry>
       <entry key="app">
@@ -20,6 +20,12 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-18T14:46:21.343654300Z" />
         </State>
+      </entry>
+      <entry key="testSearchApi()">
+        <State />
+      </entry>
+      <entry key="testWeatherApi()">
+        <State />
       </entry>
     </value>
   </component>
