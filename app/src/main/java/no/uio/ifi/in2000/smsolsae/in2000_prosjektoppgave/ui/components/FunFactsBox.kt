@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DailyFactManager
+import kotlin.random.Random
+
 
 
 /**
@@ -38,7 +41,13 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DailyFactManag
 fun CustomBox(context: Context) {
     val dailyFactManager = DailyFactManager(context)
     val fact = dailyFactManager.getDailyFact()
-    
+
+    // Array of drawable resource IDs
+    val bearImages = listOf(R.drawable.factbjorn1, R.drawable.factbjorn2, R.drawable.factbjorn3)
+
+    // Randomly select an image ID
+    val randomImage = remember { bearImages[Random.nextInt(bearImages.size)] }
+
     Box(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         contentAlignment = Alignment.Center
@@ -62,7 +71,7 @@ fun CustomBox(context: Context) {
                 ) {
                     // Content for the side picture
                     Image(
-                        painter = painterResource(id = R.drawable.panda_bear),
+                        painter = painterResource(id = randomImage),
                         contentDescription = "bear",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop

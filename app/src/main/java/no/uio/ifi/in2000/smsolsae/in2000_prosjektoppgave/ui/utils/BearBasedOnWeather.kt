@@ -55,47 +55,18 @@ fun weatherType(weatherCode: String): String{
  * Composable function for displaying the bear image.
  * @param bear The string representing the bear to be displayed.
  */
-@Composable
-fun DisplayImage(bear: String) {
-    val bearImage: Painter
-    val bearDescription: String
-    when(bear) {
-        "polarBear" -> {
-            bearImage = painterResource(R.drawable.polar_bear)
-            bearDescription = "Polar Bear"}
-        "americanBlackBear" -> {
-            bearImage = painterResource(R.drawable.am_black_bear)
-            bearDescription = "American Black Bear"}
-        "asianBlackBear" -> {
-            bearImage = painterResource(R.drawable.as_black_bear)
-            bearDescription = "Asian Black Bear"}
-        "brownBear" -> {
-            bearImage = painterResource(R.drawable.brown_bear)
-            bearDescription = "Brown Bear"}
-        "pandaBear" -> {
-            bearImage = painterResource(R.drawable.panda_bear)
-            bearDescription = "Panda Bear"}
-        "spectacledBear" -> {
-            bearImage = painterResource(R.drawable.spectacled_bear)
-            bearDescription = "Spectacled Bear"}
-        "sunBear" -> {
-            bearImage = painterResource(R.drawable.sun_bear)
-            bearDescription = "Sun Bear"}
-        "slothBear" -> {
-            bearImage = painterResource(R.drawable.sloth_bear)
-            bearDescription = "Sloth Bear"}
-        else -> {
-            bearImage = painterResource(R.drawable.red_panda)
-            bearDescription = "Red Panda - Weather Error"}
-
-    }
-    Box {
-        Image(
-            painter = bearImage,
-            contentDescription = bearDescription,
-            contentScale = ContentScale.Crop,
-            alpha = 1.0F,
-        )
+@Composable //mange endringer på format,
+fun getBearImageResource(bear: String): Int {
+    return when(bear) {
+        "polarBear" -> R.drawable.polarbear_snow
+        "americanBlackBear" -> R.drawable.am_black_bear
+        "asianBlackBear" -> R.drawable.asianblackbear_rainy1
+        "brownBear" -> R.drawable.brownbear_raincloudy
+        "pandaBear" -> R.drawable.panda_humidsun
+        "spectacledBear" -> R.drawable.foggy_spectablebear
+        "sunBear" -> R.drawable.sunbear_sunnyday2
+        "slothBear" -> R.drawable.slothbear_verysunny
+        else -> R.drawable.red_panda // Default case if no valid bear is provided
     }
 }
 
@@ -103,5 +74,5 @@ fun DisplayImage(bear: String) {
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewBearImage(){
-    DisplayImage(bear = pickBear(temperature = 14, humidity = 70, weatherCode = "sunny")) //tags: "sunny", "cloudy", "rainy"
+    getBearImageResource(bear = pickBear(temperature = 14, humidity = 70, weatherCode = "sunny")) //tags: "sunny", "cloudy", "rainy"
 }

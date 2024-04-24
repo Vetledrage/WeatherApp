@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,7 +63,8 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAn
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DisplayImage
+
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getBearImageResource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
@@ -92,6 +94,8 @@ fun HomeScreen(
 
 
 
+
+
     Surface(modifier = Modifier.fillMaxSize()) {
         when (weatherData) {
             is AppUiState.Loading -> {
@@ -106,6 +110,9 @@ fun HomeScreen(
             is AppUiState.Success -> {
                 val data = (weatherData as AppUiState.Success).weather
 
+                //choose beartype background
+                val bearType = pickBear(data.temperature, data.humidity, data.weatherCode)
+                val bearImageId = getBearImageResource(bearType)
                 Scaffold(
                     bottomBar = {
                         BottomBar(navController)
@@ -127,8 +134,8 @@ fun HomeScreen(
                             contentAlignment = Alignment.TopCenter
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_weather_background),
-                                contentDescription = "background",
+                                painter = painterResource(id = bearImageId),
+                                contentDescription = "Dynamic bear imagebackground based on weather conditions",
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .clip(shape = RoundedCornerShape(5)),
@@ -180,7 +187,7 @@ fun HomeScreen(
                                 Text(
                                     text = getLiveDateTime(),
                                     fontSize = 14.sp,
-                                    fontWeight = FontWeight.Light
+                                    fontWeight = FontWeight.SemiBold
                                 )
                             }
 
@@ -210,30 +217,35 @@ fun HomeScreen(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = 10.dp),
+                                        .padding(horizontal = 10.dp)
+                                        .offset(y = (300).dp),
+                                    
                                     horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
-                                    WeatherInfo(R.drawable.ic_drop, "${data.humidity}%")
-                                    WeatherInfo(R.drawable.ic_wind, "${data.windSpeed}m/s")
+                                ) {//icons changed -
+                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}", )
+                                    WeatherInfo(R.drawable.raindrop, "${data.humidity}%")
+                                    WeatherInfo(R.drawable.windy, "${data.windSpeed}m/s")
+
                                 }
 
                                 Column(
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .offset(y = (-260).dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
 
                                     Row(
-                                        modifier = Modifier.size(200.dp)
+                                        modifier = Modifier.size(150.dp)
                                     ){
                                         WeatherAnimation(weahter = "sunny_rain") //Weather animations, add changes based on the weather code, also add more animations!!
                                     }
-
-                                    Row(
-                                        modifier = Modifier.size(50.dp)
-                                    ){
-                                        DisplayImage(bear = pickBear(temperature = data.temperature, humidity = data.humidity, weatherCode = data.weatherCode))
-                                    }
+                                    //old bear images
+                                   // Row(
+                                     //   modifier = Modifier.size(60.dp)
+                                    //){
+                                   //     DisplayImage(bear = pickBear(temperature = data.temperature, humidity = data.humidity, weatherCode = data.weatherCode))
+                                  //  }
                                 }
                             }
                         }
@@ -352,8 +364,8 @@ fun WeatherInfo(icon : Int, value: String) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(painter = painterResource(id = icon), contentDescription = value, modifier = Modifier.size(18.dp))
-        Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.Normal)
+        Image(painter = painterResource(id = icon), contentDescription = value, modifier = Modifier.size(28.dp))
+        Text(text = value, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
     }
 }
 
