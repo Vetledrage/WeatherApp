@@ -9,9 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.theme.IN2000ProsjektoppgaveTheme
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 /**
  * The MainActivity class is the entrypoint of the app. The main()-method. (More information to be added)
@@ -34,6 +36,14 @@ class MainActivity : ComponentActivity() {
                         RootNavHost(navController = navController)
                     }
                 }
+            }
+
+            val weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
+
+            if (weatherViewModel.hasLocationPermission(this)){
+                weatherViewModel.getCurrentLocation(this)
+            }else{
+                weatherViewModel.getWeatherInfo("59.9139", "10.7522")
             }
         }
     }

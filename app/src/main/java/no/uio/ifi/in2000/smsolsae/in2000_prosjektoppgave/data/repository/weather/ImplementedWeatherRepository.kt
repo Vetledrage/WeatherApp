@@ -112,15 +112,6 @@ class ImplementedWeatherRepository : WeatherRepository {
             tempNext9Days = tempNext9Days ,
             uvIndex = uvIndex,
             humidity = humidity,
-
-
-            /*
-            fog_area_fractionL = airfog!!,
-            cloud_area_fraction_high = cloudHigh!!,
-            cloud_area_fraction_medium = cloudMid!!,
-            cloud_area_fraction_low = cloudLow!!,
-            cloud_area_fraction = cloudiness!!,*/
-
         )
     }
 }

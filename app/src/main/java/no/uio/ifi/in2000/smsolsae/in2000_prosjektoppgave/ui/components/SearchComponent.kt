@@ -107,6 +107,7 @@ fun SearchLocationDialog(
                 if (isGranted) {
                     // Permission granted, update the location
                     viewModel.getCurrentLocation(context)
+                    onDismiss()
                 }
             }
         )

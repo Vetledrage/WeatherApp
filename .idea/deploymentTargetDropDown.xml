@@ -2,13 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="BearPickerTests">
-        <State />
-      </entry>
-      <entry key="DisplayImageTests">
-        <State />
-      </entry>
-      <entry key="PreviewBearImage">
+
         <State />
       </entry>
       <entry key="app">
@@ -27,7 +21,8 @@
           <timeTargetWasSelectedWithDropDown value="2024-03-18T14:46:21.343654300Z" />
         </State>
       </entry>
-      <entry key="displayImage_DisplaysPandaBear_WhenPandaBearIsProvided()">
+
+
         <State />
       </entry>
     </value>
