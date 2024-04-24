@@ -7,6 +7,7 @@ class ImplementedMapBoxRepository : MapBoxRepository {
     override suspend fun getCoordinatesForAddress(city: String): Pair<Double, Double>? {
         val res = mapDataSource.fetchMapSearch(city = city)
 
+
         val map = res.features
 
         if (map.isEmpty() || map[0].geometry == null){

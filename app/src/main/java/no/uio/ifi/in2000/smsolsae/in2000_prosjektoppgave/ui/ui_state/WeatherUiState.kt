@@ -14,19 +14,12 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state
 data class WeatherLocationInfo(
     val temperature: Int,
     val weatherCode: String,
-
     val rain: Float,
     val tempNext12hrs: List<TemperatureNext12Hours>,
     val tempNext9Days: List<TemperatureNext9Days>,
     val uvIndex: Float,
     val windSpeed: Float,
     val humidity: Int,
-
-    /*val fog_area_fractionL: Float,
-    val cloud_area_fraction: Float,
-    var cloud_area_fraction_high: Float,
-    var cloud_area_fraction_low: Float,
-    var cloud_area_fraction_medium: Float,*/
 )
 
 
