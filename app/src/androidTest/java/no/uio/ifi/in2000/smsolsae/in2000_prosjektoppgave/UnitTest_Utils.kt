@@ -1,38 +1,47 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DisplayImage
+
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatAlertsDate
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatDate
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatTime
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getBearImageResource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getDay
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-
+//Test must be changed to the appropiate new names they have been given in BearBasedOnWeather File
 //Test to see if we get the right bear from the temperature
 class BearPickerTests {
 
     @Test
-    fun testPickBear_WhenTempAbove20_ReturnsPandaBear() {
-        val result = pickBear(21)
-        assertEquals("pandaBear", result)
+    fun testPickBear_WhenTempAbove20AndSunny_ReturnsSunBear() {
+        val result = pickBear(21, 50, "sunny")
+        assertEquals("sunBear", result)
     }
 
     @Test
     fun testPickBear_WhenTempBelowZero_ReturnsPolarBear() {
-        val result = pickBear(-1)
+        val result = pickBear(-6, 50, "snowy")
         assertEquals("polarBear", result)
     }
 
     @Test
-    fun testPickBear_WhenTempBetween0And20_ReturnsBrownBear() {
-        val result = pickBear(10)
+    fun testPickBear_WhenTempBetween0And20AndRainy_ReturnsBrownBear() {
+        val result = pickBear(10, 50, "rainy")
         assertEquals("brownBear", result)
+    }
+
+    @Test
+    fun testPickBear_WhenHighHumidityAndModerateTemperature_ReturnsPandaBear() {
+        val result = pickBear(14, 80, "cloudy")
+        assertEquals("pandaBear", result)
     }
 }
 
@@ -41,40 +50,41 @@ class BearPickerTests {
 class DisplayImageTests {
     @get:Rule
     val composeTestRule = createComposeRule()
-
     @Test
     fun displayImage_DisplaysPolarBear_WhenPolarBearIsProvided() {
         composeTestRule.setContent {
-            DisplayImage(bear = "polarBear")
+            Image(
+                painter = painterResource(getBearImageResource("polarBear")),
+                contentDescription = "Polar Bear Image"
+            )
         }
-
-        composeTestRule
-            .onNodeWithContentDescription("Polar Bear")
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Polar Bear Image").assertIsDisplayed()
     }
 
     @Test
     fun displayImage_DisplaysBrownBear_WhenBrownBearIsProvided() {
         composeTestRule.setContent {
-            DisplayImage(bear = "brownBear")
+            Image(
+                painter = painterResource(getBearImageResource("brownBear")),
+                contentDescription = "Brown Bear Image"
+            )
         }
-
-        composeTestRule
-            .onNodeWithContentDescription("Brown Bear")
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Brown Bear Image").assertIsDisplayed()
     }
 
     @Test
     fun displayImage_DisplaysPandaBear_WhenPandaBearIsProvided() {
         composeTestRule.setContent {
-            DisplayImage(bear = "pandaBear")
+            Image(
+                painter = painterResource(getBearImageResource("pandaBear")),
+                contentDescription = "Panda Bear Image"
+            )
         }
-
-        composeTestRule
-            .onNodeWithContentDescription("Panda Bear")
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Panda Bear Image").assertIsDisplayed()
     }
 }
+
+
 
 class TimeFormatTests {
 
