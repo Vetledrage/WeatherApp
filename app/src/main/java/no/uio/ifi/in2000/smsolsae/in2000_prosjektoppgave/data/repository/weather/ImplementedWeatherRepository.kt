@@ -25,13 +25,19 @@ class ImplementedWeatherRepository : WeatherRepository {
         val timeDay1 = 24 - currentHour
         val timeDay2 = timeDay1 + 24
         val timeDay3 = timeDay2 + 24
-        val timeDay4 = timeDay3 + 4 //After day 3, then it is just 4 temps in a day therefore + 4
+        val timeDay4 = timeDay3 + 6 //After day 3, then it is just 4 temps in a day therefore + 4
         val timeDay5 = timeDay4 + 4
         val timeDay6 = timeDay5 + 4
         val timeDay7 = timeDay6 + 4
         val timeDay8 = timeDay7 + 4
 
-        Log.d("TAG TIMEDAY3", "getLocationWeather: $timeDay1")
+        Log.d("TAG TIMEDAY1", "getLocationWeather: $timeDay1")
+        Log.d("TAG TIMEDAY2", "getLocationWeather: $timeDay2")
+        Log.d("TAG TIMEDAY3", "getLocationWeather: $timeDay3")
+        Log.d("TAG TIMEDAY4", "getLocationWeather: $timeDay4")
+        Log.d("TAG TIMEDAY5", "getLocationWeather: $timeDay5")
+        Log.d("TAG TIMEDAY6", "getLocationWeather: $timeDay6")
+        Log.d("TAG TIMEDAY7", "getLocationWeather: $timeDay7")
 
 
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
@@ -43,12 +49,7 @@ class ImplementedWeatherRepository : WeatherRepository {
 
 
 
-        //Tror ikke vi trenger disse her
-        /*val airfog = locationForecast.properties.timeseries.get(0)?.data?.instant?.details?.fog_area_fraction
-        val cloudHigh = locationForecast.properties.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_high
-        val cloudMid = locationForecast.properties?.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction_medium
-        val cloudLow = locationForecast.properties.timeseries.get(0)?.data?.instant?.details?.cloud_area_fraction_low
-        val cloudiness = locationForecast.properties.timeseries?.get(0)?.data?.instant?.details?.cloud_area_fraction*/
+
 
         val tempNext12h = mutableListOf<TemperatureNext12Hours>()
         for (i in 0 until 12){
