@@ -22,22 +22,22 @@ class ImplementedWeatherRepository : WeatherRepository {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
 
-        val timeDay1 = 24 - currentHour
+        val timeDay1 = 24 - currentHour +2
         val timeDay2 = timeDay1 + 24
-        val timeDay3 = timeDay2 + 24
-        val timeDay4 = timeDay3 + 6 //After day 3, then it is just 4 temps in a day therefore + 4
+        val timeDay3 = timeDay2 + 19 //For some areas the weather shows until 23:00 and for others like oslo and stockholm only untill 18. Therefore the data will show wrong.
+        val timeDay4 = timeDay3 + 4 //After day 3, then it is just 4 temps in a day therefore + 4
         val timeDay5 = timeDay4 + 4
         val timeDay6 = timeDay5 + 4
         val timeDay7 = timeDay6 + 4
         val timeDay8 = timeDay7 + 4
 
         Log.d("TAG TIMEDAY1", "getLocationWeather: $timeDay1")
-        Log.d("TAG TIMEDAY2", "getLocationWeather: $timeDay2")
-        Log.d("TAG TIMEDAY3", "getLocationWeather: $timeDay3")
-        Log.d("TAG TIMEDAY4", "getLocationWeather: $timeDay4")
-        Log.d("TAG TIMEDAY5", "getLocationWeather: $timeDay5")
-        Log.d("TAG TIMEDAY6", "getLocationWeather: $timeDay6")
-        Log.d("TAG TIMEDAY7", "getLocationWeather: $timeDay7")
+        //Log.d("TAG TIMEDAY2", "getLocationWeather: $timeDay2")
+        //Log.d("TAG TIMEDAY3", "getLocationWeather: $timeDay3")
+        //Log.d("TAG TIMEDAY4", "getLocationWeather: $timeDay4")
+        //Log.d("TAG TIMEDAY5", "getLocationWeather: $timeDay5")
+        //Log.d("TAG TIMEDAY6", "getLocationWeather: $timeDay6")
+        //Log.d("TAG TIMEDAY7", "getLocationWeather: $timeDay7")
 
 
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
@@ -81,7 +81,16 @@ class ImplementedWeatherRepository : WeatherRepository {
         val time7 = locationForecast.properties.timeseries[timeDay7].time
         val time8 = locationForecast.properties.timeseries[timeDay8].time
 
-        //Log.d("TAG", "getLocationWeather: $time1 $time2 $time3 $time5")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t1 $time1 ")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t2 $time2 ")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t3 $time3 ")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t4 $time4 ")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t5 $time5 ")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t6 $time6 ")
+        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t7 $time7 ")
+
+
+
 
         val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data?.next_12_hours?.summary?.get("symbol_code")
         val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data?.next_12_hours?.summary?.get("symbol_code")

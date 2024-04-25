@@ -31,7 +31,7 @@ fun formatTime(time: String): String{
  */
 fun formatDate(date: String) : String{
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-    inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
 
     val date = inputFormat.parse(date)
 
@@ -62,7 +62,7 @@ fun formatAlertsDate(date: String) : String{
 //hente dag bassert på dato
 fun getDay(date: String): String{
     val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US) // Bruker Locale.US for engelsk
-    format.timeZone = TimeZone.getTimeZone("UTC") // Sørger for at tiden tolkes som UTC
+
     val date = format.parse(date) ?: return "Unknown"
 
     val calendar = Calendar.getInstance()
