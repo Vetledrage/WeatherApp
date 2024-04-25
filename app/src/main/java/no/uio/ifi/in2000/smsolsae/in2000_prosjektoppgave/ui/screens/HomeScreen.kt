@@ -114,7 +114,7 @@ fun HomeScreen(
                 val bearType = pickBear(data.temperature, data.humidity, data.weatherCode)
                 val bearImageId = getBearImageResource(bearType)
 
-                val BetterFormatNameWeatherCode = weatherCodeBetterNames(weatherName = data.weatherCode)
+                val betterFormatNameWeatherCode = weatherCodeBetterNames(weatherName = data.weatherCode)
                 Scaffold(
                     bottomBar = {
                         BottomBar(navController)
@@ -207,7 +207,7 @@ fun HomeScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text( //BetterFormatNameWeatherCode Removes the underscores and makes it better formated
-                                    text = BetterFormatNameWeatherCode,
+                                    text = betterFormatNameWeatherCode,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Light
                                 )
@@ -224,10 +224,9 @@ fun HomeScreen(
                                     
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {//icons changed -
-                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}", )
+                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
                                     WeatherInfo(R.drawable.raindrop, "${data.humidity}%")
                                     WeatherInfo(R.drawable.windy, "${data.windSpeed}m/s")
-
                                 }
 
                                 Column(

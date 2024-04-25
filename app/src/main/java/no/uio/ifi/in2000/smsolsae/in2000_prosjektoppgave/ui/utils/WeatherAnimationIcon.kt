@@ -1,6 +1,5 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -38,7 +37,7 @@ fun WeatherAnimation(weather: String) {
         // Rain conditions
         "heavyrain" -> R.raw.thunder_rain
         "lightrain" -> R.raw.sunny_rain_anim
-        "rain" -> R.raw.sunny_rain_anim
+        "rain" -> R.raw.rainy_anim
         "heavyrainshowers_night" -> R.raw.night_rain
         "heavyrainshowers_polartwilight" -> R.raw.night_rain
         "lightrainshowers_night" -> R.raw.night_rain
