@@ -51,10 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
+
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
@@ -63,11 +60,14 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAn
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.WeatherAnimation
 
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getBearImageResource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
+
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.weatherCodeBetterNames
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -113,6 +113,8 @@ fun HomeScreen(
                 //choose beartype background
                 val bearType = pickBear(data.temperature, data.humidity, data.weatherCode)
                 val bearImageId = getBearImageResource(bearType)
+
+                val betterFormatNameWeatherCode = weatherCodeBetterNames(weatherName = data.weatherCode)
                 Scaffold(
                     bottomBar = {
                         BottomBar(navController)
@@ -204,8 +206,8 @@ fun HomeScreen(
                                     fontSize = 70.sp,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(
-                                    text = data.weatherCode,
+                                Text( //BetterFormatNameWeatherCode Removes the underscores and makes it better formated
+                                    text = betterFormatNameWeatherCode,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Light
                                 )
@@ -225,7 +227,6 @@ fun HomeScreen(
                                     WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
                                     WeatherInfo(R.drawable.raindrop, "${data.humidity}%")
                                     WeatherInfo(R.drawable.windy, "${data.windSpeed}m/s")
-
                                 }
 
                                 Column(
@@ -237,7 +238,7 @@ fun HomeScreen(
                                     Row(
                                         modifier = Modifier.size(150.dp)
                                     ){
-                                        WeatherAnimation(weahter = "sunny_rain") //Weather animations, add changes based on the weather code, also add more animations!!
+                                        WeatherAnimation(weather = data.weatherCode) //Weather animations, add changes based on the weather code, also add more animations!!
                                     }
                                     //old bear images
                                    // Row(
@@ -368,30 +369,9 @@ fun WeatherInfo(icon : Int, value: String) {
     }
 }
 
-@Composable
-fun WeatherAnimation(weahter: String){
-    val animationSpec = when(weahter) {
-        "sunny" -> R.raw.sunny_anim
-        "rainy" -> R.raw.rainy_anim
-        "snowing" -> R.raw.snowing_anim
-        "to_hot" -> R.raw.to_hot_anim
-        "sunny_rain" -> R.raw.sunny_rain_anim
-        else -> R.raw.sunny_anim
-    }
 
-    val composition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(
-            resId = animationSpec
-        )
-    )
-    LottieAnimation(
-        composition = composition,
-        iterations = LottieConstants.IterateForever,
-        modifier = Modifier
 
-            .fillMaxWidth()
-    )
-}
+
 
 
 @Preview(showSystemUi = true)

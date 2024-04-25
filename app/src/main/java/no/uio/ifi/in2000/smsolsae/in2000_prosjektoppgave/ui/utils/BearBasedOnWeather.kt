@@ -59,7 +59,7 @@ fun weatherType(weatherCode: String): String{
 fun getBearImageResource(bear: String): Int {
     return when(bear) {
         "polarBear" -> R.drawable.polarbear_snow
-        "americanBlackBear" -> R.drawable.am_black_bear
+        "americanBlackBear" -> R.drawable.americanblackbear_cloudy
         "asianBlackBear" -> R.drawable.asianblackbear_rainy1
         "brownBear" -> R.drawable.brownbear_raincloudy
         "pandaBear" -> R.drawable.panda_humidsun
