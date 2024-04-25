@@ -67,6 +67,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getLiveDateTim
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
 
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.weatherCodeBetterNames
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
@@ -112,6 +113,8 @@ fun HomeScreen(
                 //choose beartype background
                 val bearType = pickBear(data.temperature, data.humidity, data.weatherCode)
                 val bearImageId = getBearImageResource(bearType)
+
+                val BetterFormatNameWeatherCode = weatherCodeBetterNames(weatherName = data.weatherCode)
                 Scaffold(
                     bottomBar = {
                         BottomBar(navController)
@@ -203,8 +206,8 @@ fun HomeScreen(
                                     fontSize = 70.sp,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(
-                                    text = data.weatherCode,
+                                Text( //BetterFormatNameWeatherCode Removes the underscores and makes it better formated
+                                    text = BetterFormatNameWeatherCode,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Light
                                 )
