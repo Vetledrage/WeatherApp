@@ -222,7 +222,7 @@ fun HomeScreen(
                                     
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {//icons changed -
-                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}", )
+                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
                                     WeatherInfo(R.drawable.raindrop, "${data.humidity}%")
                                     WeatherInfo(R.drawable.windy, "${data.windSpeed}m/s")
 
@@ -234,7 +234,6 @@ fun HomeScreen(
                                         .offset(y = (-260).dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-
                                     Row(
                                         modifier = Modifier.size(150.dp)
                                     ){
