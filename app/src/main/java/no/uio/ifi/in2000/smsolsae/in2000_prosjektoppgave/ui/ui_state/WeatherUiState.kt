@@ -50,14 +50,14 @@ data class TemperatureNext9Days(
 
 //Change the variable names under AlertInfo and fix to let them be more understandable!!!!
 data class AlertInfo(
-    val areaA: String,
-    val typeA: String,
-    val consequenseA: String,
-    val recomendationA : String,
-    val descriptionA : String,
-    val alertTypeA: String,
-    val alertLevelA: String,
-    val timeIntervalA: List<String?>?
+    val area: String?,
+    val type: String?,
+    val consequense: String?,
+    val recomendation : String?,
+    val description : String?,
+    val alertType: String?,
+    val alertLevel: String?,
+    val timeInterval: List<String?>?
 )
 
 /**

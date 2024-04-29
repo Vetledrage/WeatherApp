@@ -11,9 +11,9 @@ class ImplementedAlertsRepository : AlertsRepository {
         val alertList : MutableList<AlertInfo> = mutableListOf()
         var area : String?
         var type : String?
-        var cons : String?
-        var rec : String?
-        var desc: String?
+        var consequence : String?
+        var recomendation : String?
+        var description: String?
         var alertType: String?
         var alertLevel: String?
         var timeIntervalA: List<String?>?
@@ -23,22 +23,22 @@ class ImplementedAlertsRepository : AlertsRepository {
 
             area = prop?.area
             type = prop?.eventAwarenessName
-            cons = prop?.consequences
-            rec = prop?.instruction
-            desc = prop?.description
+            consequence = prop?.consequences
+            recomendation = prop?.instruction
+            description = prop?.description
             alertType = prop?.awareness_type
             alertLevel = prop?.awareness_level
             timeIntervalA = it.tid?.interval
 
             val alertF = AlertInfo(
-                areaA = area!!,
-                typeA = type!!,
-                consequenseA = cons!!,
-                recomendationA = rec!!,
-                descriptionA = desc!!,
-                alertTypeA = alertType!!,
-                alertLevelA = alertLevel!!,
-                timeIntervalA = timeIntervalA!!
+                area = area,
+                type = type,
+                consequense = consequence,
+                recomendation = recomendation,
+                description = description,
+                alertType = alertType,
+                alertLevel = alertLevel,
+                timeInterval = timeIntervalA
             )
 
             alertList.add(alertF)

@@ -5,13 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -31,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.PopupProperties
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatAlertsDate
 
@@ -42,8 +39,8 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatAlertsDa
 @Composable
 fun AlertsBox(alert: MutableList<AlertInfo>){
     var expanded by remember { mutableStateOf(false) }
-    var selectedLocation by remember { mutableStateOf(alert.first().areaA) }
-    val selectedAlert = alert.firstOrNull {it.areaA == selectedLocation}
+    var selectedLocation by remember { mutableStateOf(alert.first().area) }
+    val selectedAlert = alert.firstOrNull {it.area == selectedLocation}
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -57,7 +54,7 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = selectedLocation,
+                    text = selectedLocation!!,
                     fontSize = 18.sp,
                     modifier = Modifier
                         .clickable { expanded = true }
@@ -75,16 +72,16 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                 expanded = expanded,
                 onDismissRequest = { expanded = false},
             ) {
-                alert.distinctBy { it.areaA }.forEach{ alert ->
+                alert.distinctBy { it.area }.forEach{ alert ->
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = alert.areaA,
+                                text = alert.area!!,
                                 fontSize = 18.sp
                             )
                         },
                         onClick = {
-                            selectedLocation = alert.areaA
+                            selectedLocation = alert.area
                             expanded = false
                         },
 
@@ -92,10 +89,11 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                 }
             }
         }
+
         Spacer(modifier = Modifier.height(10.dp))
 
         selectedAlert?.let { alert ->
-            val backgroundColor = getBackgroundColorForDangerScale(alert.alertLevelA.split(";")[1].trim())
+            val backgroundColor = getBackgroundColorForDangerScale(alert.alertLevel!!.split(";")[1].trim())
             Card(
                 modifier = Modifier
                     .padding(8.dp)
@@ -107,31 +105,31 @@ fun AlertsBox(alert: MutableList<AlertInfo>){
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Danger level: ${alert.alertLevelA.split(";")[0]}",
+                        text = "Danger level: ${alert.alertLevel.split(";")[0]}",
                         fontWeight = FontWeight(700),
                         fontSize = 28.sp
                     )
                     Spacer(modifier = Modifier.height(7.dp))
 
-                    Text("Description: ${alert.descriptionA}")
+                    Text("Description: ${alert.description}")
                     Spacer(modifier = Modifier.height(7.dp))
 
-                    Text("Location: ${alert.areaA}")
-
-                    Spacer(modifier = Modifier.height(7.dp))
-
-                    Text("Consequense: ${alert.consequenseA}")
+                    Text("Location: ${alert.area}")
 
                     Spacer(modifier = Modifier.height(7.dp))
 
+                    Text("Consequense: ${alert.consequense}")
 
                     Spacer(modifier = Modifier.height(7.dp))
 
-                    Text("Recomendation: ${alert.recomendationA}")
 
                     Spacer(modifier = Modifier.height(7.dp))
-                    val startTime = formatAlertsDate(alert.timeIntervalA!![0]!!)
-                    val endTime = formatAlertsDate(alert.timeIntervalA[1]!!)
+
+                    Text("Recomendation: ${alert.recomendation}")
+
+                    Spacer(modifier = Modifier.height(7.dp))
+                    val startTime = formatAlertsDate(alert.timeInterval!![0]!!)
+                    val endTime = formatAlertsDate(alert.timeInterval[1]!!)
 
                     Text("Time interval: $startTime - $endTime")
                 }
@@ -151,7 +149,8 @@ fun getBackgroundColorForDangerScale(dangerScale: String): Color {
     return when (dangerScale) {
         "red" -> Color.Red
         "yellow" -> Color.Yellow
-        "orange" -> Color(0xFFFFA500) // RGBA verdi for oransje
-        else -> Color.LightGray // Standardfarge hvis ingen kriterier møtes
+        "orange" -> Color(0xFFFFA500) // RGBA code for orange
+        "green" -> Color.Green
+        else -> Color.LightGray //Standard color GREY else.
     }
 }
