@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components
 
 import android.content.Context
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,11 +25,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DailyFactManager
 import kotlin.random.Random
-
 
 
 /**
@@ -49,7 +48,9 @@ fun CustomBox(context: Context) {
     val randomImage = remember { bearImages[Random.nextInt(bearImages.size)] }
 
     Box(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -80,13 +81,16 @@ fun CustomBox(context: Context) {
 
                 Box(
                     modifier = Modifier
-                        .size(190.dp, 94.dp)
+                        .fillMaxWidth()
+
                         .clip(RoundedCornerShape(15.dp))
                         .shadow(30.dp)
                         .background(Color.White)
+                        .padding(top = 8.dp, bottom = 8.dp, end = 8.dp)
                 ) {
                     Column(
-                        modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
