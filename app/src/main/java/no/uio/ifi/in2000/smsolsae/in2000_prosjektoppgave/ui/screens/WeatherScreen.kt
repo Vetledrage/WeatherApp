@@ -54,7 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext7Days
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatDate
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getDay
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
@@ -139,7 +139,7 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                         Column(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            val weeklyWeatherData = data.tempNext9Days
+                            val weeklyWeatherData = data.tempNext7Days
                             WeatherNextWeek(weeklyWeatherData = weeklyWeatherData)
                         }
                     }
@@ -220,7 +220,7 @@ fun TodaysWeatherRow(hourlyWeatherData: List<TemperatureNext12Hours>){
  * @param weeklyWeatherData A list of TemperatureNext9Days-objects
  */
 @Composable
-fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext9Days>){
+fun WeatherNextWeek(weeklyWeatherData: List<TemperatureNext7Days>){
     val context = LocalContext.current
     LazyColumn{
         items(weeklyWeatherData){weather ->

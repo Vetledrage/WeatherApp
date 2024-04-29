@@ -1,12 +1,14 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather
 
-import android.util.Log
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Timeseries
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.datasource.WeatherDataSource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext9Days
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext7Days
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.WeatherLocationInfo
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatTime
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 
 /**
@@ -16,28 +18,45 @@ class ImplementedWeatherRepository : WeatherRepository {
     private val datasource = WeatherDataSource(baseUrl = "https://gw-uio.intark.uh-it.no/in2000/weatherapi")
 
 
+    //Private function to get the Timeseries for only the next 7 days, and to remove the hourly data from each date.
+    //Easier to work with like this.
+    private fun getNext7DaysTimeseries(timeseriesList: List<Timeseries>): List<Timeseries> {
+        // Opprett en Calendar-instans for dagens dato
+        val currentDate = Calendar.getInstance()
+
+        // Opprett en SimpleDateFormat for å konvertere tidsserienes strengrepresentasjon av tid til Calendar-objekter
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        // Finn datoen 7 dager frem i tid
+        val next7DaysDate = Calendar.getInstance()
+        next7DaysDate.add(Calendar.DAY_OF_YEAR, 7)
+
+        // Opprett en liste for å lagre resultatene
+        val next7DaysTimeseries = mutableListOf<Timeseries>()
+
+        // Iterer gjennom tidsseriene
+        for (timeseries in timeseriesList) {
+            // Konverter tidsseriens strengrepresentasjon av tid til en Calendar-objekt
+            val time = Calendar.getInstance().apply {
+                timeInMillis = dateFormat.parse(timeseries.time)?.time ?: 0
+            }
+
+            // Sjekk om tidspunktet er innenfor de neste 7 dagene
+            if (time.after(currentDate) && time.before(next7DaysDate)) {
+                // Legg til tidsserien i listen hvis datoen ikke allerede er lagt til
+                if (!next7DaysTimeseries.any { it.time.substring(0, 10) == timeseries.time.substring(0, 10) }) {
+                    next7DaysTimeseries.add(timeseries)
+                }
+            }
+        }
+
+        // Returner resultatet
+        return next7DaysTimeseries
+    }
+
+
     override suspend fun getLocationWeather(latitude: String, longitude: String, altitude: String?): WeatherLocationInfo {
         val locationForecast = datasource.fetchLocationForecastData(latitude, longitude, altitude)
-
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-
-
-        val timeDay1 = 24 - currentHour +2
-        val timeDay2 = timeDay1 + 24
-        val timeDay3 = timeDay2 + 19 //For some areas the weather shows until 23:00 and for others like oslo and stockholm only untill 18. Therefore the data will show wrong.
-        val timeDay4 = timeDay3 + 4 //After day 3, then it is just 4 temps in a day therefore + 4
-        val timeDay5 = timeDay4 + 4
-        val timeDay6 = timeDay5 + 4
-        val timeDay7 = timeDay6 + 4
-        val timeDay8 = timeDay7 + 4
-
-        Log.d("TAG TIMEDAY1", "getLocationWeather: $timeDay1")
-        //Log.d("TAG TIMEDAY2", "getLocationWeather: $timeDay2")
-        //Log.d("TAG TIMEDAY3", "getLocationWeather: $timeDay3")
-        //Log.d("TAG TIMEDAY4", "getLocationWeather: $timeDay4")
-        //Log.d("TAG TIMEDAY5", "getLocationWeather: $timeDay5")
-        //Log.d("TAG TIMEDAY6", "getLocationWeather: $timeDay6")
-        //Log.d("TAG TIMEDAY7", "getLocationWeather: $timeDay7")
 
 
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
@@ -57,59 +76,47 @@ class ImplementedWeatherRepository : WeatherRepository {
             val time = locationForecast.properties.timeseries[i].time
             val timeFormatted = formatTime(time)
             val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary.get("symbol_code")
-            Log.d("WEATHERCODE", "getLocationWeather: $iconId")
             tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
-        val tempNext9Days = mutableListOf<TemperatureNext9Days>()
+        val tempNext7Days = mutableListOf<TemperatureNext7Days>()
 
-        val tempDay1: Int = locationForecast.properties.timeseries[timeDay1].data.instant.details.air_temperature.toInt()
-        val tempDay2: Int = locationForecast.properties.timeseries[timeDay2].data.instant.details.air_temperature.toInt()
-        val tempDay3: Int = locationForecast.properties.timeseries[timeDay3].data.instant.details.air_temperature.toInt()
-        val tempDay4: Int = locationForecast.properties.timeseries[timeDay4].data.instant.details.air_temperature.toInt()
-        val tempDay5: Int = locationForecast.properties.timeseries[timeDay5].data.instant.details.air_temperature.toInt()
-        val tempDay6: Int = locationForecast.properties.timeseries[timeDay6].data.instant.details.air_temperature.toInt()
-        val tempDay7: Int = locationForecast.properties.timeseries[timeDay7].data.instant.details.air_temperature.toInt()
-        val tempDay8: Int = locationForecast.properties.timeseries[timeDay8].data.instant.details.air_temperature.toInt()
+        val liste = getNext7DaysTimeseries(locationForecast.properties.timeseries)
 
-        val time1 = locationForecast.properties.timeseries[timeDay1].time
-        val time2 = locationForecast.properties.timeseries[timeDay2].time
-        val time3 = locationForecast.properties.timeseries[timeDay3].time
-        val time4 = locationForecast.properties.timeseries[timeDay4].time
-        val time5 = locationForecast.properties.timeseries[timeDay5].time
-        val time6 = locationForecast.properties.timeseries[timeDay6].time
-        val time7 = locationForecast.properties.timeseries[timeDay7].time
-        val time8 = locationForecast.properties.timeseries[timeDay8].time
+        val tempDay1: Int = liste[0].data.instant.details.air_temperature.toInt()
+        val tempDay2: Int = liste[1].data.instant.details.air_temperature.toInt()
+        val tempDay3: Int = liste[2].data.instant.details.air_temperature.toInt()
+        val tempDay4: Int = liste[3].data.instant.details.air_temperature.toInt()
+        val tempDay5: Int = liste[4].data.instant.details.air_temperature.toInt()
+        val tempDay6: Int = liste[5].data.instant.details.air_temperature.toInt()
+        val tempDay7: Int = liste[6].data.instant.details.air_temperature.toInt()
 
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t1 $time1 ")
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t2 $time2 ")
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t3 $time3 ")
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t4 $time4 ")
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t5 $time5 ")
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t6 $time6 ")
-        Log.d("TAG TIMEDAY1 STRING", "getLocationWeather:t7 $time7 ")
+        val time1 = liste[0].time
+        val time2 = liste[1].time
+        val time3 = liste[2].time
+        val time4 = liste[3].time
+        val time5 = liste[4].time
+        val time6 = liste[5].time
+        val time7 = liste[6].time
 
 
 
+        val symbolCodeWeather = liste[0].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather2 = liste[1].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather3 = liste[2].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather4 = liste[3].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather5 = liste[4].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather6 = liste[5].data?.next_12_hours?.summary?.get("symbol_code")
+        val symbolCodeWeather7 = liste[6].data?.next_12_hours?.summary?.get("symbol_code")
 
-        val symbolCodeWeather = locationForecast.properties.timeseries[timeDay1].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather2 = locationForecast.properties.timeseries[timeDay2].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather3 = locationForecast.properties.timeseries[timeDay3].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather4 = locationForecast.properties.timeseries[timeDay4].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather5 = locationForecast.properties.timeseries[timeDay5].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather6 = locationForecast.properties.timeseries[timeDay6].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather7 = locationForecast.properties.timeseries[timeDay7].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather8 = locationForecast.properties.timeseries[timeDay8].data?.next_12_hours?.summary?.get("symbol_code")
-
-        tempNext9Days.addAll(listOf(
-            TemperatureNext9Days(time1,tempDay1, symbolCodeWeather),
-            TemperatureNext9Days(time2,tempDay2,symbolCodeWeather2),
-            TemperatureNext9Days(time3,tempDay3,symbolCodeWeather3),
-            TemperatureNext9Days(time4,tempDay4,symbolCodeWeather4),
-            TemperatureNext9Days(time5,tempDay5,symbolCodeWeather5),
-            TemperatureNext9Days(time6,tempDay6,symbolCodeWeather6),
-            TemperatureNext9Days(time7,tempDay7,symbolCodeWeather7),
-            TemperatureNext9Days(time8,tempDay8,symbolCodeWeather8),
+        tempNext7Days.addAll(listOf(
+            TemperatureNext7Days(time1,tempDay1, symbolCodeWeather),
+            TemperatureNext7Days(time2,tempDay2,symbolCodeWeather2),
+            TemperatureNext7Days(time3,tempDay3,symbolCodeWeather3),
+            TemperatureNext7Days(time4,tempDay4,symbolCodeWeather4),
+            TemperatureNext7Days(time5,tempDay5,symbolCodeWeather5),
+            TemperatureNext7Days(time6,tempDay6,symbolCodeWeather6),
+            TemperatureNext7Days(time7,tempDay7,symbolCodeWeather7),
             )
         )
 
@@ -119,7 +126,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             rain = rain,
             weatherCode = weatherCode!!,
             tempNext12hrs = tempNext12h,
-            tempNext9Days = tempNext9Days ,
+            tempNext7Days = tempNext7Days ,
             uvIndex = uvIndex,
             humidity = humidity,
         )

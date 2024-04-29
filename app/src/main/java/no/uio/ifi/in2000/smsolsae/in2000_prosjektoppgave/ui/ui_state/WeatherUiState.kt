@@ -16,7 +16,7 @@ data class WeatherLocationInfo(
     val weatherCode: String,
     val rain: Float,
     val tempNext12hrs: List<TemperatureNext12Hours>,
-    val tempNext9Days: List<TemperatureNext9Days>,
+    val tempNext7Days: List<TemperatureNext7Days>,
     val uvIndex: Float,
     val windSpeed: Float,
     val humidity: Int,
@@ -42,7 +42,7 @@ data class TemperatureNext12Hours(
  * @property temp current temperature in celcius
  * @property iconid The icon id
  */
-data class TemperatureNext9Days(
+data class TemperatureNext7Days(
     val time: String,
     val temp: Int?,
     val iconId: String?
