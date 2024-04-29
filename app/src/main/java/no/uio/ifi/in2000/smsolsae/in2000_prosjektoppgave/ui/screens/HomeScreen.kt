@@ -56,6 +56,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.CustomBox
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.ErrorScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
@@ -90,10 +91,6 @@ fun HomeScreen(
     val context = LocalContext.current
     val locationName by viewModel.locationName.collectAsState()
     val scrollState = rememberScrollState()
-
-
-
-
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -238,14 +235,8 @@ fun HomeScreen(
                                     Row(
                                         modifier = Modifier.size(150.dp)
                                     ){
-                                        WeatherAnimation(weather = data.weatherCode) //Weather animations, add changes based on the weather code, also add more animations!!
+                                        WeatherAnimation(weather = data.weatherCode)
                                     }
-                                    //old bear images
-                                   // Row(
-                                     //   modifier = Modifier.size(60.dp)
-                                    //){
-                                   //     DisplayImage(bear = pickBear(temperature = data.temperature, humidity = data.humidity, weatherCode = data.weatherCode))
-                                  //  }
                                 }
                             }
                         }
@@ -310,7 +301,14 @@ fun HomeScreen(
             }
 
             is AppUiState.Error -> {
-                Text(text = "Error in getting data")
+                ErrorScreen(
+                    errorMsg = "Failed to load data",
+                    onRetry = {
+                        viewModel.getWeatherInfo(
+                            viewModel.coordinatesState.value!!.second.toString(),
+                            viewModel.coordinatesState.value!!.first.toString()
+                        )
+                    })
             }
         }
 

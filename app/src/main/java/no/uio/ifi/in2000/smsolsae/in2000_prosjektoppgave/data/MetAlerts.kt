@@ -14,7 +14,7 @@ data class Features(
     val geometry : GeometryAlert,
     val properties: PropertiesAlert?,
     val type : String?,
-    @SerializedName("when") val tid : WhenMet?,
+    @SerializedName("when") val time : WhenMet?,
 )
 data class WhenMet(
     val interval : List<String?>

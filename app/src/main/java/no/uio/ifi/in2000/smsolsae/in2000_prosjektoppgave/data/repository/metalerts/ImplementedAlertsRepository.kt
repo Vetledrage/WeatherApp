@@ -16,7 +16,7 @@ class ImplementedAlertsRepository : AlertsRepository {
         var description: String?
         var alertType: String?
         var alertLevel: String?
-        var timeIntervalA: List<String?>?
+        var timeInterval: List<String?>?
 
         alert.features?.forEach{
             val prop = it.properties
@@ -28,7 +28,7 @@ class ImplementedAlertsRepository : AlertsRepository {
             description = prop?.description
             alertType = prop?.awareness_type
             alertLevel = prop?.awareness_level
-            timeIntervalA = it.tid?.interval
+            timeInterval = it.time?.interval
 
             val alertF = AlertInfo(
                 area = area,
@@ -38,7 +38,7 @@ class ImplementedAlertsRepository : AlertsRepository {
                 description = description,
                 alertType = alertType,
                 alertLevel = alertLevel,
-                timeInterval = timeIntervalA
+                timeInterval = timeInterval
             )
 
             alertList.add(alertF)
