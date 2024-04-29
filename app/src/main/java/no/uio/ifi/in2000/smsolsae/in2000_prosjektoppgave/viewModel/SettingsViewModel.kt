@@ -3,7 +3,6 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class SettingsViewModel : ViewModel() {
     private val _settingsState = MutableStateFlow(SettingsState())
@@ -18,6 +17,8 @@ class SettingsViewModel : ViewModel() {
             else -> _settingsState.value // If settingId doesn't match any known setting, return current state
         }
     }
+
+
 }
 
 
