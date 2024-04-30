@@ -7,11 +7,6 @@ Johannes
 Brede
 
 
-# PawCast
-
-A brief description of what this project does and who it's for
-
-
 # Pawcast 
 ## Case 3. Vær- og farevarsel for yngre brukere
 
