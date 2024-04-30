@@ -21,27 +21,83 @@ import org.junit.Test
 class BearPickerTests {
 
     @Test
-    fun testPickBear_WhenTempAbove20AndSunny_ReturnsSunBear() {
-        val result = pickBear(21, 50, "sunny")
-        assertEquals("sunBear", result)
-    }
-
-    @Test
-    fun testPickBear_WhenTempBelowZero_ReturnsPolarBear() {
-        val result = pickBear(-6, 50, "snowy")
+    fun testPickBear_PolarBear() {
+        //temp: < -5
+        val result = pickBear(temperature = -6)
         assertEquals("polarBear", result)
     }
 
     @Test
-    fun testPickBear_WhenTempBetween0And20AndRainy_ReturnsBrownBear() {
-        val result = pickBear(10, 50, "rainy")
-        assertEquals("brownBear", result)
+    fun testPickBear_AmericanBlackBear() {
+        //temp: -5 <= temp < 30, humid&weather: not that of another bear's
+        val resultLow = pickBear(temperature = -5)
+        val resultMid = pickBear(temperature = 15, humidity = 69) //notRainyOrFoggy
+        val resultHigh = pickBear(temperature = 29, humidity = 69, weatherCode = "cloudy") //notRainyOrSunny
+        assertEquals("americanBlackBear", resultLow)
+        assertEquals("americanBlackBear", resultMid)
+        assertEquals("americanBlackBear", resultHigh)
     }
 
     @Test
-    fun testPickBear_WhenHighHumidityAndModerateTemperature_ReturnsPandaBear() {
-        val result = pickBear(14, 80, "cloudy")
-        assertEquals("pandaBear", result)
+    fun testPickBear_AsianBlackBear() {
+        //temp: 15 <= temp < 30, weather: rainy
+        val resultLow = pickBear(temperature = 15, weatherCode = "rain")
+        val resultHigh = pickBear(temperature = 29, weatherCode = "rain")
+        assertEquals("asianBlackBear", resultLow)
+        assertEquals("asianBlackBear", resultHigh)
+    }
+
+    @Test
+    fun testPickBear_BrownBear() {
+        //temp: -5 <= temp < 15, weather: rainy, snow, sleet
+        val resultLow = pickBear(temperature = -5, weatherCode = "snow")
+        val resultHigh = pickBear(temperature = 14, weatherCode = "rain")
+        assertEquals("brownBear", resultLow)
+        assertEquals("brownBear", resultHigh)
+    }
+
+    @Test
+    fun testPickBear_SpectacledBear() {
+        //temp: 5 <= temp < 25, weather: cloudy or foggy
+        val resultLow = pickBear(temperature = 5, weatherCode = "cloudy")
+        val resultHigh = pickBear(temperature = 24, weatherCode = "cloudy")
+        assertEquals("spectacledBear", resultLow)
+        assertEquals("spectacledBear", resultHigh)
+    }
+
+    @Test
+    fun testPickBear_PandaBear() {
+        //temp: 10 <= temp < 20, humidity >= 70, weather: not rainy
+        val resultLow = pickBear(temperature = 10, humidity = 70)
+        val resultHigh = pickBear(temperature = 19, humidity = 70)
+        assertEquals("pandaBear", resultLow)
+        assertEquals("pandaBear", resultHigh)
+    }
+
+    @Test
+    fun testPickBear_SunBear() {
+        //temp: 20-29, humidity: < 70 (when temp >= 25), weather: sunny
+        val resultLow = pickBear(temperature = 20, humidity = 69, weatherCode = "clearsky_day")
+        val resultHigh = pickBear(temperature = 29, humidity = 69, weatherCode = "clearsky_day")
+        assertEquals("sunBear", resultLow)
+        assertEquals("sunBear", resultHigh)
+    }
+
+    @Test
+    fun testPickBear_SlothBear() {
+        //Case 1 -> temp: 25 <= temp < 30, humidity: >= 70, weather: not rainy or sunny
+        //Case 2 -> temp: <=30
+        val resultLow = pickBear(temperature = 25, humidity = 70, weatherCode = "cloudy")
+        val resultHigh = pickBear(temperature = 30)
+        assertEquals("slothBear", resultLow)
+        assertEquals("slothBear", resultHigh)
+    }
+
+    @Test
+    fun testPickBear_RedPanda() { //OBS: not fully implemented in app
+        //error = true
+        val result = pickBear(error = true)
+        assertEquals("redPanda", result)
     }
 }
 
@@ -51,7 +107,7 @@ class DisplayImageTests {
     @get:Rule
     val composeTestRule = createComposeRule()
     @Test
-    fun displayImage_DisplaysPolarBear_WhenPolarBearIsProvided() {
+    fun displayImage_PolarBear() {
         composeTestRule.setContent {
             Image(
                 painter = painterResource(getBearImageResource("polarBear")),
@@ -62,7 +118,7 @@ class DisplayImageTests {
     }
 
     @Test
-    fun displayImage_DisplaysBrownBear_WhenBrownBearIsProvided() {
+    fun displayImage_BrownBear() {
         composeTestRule.setContent {
             Image(
                 painter = painterResource(getBearImageResource("brownBear")),
@@ -73,7 +129,7 @@ class DisplayImageTests {
     }
 
     @Test
-    fun displayImage_DisplaysPandaBear_WhenPandaBearIsProvided() {
+    fun displayImage_PandaBear() {
         composeTestRule.setContent {
             Image(
                 painter = painterResource(getBearImageResource("pandaBear")),
