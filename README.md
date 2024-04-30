@@ -11,7 +11,7 @@ Brede
 ## Case 3. Vær- og farevarsel for yngre brukere
 
 
-#### Pawcast is a weatherApp that is made to inform a younger audience about weather and dangeralerts. Using child friendly design and fun features we want to attract users from the age 9-25. 
+#### Pawcast is a weatherApp that is made to inform a younger audience about weather and dangeralerts. Using child friendly designs and fun features we want to attract users from the age 9-25. 
 #### Key features in the app are API calls getting the newest weather info and dageralerts and presenting it. Getting the location of user, but also making it possible for user to choose a specific location.
 
 # installations
@@ -25,7 +25,7 @@ Brede
 
 # Usage 
 #### If the code is downloaded and Gradle is synced, running the App in Android Studio is how to run. Make sure that you are connected to Wifi. 
-#### If you run the code and change internett after, running again could make the API calls fail. Therefore termenation the App then running it again on the new internett (Not rerun, but cancel then run),will fix this problem.
+#### If you run the code and change internett after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internett (Not rerun, but cancel then run),will fix this problem.
 
 #### (Kjøre via terminal om det er nødvendig)
 # Contribution
@@ -39,6 +39,7 @@ Brede
 # License 
 #### Har ikke det?
 # Changelog
+#### Changelog: Optionally, include a changelog that lists significant changes in each version of your project. This helps users understand what's new and whether they need to update.
 # Contact us!
 #### ja vet ikke hva vi skal ha her
 
