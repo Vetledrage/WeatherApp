@@ -60,7 +60,7 @@ fun CustomBox(context: Context) {
                     modifier = Modifier
                         .size(100.dp, 170.dp)
                         .background(Color.White)
-                    //.clip(RoundedCornerShape(15.dp)) //I think it looks better without clip.
+
                 ) {
                     // Content for the side picture
                     Image(
@@ -74,7 +74,6 @@ fun CustomBox(context: Context) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-
                         .clip(RoundedCornerShape(15.dp))
                         .shadow(30.dp)
                         .background(Color.White)
