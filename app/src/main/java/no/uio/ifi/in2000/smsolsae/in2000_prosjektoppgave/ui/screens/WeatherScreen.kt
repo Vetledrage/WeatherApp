@@ -69,7 +69,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = viewModel()){
-    //val weeklyWeatherData by viewModel.weeklyWeatherUiState.collectAsState()
+
     val locationName by viewModel.locationName.collectAsState()
     val weatherData by viewModel.appUiState.collectAsState()
     val data = (weatherData as AppUiState.Success).weather

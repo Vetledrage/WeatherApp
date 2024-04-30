@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {BottomBar(navController = navController)}
                     ) {
-                        RootNavHost(navController = navController)
+                        RootNavHost(navController = navController, context = this)
                     }
                 }
             }

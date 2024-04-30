@@ -16,7 +16,6 @@ fun getWeatherIcon(context: Context, symbolCode: String?): Int {
     }
 
     val resId = context.resources.getIdentifier(resName, "drawable", context.packageName)
-    println(symbolCode)
     return if (resId != 0){
         resId
     }else{

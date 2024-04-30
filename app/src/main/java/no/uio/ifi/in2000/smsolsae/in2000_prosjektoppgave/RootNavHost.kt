@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -17,9 +18,10 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 /**
  * Manages the navigation between the different screens.
  * @param navController: The navhostcontroller. (For more information on navigation: please see the Android documentation)
+ * @param context: The context is used to send to the Screens that needs the activity context.
  */
 @Composable
-fun RootNavHost(navController: NavHostController){
+fun RootNavHost(navController: NavHostController, context: Context){
     val viewModel: WeatherViewModel = viewModel()
     val settingsViewmodel: SettingsViewModel = viewModel()
     NavHost(
@@ -27,7 +29,7 @@ fun RootNavHost(navController: NavHostController){
         startDestination = Screen.Home.route
     ){
         composable(Screen.Home.route){
-            HomeScreen(navController = navController, viewModel = viewModel)
+            HomeScreen(navController = navController, viewModel = viewModel, context)
         }
 
         composable(route = Screen.Weather.route){

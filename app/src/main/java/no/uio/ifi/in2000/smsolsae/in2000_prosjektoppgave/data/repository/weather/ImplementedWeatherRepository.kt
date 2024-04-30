@@ -29,7 +29,7 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         // Finn datoen 7 dager frem i tid
         val next7DaysDate = Calendar.getInstance()
-        next7DaysDate.add(Calendar.DAY_OF_YEAR, 7)
+        next7DaysDate.add(Calendar.DAY_OF_YEAR, 8)
 
         // Opprett en liste for å lagre resultatene
         val next7DaysTimeseries = mutableListOf<Timeseries>()
@@ -59,14 +59,13 @@ class ImplementedWeatherRepository : WeatherRepository {
         val locationForecast = datasource.fetchLocationForecastData(latitude, longitude, altitude)
 
 
+        //Todays weather information
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
         val weatherCode = locationForecast.properties.timeseries[0].data.next_6_hours.summary.get("symbol_code")
         val windspeed = locationForecast.properties.timeseries[0].data.instant.details.wind_speed
         val humidity = locationForecast.properties.timeseries[0].data.instant.details.relative_humidity.toInt()
         val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount
         val uvIndex = locationForecast.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky
-
-
 
 
 
@@ -79,46 +78,16 @@ class ImplementedWeatherRepository : WeatherRepository {
             tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
+        val weekList = getNext7DaysTimeseries(locationForecast.properties.timeseries)
+
         val tempNext7Days = mutableListOf<TemperatureNext7Days>()
+        for (i in weekList.indices){
+            val nextTemp: Int = weekList[i].data.instant.details.air_temperature.toInt()
+            val time = weekList[i].time
+            val symbolCodeWeather = weekList[i].data.next_12_hours.summary.get("symbol_code")
+            tempNext7Days.add(TemperatureNext7Days(time, nextTemp, symbolCodeWeather))
+        }
 
-        val liste = getNext7DaysTimeseries(locationForecast.properties.timeseries)
-
-        val tempDay1: Int = liste[0].data.instant.details.air_temperature.toInt()
-        val tempDay2: Int = liste[1].data.instant.details.air_temperature.toInt()
-        val tempDay3: Int = liste[2].data.instant.details.air_temperature.toInt()
-        val tempDay4: Int = liste[3].data.instant.details.air_temperature.toInt()
-        val tempDay5: Int = liste[4].data.instant.details.air_temperature.toInt()
-        val tempDay6: Int = liste[5].data.instant.details.air_temperature.toInt()
-        val tempDay7: Int = liste[6].data.instant.details.air_temperature.toInt()
-
-        val time1 = liste[0].time
-        val time2 = liste[1].time
-        val time3 = liste[2].time
-        val time4 = liste[3].time
-        val time5 = liste[4].time
-        val time6 = liste[5].time
-        val time7 = liste[6].time
-
-
-
-        val symbolCodeWeather = liste[0].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather2 = liste[1].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather3 = liste[2].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather4 = liste[3].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather5 = liste[4].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather6 = liste[5].data?.next_12_hours?.summary?.get("symbol_code")
-        val symbolCodeWeather7 = liste[6].data?.next_12_hours?.summary?.get("symbol_code")
-
-        tempNext7Days.addAll(listOf(
-            TemperatureNext7Days(time1,tempDay1, symbolCodeWeather),
-            TemperatureNext7Days(time2,tempDay2,symbolCodeWeather2),
-            TemperatureNext7Days(time3,tempDay3,symbolCodeWeather3),
-            TemperatureNext7Days(time4,tempDay4,symbolCodeWeather4),
-            TemperatureNext7Days(time5,tempDay5,symbolCodeWeather5),
-            TemperatureNext7Days(time6,tempDay6,symbolCodeWeather6),
-            TemperatureNext7Days(time7,tempDay7,symbolCodeWeather7),
-            )
-        )
 
         return WeatherLocationInfo(
             temperature = temp,

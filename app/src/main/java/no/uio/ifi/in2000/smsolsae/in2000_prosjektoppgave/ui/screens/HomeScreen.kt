@@ -84,11 +84,11 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: WeatherViewModel = viewModel()
+    viewModel: WeatherViewModel = viewModel(),
+    context: Context
 ) {
     val weatherData by viewModel.appUiState.collectAsState()
     var showSearchBox by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     val locationName by viewModel.locationName.collectAsState()
     val scrollState = rememberScrollState()
 
@@ -369,11 +369,3 @@ fun WeatherInfo(icon : Int, value: String) {
 
 
 
-
-
-
-@Preview(showSystemUi = true)
-@Composable
-fun ShowHomeScreen(){
-    HomeScreen(navController = rememberNavController(), viewModel = WeatherViewModel())
-}

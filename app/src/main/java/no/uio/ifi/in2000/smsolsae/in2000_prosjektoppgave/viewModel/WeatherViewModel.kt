@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -94,11 +95,6 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-    init {
-        //if (viewModel.hasLocationPermission(context))
-        //getWeatherInfo("59.9139", "10.7522") //Fetches weather data in Oslo as default, to begin with, change this to current location afterwards!
-    }
-
     /**
      * Updates already existing UI state.
      * @param lat latitude
@@ -108,6 +104,8 @@ class WeatherViewModel : ViewModel() {
     fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
         getWeatherInfo(lat, long, altitude)
     }
+
+
 
     fun hasLocationPermission(context: Context): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -135,7 +133,9 @@ class WeatherViewModel : ViewModel() {
             }
             .addOnFailureListener { exception ->
                 // Handle location retrieval failure
+                println("fail on getting current location: ${exception.message}")
                 exception.printStackTrace()
+                println(exception.printStackTrace())
             }
     }
 

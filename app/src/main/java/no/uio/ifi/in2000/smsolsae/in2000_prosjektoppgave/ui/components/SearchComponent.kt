@@ -188,15 +188,15 @@ fun SearchLocationDialog(
                         TextButton(onClick = {
                             if (viewModel.hasLocationPermission(context)) {
                                 viewModel.getCurrentLocation(context)
-                                onDismiss()
+                                //onDismiss()
                             } else {
                                 requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
                             }
                         }) {
                             Text(text = "Use my location", fontSize = 14.sp)
                         }
-
                     }
+
                 } else{
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
