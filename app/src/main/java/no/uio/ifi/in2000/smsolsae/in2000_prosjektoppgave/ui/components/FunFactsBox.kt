@@ -55,7 +55,7 @@ fun CustomBox(context: Context) {
     ) {
         Box(
             modifier = Modifier
-                .size(400.dp, 100.dp)
+                .size(400.dp, 200.dp)
                 .clip(shape = RoundedCornerShape(15.dp))
                 .background(Color.White),
             contentAlignment = Alignment.Center
