@@ -24,6 +24,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         // Opprett en Calendar-instans for dagens dato
         val currentDate = Calendar.getInstance()
 
+
         // Opprett en SimpleDateFormat for å konvertere tidsserienes strengrepresentasjon av tid til Calendar-objekter
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -66,7 +67,6 @@ class ImplementedWeatherRepository : WeatherRepository {
         val humidity = locationForecast.properties.timeseries[0].data.instant.details.relative_humidity.toInt()
         val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount
         val uvIndex = locationForecast.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky
-
 
 
         val tempNext12h = mutableListOf<TemperatureNext12Hours>()
