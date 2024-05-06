@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -83,6 +82,7 @@ class WeatherViewModel : ViewModel() {
             }
         }
     }
+
 
     fun getCoordinates(city: String){
         viewModelScope.launch(Dispatchers.IO) {

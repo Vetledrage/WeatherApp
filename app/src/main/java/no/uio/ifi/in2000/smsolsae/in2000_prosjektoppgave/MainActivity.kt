@@ -1,6 +1,10 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,22 +37,57 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {BottomBar(navController = navController)}
                     ) {
-                        RootNavHost(navController = navController, context = this)
+                        if (isNetworkConnected()){
+                            RootNavHost(navController = navController, context = this)
+                        }else{
+                            showNetworkErrorDialog()
+                        }
                     }
                 }
             }
 
-            val weatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
-
-            if (weatherViewModel.hasLocationPermission(this)){
-                weatherViewModel.getCurrentLocation(this)
-            }else{
-                weatherViewModel.getWeatherInfo("59.9139", "10.7522")
+            if (isNetworkConnected()){
+                performGetData()
             }
         }
     }
 
+    //To handle if the network is not connected.
+    private fun isNetworkConnected(): Boolean{
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
 
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+    }
+
+    private fun showNetworkErrorDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Network Error")
+            .setMessage("Please check your internet connection and try again.")
+            .setPositiveButton("OK") { _, _ ->
+                if (!isNetworkConnected()) {
+                    showNetworkErrorDialog()
+                } else {
+                    performGetData()
+                }
+            }
+            .show()
+    }
+
+    private fun performGetData(){
+        val weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
+
+        if (weatherViewModel.hasLocationPermission(this)){
+            weatherViewModel.getCurrentLocation(this)
+        }else{
+            weatherViewModel.getWeatherInfo("59.9139", "10.7522")
+        }
+    }
 }
 

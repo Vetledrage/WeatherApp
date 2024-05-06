@@ -25,6 +25,10 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +36,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,33 +45,28 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.CustomBox
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.ErrorScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.WeatherAnimation
-
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getBearImageResource
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getLiveDateTime
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.getWeatherIcon
-
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.pickBear
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.weatherCodeBetterNames
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
@@ -91,224 +91,249 @@ fun HomeScreen(
     var showSearchBox by remember { mutableStateOf(false) }
     val locationName by viewModel.locationName.collectAsState()
     val scrollState = rememberScrollState()
+    val snackBar = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+    fun showSnackbar(scope: CoroutineScope, snackbarHostState: SnackbarHostState, weatherViewModel: WeatherViewModel){
+        scope.launch {
+            val res = snackbarHostState.showSnackbar(
+                message = "No Internet Conection!",
+                actionLabel = "Try Again!",
+                duration = SnackbarDuration.Indefinite,
+            )
+            when(res) {
+                SnackbarResult.ActionPerformed -> weatherViewModel.getWeatherInfo(
+                    weatherViewModel.coordinatesState.value!!.second.toString(),
+                    weatherViewModel.coordinatesState.value!!.first.toString())
+                SnackbarResult.Dismissed -> {}
+            }
+        }
+    }
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        when (weatherData) {
-            is AppUiState.Loading -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    LoadingAnimation(text = "Loading Data...")
-                }
-            }
-            is AppUiState.Success -> {
-                val data = (weatherData as AppUiState.Success).weather
+        Scaffold(
+            snackbarHost = {SnackbarHost(hostState = snackBar)}
+        ) { padding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                when (weatherData) {
+                    is AppUiState.Error -> {
+                        showSnackbar(coroutineScope, snackBar, viewModel)
+                    }
 
-                //choose beartype background
-                val bearType = pickBear(data.temperature, data.humidity, data.weatherCode)
-                val bearImageId = getBearImageResource(bearType)
+                    is AppUiState.Loading -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ){
+                            LoadingAnimation(text = "Loading Data...")
+                        }
+                    }
+                    is AppUiState.Success -> {
+                        val data = (weatherData as AppUiState.Success).weather
 
-                val betterFormatNameWeatherCode = weatherCodeBetterNames(weatherName = data.weatherCode)
-                Scaffold(
-                    bottomBar = {
-                        BottomBar(navController)
-                    },
+                        //choose beartype background
+                        val bearType = pickBear(data.temperature, data.humidity, data.weatherCode)
+                        val bearImageId = getBearImageResource(bearType)
 
-                ) { innerPadding ->
+                        val betterFormatNameWeatherCode = weatherCodeBetterNames(weatherName = data.weatherCode)
+                        Scaffold(
+                            bottomBar = {
+                                BottomBar(navController)
+                            },
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .verticalScroll(state = scrollState),
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                                .height(550.dp),
-                            contentAlignment = Alignment.TopCenter
-                        ) {
-                            Image(
-                                painter = painterResource(id = bearImageId),
-                                contentDescription = "Dynamic bear imagebackground based on weather conditions",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(shape = RoundedCornerShape(5)),
-                                contentScale = ContentScale.Crop,
-                            )
-
-
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .padding(15.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .clickable { showSearchBox = true }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.location_dot),
-                                        contentDescription = "location",
-                                        modifier = Modifier
-                                            .padding(horizontal = 2.dp)
-                                            .size(16.dp)
-                                    )
-                                    Text(
-                                        text = locationName,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                }
-
-                                if(showSearchBox){
-                                    SearchLocationDialog(
-                                        onDismiss = { showSearchBox = false },
-                                        onSearch = {query ->
-                                            val loc = query.replaceFirstChar { it.uppercase() }
-                                            viewModel.setLocationName(loc.split(",")[0])
-
-                                            viewModel.getCoordinates(city = loc)
-                                            showSearchBox = false
-                                        },
-                                        viewModel = viewModel,
-                                        context = context
-                                    )
-                                }
-
-                                Text(
-                                    text = getLiveDateTime(),
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
+                        ) { innerPadding ->
 
                             Column(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
+                                    .fillMaxSize()
+                                    .padding(innerPadding)
+                                    .verticalScroll(state = scrollState),
                             ) {
-                                Spacer(modifier = Modifier.height(60.dp))
-
-                                Text(
-                                    text = "${data.temperature}°",
-                                    fontSize = 70.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text( //BetterFormatNameWeatherCode Removes the underscores and makes it better formated
-                                    text = betterFormatNameWeatherCode,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Light
-                                )
-
-                                Spacer(
-                                    modifier = Modifier.height(30.dp)
-                                )
-
-                                Row(
+                                Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = 10.dp)
-                                        .offset(y = (300).dp),
-                                    
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {//icons changed -
-                                    WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
-                                    WeatherInfo(R.drawable.raindrop, "${data.humidity}%")
-                                    WeatherInfo(R.drawable.windy, "${data.windSpeed}m/s")
+                                        .padding(16.dp)
+                                        .height(550.dp),
+                                    contentAlignment = Alignment.TopCenter
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = bearImageId),
+                                        contentDescription = "Dynamic bear imagebackground based on weather conditions",
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(shape = RoundedCornerShape(5)),
+                                        contentScale = ContentScale.Crop,
+                                    )
+
+
+                                    Row(
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier
+                                            .padding(15.dp)
+                                            .fillMaxWidth()
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier
+                                                .clickable { showSearchBox = true }
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.location_dot),
+                                                contentDescription = "location",
+                                                modifier = Modifier
+                                                    .padding(horizontal = 2.dp)
+                                                    .size(16.dp)
+                                            )
+                                            Text(
+                                                text = locationName,
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight.SemiBold
+                                            )
+                                        }
+
+                                        if(showSearchBox){
+                                            SearchLocationDialog(
+                                                onDismiss = { showSearchBox = false },
+                                                onSearch = {query ->
+                                                    val loc = query.replaceFirstChar { it.uppercase() }
+                                                    viewModel.setLocationName(loc.split(",")[0])
+
+                                                    viewModel.getCoordinates(city = loc)
+                                                    showSearchBox = false
+                                                },
+                                                viewModel = viewModel,
+                                                context = context
+                                            )
+                                        }
+
+                                        Text(
+                                            text = getLiveDateTime(),
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    }
+
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                    ) {
+                                        Spacer(modifier = Modifier.height(60.dp))
+
+                                        Text(
+                                            text = "${data.temperature}°",
+                                            fontSize = 70.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Text( //BetterFormatNameWeatherCode Removes the underscores and makes it better formated
+                                            text = betterFormatNameWeatherCode,
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Light
+                                        )
+
+                                        Spacer(
+                                            modifier = Modifier.height(30.dp)
+                                        )
+
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 10.dp)
+                                                .offset(y = (300).dp),
+
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {//icons changed -
+                                            WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")
+                                            WeatherInfo(R.drawable.raindrop, "${data.humidity}%")
+                                            WeatherInfo(R.drawable.windy, "${data.windSpeed}m/s")
+                                        }
+
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .offset(y = (-260).dp),
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            Row(
+                                                modifier = Modifier.size(150.dp)
+                                            ){
+                                                WeatherAnimation(weather = data.weatherCode)
+                                            }
+                                        }
+                                    }
                                 }
 
+                                val annotedstring = buildAnnotatedString {
+                                    val text = "Next 7 days"
+                                    append(text)
+                                }
                                 Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .offset(y = (-260).dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                        .padding(horizontal = 16.dp)
                                 ) {
                                     Row(
-                                        modifier = Modifier.size(150.dp)
-                                    ){
-                                        WeatherAnimation(weather = data.weatherCode)
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = "Today",
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight(600)
+                                        )
+
+                                        ClickableText(
+                                            text = annotedstring,
+                                            style = TextStyle(
+                                                fontWeight = FontWeight(400),
+                                                fontSize = 15.sp,
+                                                color = Color.Blue
+                                            ),
+                                            modifier = Modifier
+                                                .drawBehind {
+                                                    val strokeWidth = 1.dp.toPx()
+                                                    val y = size.height - strokeWidth / 2
+                                                    drawLine(
+                                                        color = Color.Blue,
+                                                        start = Offset(0f, y),
+                                                        end = Offset(size.width, y),
+                                                        strokeWidth = strokeWidth
+                                                    )
+                                                },
+                                            onClick = {
+                                                navController.navigate(Screen.Weather.route)
+                                            }
+                                        )
                                     }
+                                    Spacer(modifier = Modifier.height(20.dp))
+
+                                    val hourlyWeatherData = data.tempNext12hrs
+
+                                    WeatherScrollableRow(context, hourlyWeatherData = hourlyWeatherData)
+
+                                    Spacer(modifier = Modifier.height(30.dp))
+
+                                    CustomBox(
+                                        context = context
+                                    )
+
                                 }
                             }
                         }
-
-                        val annotedstring = buildAnnotatedString {
-                            val text = "Next 7 days"
-                            append(text)
-                        }
-                        Column(
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "Today",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight(600)
-                                )
-
-                                ClickableText(
-                                    text = annotedstring,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight(400),
-                                        fontSize = 15.sp,
-                                        color = Color.Blue
-                                    ),
-                                    modifier = Modifier
-                                        .drawBehind {
-                                            val strokeWidth = 1.dp.toPx()
-                                            val y = size.height - strokeWidth / 2
-                                            drawLine(
-                                                color = Color.Blue,
-                                                start = Offset(0f, y),
-                                                end = Offset(size.width, y),
-                                                strokeWidth = strokeWidth
-                                            )
-                                        },
-                                    onClick = {
-                                        navController.navigate(Screen.Weather.route)
-                                    }
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(20.dp))
-
-                            val hourlyWeatherData = data.tempNext12hrs
-
-                            WeatherScrollableRow(context, hourlyWeatherData = hourlyWeatherData)
-
-                            Spacer(modifier = Modifier.height(30.dp))
-
-                            CustomBox(
-                                context = context
-                            )
-
-                        }
                     }
-                }
-            }
 
-            is AppUiState.Error -> {
-                ErrorScreen(
-                    errorMsg = "Failed to load data",
-                    onRetry = {
-                        viewModel.getWeatherInfo(
-                            viewModel.coordinatesState.value!!.second.toString(),
-                            viewModel.coordinatesState.value!!.first.toString()
-                        )
-                    })
+
+                }
             }
         }
 
