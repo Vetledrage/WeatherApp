@@ -104,8 +104,8 @@ fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = vie
                                         Spacer(modifier = Modifier.height(10.dp))
 
                                         Text(
-                                            text = "This is page contains information about weather alerts in Norway.\n" +
-                                                    "Currently we have weather alerts information only for Norway.",
+                                            text = "This page contains information about weather alerts in Norway.\n" +
+                                                    "Currently we only have weather alerts information for Norway.",
                                             textAlign = TextAlign.Center,
 
                                         )
