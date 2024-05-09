@@ -2,7 +2,6 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 
 /**
@@ -66,13 +65,6 @@ fun getBearImageResource(bear: String): Int {
         "spectacledBear" -> R.drawable.foggy_spectablebear
         "sunBear" -> R.drawable.sunbear_sunnyday2
         "slothBear" -> R.drawable.slothbear_verysunny
-        else -> R.drawable.red_panda // Default case if no valid bear is provided
+        else -> R.drawable.red_panda_background // Default case if no valid bear is provided
     }
-}
-
-//Preview - change inputs to change preview
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewBearImage(){
-    getBearImageResource(bear = pickBear(temperature = 14, humidity = 70, weatherCode = "clearsky_day"))
 }

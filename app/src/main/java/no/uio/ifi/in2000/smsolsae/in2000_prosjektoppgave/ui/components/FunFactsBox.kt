@@ -64,8 +64,8 @@ fun CustomBox(context: Context) {
                 ) {
                     // Content for the side picture
                     Image(
-                        painter = painterResource(id = R.drawable.factbjorn2),
-                        contentDescription = "bear",
+                        painter = painterResource(id = R.drawable.factbjorn2), //redPanda fact icon
+                        contentDescription = "Cute red panda",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
