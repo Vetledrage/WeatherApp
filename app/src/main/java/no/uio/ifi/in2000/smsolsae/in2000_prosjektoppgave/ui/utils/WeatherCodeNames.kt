@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 
 
 
-@Composable
+/*@Composable
 fun weatherCodeBetterNames(weatherName: String): String {
     val weatherNameMap = mapOf(
         // Clear conditions
@@ -119,7 +119,7 @@ fun weatherCodeBetterNames(weatherName: String): String {
         // Night Cloudy
         "cloudy_night" to "Cloudy Night"
     )
-    return weatherNameMap[weatherName] ?: "Unknown Weather Condition"}
+    return weatherNameMap[weatherName] ?: "Unknown Weather Condition"}*/
 
 
 /**
@@ -129,7 +129,7 @@ fun weatherCodeBetterNames(weatherName: String): String {
  */
 
 @Composable
-fun weatherCodeToSummary(weatherName: String) : String {
+fun weatherCodeBetterNames(weatherName: String) : String {
     val weatherNameMap = mapOf(
         // Clear conditions
         "clearsky_day" to "The weather today will be clear with sunshine.",

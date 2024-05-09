@@ -12,6 +12,8 @@ class SettingsViewModel : ViewModel() {
         _settingsState.value = when (settingId) {
             "dark_mode" -> _settingsState.value.copy(darkModeEnabled = !_settingsState.value.darkModeEnabled)
             "notifications" -> _settingsState.value.copy(notificationsEnabled = !_settingsState.value.notificationsEnabled)
+            "bigger_font" -> _settingsState.value.copy(biggerFontSize = !_settingsState.value.biggerFontSize)
+            "text_to_speach" -> _settingsState.value.copy(textToSpeach = !_settingsState.value.textToSpeach)
 
             // Add more settings here as needed
             else -> _settingsState.value // If settingId doesn't match any known setting, return current state
@@ -19,10 +21,13 @@ class SettingsViewModel : ViewModel() {
     }
 
 
+
 }
 
 
 data class SettingsState(
     val darkModeEnabled: Boolean = false,
-    val notificationsEnabled: Boolean = false
+    val notificationsEnabled: Boolean = false,
+    val biggerFontSize: Boolean = false,
+    val textToSpeach: Boolean = false
 )

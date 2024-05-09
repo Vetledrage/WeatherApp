@@ -49,7 +49,9 @@ class MainActivity : ComponentActivity() {
             if (isNetworkConnected()){
                 performGetData()
             }
+
         }
+
     }
 
     //To handle if the network is not connected.

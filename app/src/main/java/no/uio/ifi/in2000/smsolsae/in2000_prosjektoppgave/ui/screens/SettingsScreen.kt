@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -26,7 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.Header
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.SettingsViewModel
@@ -65,21 +64,36 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
             SettingItem(
                 label = "Dark Mode",
                 isEnabled = settingsState.darkModeEnabled,
-                onToggle = { viewModel.toggleSetting("dark_mode") }
+                onToggle = { viewModel.toggleSetting("dark_mode") },
+                icon = R.drawable.moon_solid
             )
             
             SettingItem(
                 label = "Notifications",
                 isEnabled = settingsState.notificationsEnabled,
-                onToggle = { viewModel.toggleSetting("notifications") }
+                onToggle = { viewModel.toggleSetting("notifications") },
+                icon = R.drawable.bell_solid
             )
 
+            SettingItem(
+                label = "Large Font-Size",
+                isEnabled = settingsState.biggerFontSize,
+                onToggle = { viewModel.toggleSetting("bigger_font") },
+                icon = R.drawable.font_solid
+            )
+
+            SettingItem(
+                label = "Text-to-Speach",
+                isEnabled = settingsState.textToSpeach,
+                onToggle = { viewModel.toggleSetting("text_to_speach") },
+                icon = R.drawable.file_audio_solid
+            )
         }
     }
 }
 
 @Composable
-fun SettingItem(label: String, isEnabled: Boolean, onToggle: () -> Unit){
+fun SettingItem(label: String, isEnabled: Boolean, onToggle: () -> Unit, icon: Int?){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,8 +102,9 @@ fun SettingItem(label: String, isEnabled: Boolean, onToggle: () -> Unit){
         verticalAlignment = Alignment.CenterVertically
     ){
         Icon(
-            imageVector = Icons.Default.LocationOn, 
-            contentDescription = label
+            painter = painterResource(id = icon!!),
+            contentDescription = "label",
+            Modifier.size(18.dp)
         )
         
         Spacer(modifier = Modifier.width(5.dp))
@@ -101,11 +116,13 @@ fun SettingItem(label: String, isEnabled: Boolean, onToggle: () -> Unit){
             modifier = Modifier.weight(1f)
         )
 
+
         Switch(
             checked = isEnabled,
             onCheckedChange = { onToggle() },
             modifier = Modifier.padding(end = 16.dp)
         )
+
     }
     HorizontalDivider(
         color = Color.LightGray,
