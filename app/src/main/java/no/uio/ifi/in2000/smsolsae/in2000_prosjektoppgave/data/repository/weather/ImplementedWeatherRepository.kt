@@ -38,7 +38,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             val time = Calendar.getInstance().apply {
                 timeInMillis = dateFormat.parse(timeseries.time)?.time ?: 0
             }
-            
+
             if (time.after(currentDate) && time.before(next7DaysDate)) {
 
                 if (!next7DaysTimeseries.any { it.time.substring(0, 10) == timeseries.time.substring(0, 10) }) {
