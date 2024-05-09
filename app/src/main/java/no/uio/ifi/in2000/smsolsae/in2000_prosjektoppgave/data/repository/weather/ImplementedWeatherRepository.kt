@@ -21,37 +21,32 @@ class ImplementedWeatherRepository : WeatherRepository {
     //Private function to get the Timeseries for only the next 7 days, and to remove the hourly data from each date.
     //Easier to work with like this.
     private fun getNext7DaysTimeseries(timeseriesList: List<Timeseries>): List<Timeseries> {
-        // Opprett en Calendar-instans for dagens dato
+
         val currentDate = Calendar.getInstance()
 
-
-        // Opprett en SimpleDateFormat for å konvertere tidsserienes strengrepresentasjon av tid til Calendar-objekter
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        // Finn datoen 7 dager frem i tid
         val next7DaysDate = Calendar.getInstance()
         next7DaysDate.add(Calendar.DAY_OF_YEAR, 8)
 
-        // Opprett en liste for å lagre resultatene
+
         val next7DaysTimeseries = mutableListOf<Timeseries>()
 
-        // Iterer gjennom tidsseriene
+
         for (timeseries in timeseriesList) {
-            // Konverter tidsseriens strengrepresentasjon av tid til en Calendar-objekt
+
             val time = Calendar.getInstance().apply {
                 timeInMillis = dateFormat.parse(timeseries.time)?.time ?: 0
             }
-
-            // Sjekk om tidspunktet er innenfor de neste 7 dagene
+            
             if (time.after(currentDate) && time.before(next7DaysDate)) {
-                // Legg til tidsserien i listen hvis datoen ikke allerede er lagt til
+
                 if (!next7DaysTimeseries.any { it.time.substring(0, 10) == timeseries.time.substring(0, 10) }) {
                     next7DaysTimeseries.add(timeseries)
                 }
             }
         }
 
-        // Returner resultatet
         return next7DaysTimeseries
     }
 
