@@ -38,8 +38,6 @@ class WeatherViewModel : ViewModel() {
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
 
-    private val _currentLocation = MutableStateFlow<Pair<Double, Double>?>(null)
-    val currentLocation: StateFlow<Pair<Double, Double>?> = _currentLocation.asStateFlow()
 
     private val _locationName = MutableStateFlow("Oslo")
     val locationName: StateFlow<String> = _locationName.asStateFlow()
@@ -101,7 +99,7 @@ class WeatherViewModel : ViewModel() {
      * @param long longitude
      * @param altitude altitude
      */
-    fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
+    private fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
         getWeatherInfo(lat, long, altitude)
     }
 
@@ -120,26 +118,29 @@ class WeatherViewModel : ViewModel() {
      */
     @SuppressLint("MissingPermission")
     fun getCurrentLocation(context: Context) {
+        println("Inne her")
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
+                println("inne på add on $location")
                 if (location != null) {
                     val lat = location.latitude
                     val long = location.longitude
-                    _currentLocation.value = Pair(lat, long)
+                    println("$lat, $long")
+
                     updateWeatherInfo(lat.toString(), long.toString())
                     updateLocationName(context, lat, long)
                 }
             }
             .addOnFailureListener { exception ->
                 // Handle location retrieval failure
-                println("fail on getting current location: ${exception.message}")
                 exception.printStackTrace()
                 println(exception.printStackTrace())
             }
     }
 
-    fun updateLocationName(context: Context, latitude: Double, longitude: Double) {
+    @Suppress("DEPRECATION")
+    private fun updateLocationName(context: Context, latitude: Double, longitude: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val geocoder = Geocoder(context, Locale.getDefault())

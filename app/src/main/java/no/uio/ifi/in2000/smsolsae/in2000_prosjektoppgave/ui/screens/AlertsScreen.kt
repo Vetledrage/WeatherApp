@@ -23,14 +23,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.AlertsBox
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.ErrorScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.Header
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.NoDataComponent
@@ -60,7 +59,7 @@ fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = vie
                 }
             }
             is AppUiState.Error -> {
-                Text(text = "Error in getting alerts info")
+                ErrorScreen(errorMsg = "Something bad happend here!", onRetry = {viewModel.updateAlerts()})
             }
 
             is AppUiState.Success -> {

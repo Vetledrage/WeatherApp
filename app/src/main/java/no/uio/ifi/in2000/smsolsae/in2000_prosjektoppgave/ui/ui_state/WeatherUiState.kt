@@ -6,7 +6,7 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state
  * @property weatherCode string representing the current weather condition
  * @property rain current rain level in millimeters
  * @property tempNext12hrs a list of temperatureNext12Hours-objects representing the temperature the next 12 hours
- * @property tempNext9Days a list of temperatureNext9Days-objects representing the temperature the next 9 days
+ * @property tempNext7Days a list of temperatureNext9Days-objects representing the temperature the next 9 days
  * @property uvIndex the uvindex
  * @property windSpeed the wind speed in meters per second
  * @property humidity the humidity in percentage
@@ -40,7 +40,7 @@ data class TemperatureNext12Hours(
  * Data class for the temperature the next 9 days. Used in the data class WeatherLocationInfo
  * @property time The current time as a string
  * @property temp current temperature in celcius
- * @property iconid The icon id
+ * @property iconId The icon id
  */
 data class TemperatureNext7Days(
     val time: String,
@@ -73,7 +73,7 @@ sealed interface AppUiState {
         val weather: WeatherLocationInfo,
         val alerts: MutableList<AlertInfo>
     ) : AppUiState
-    object Error : AppUiState
-    object Loading : AppUiState
+    data object Error : AppUiState
+    data object Loading : AppUiState
 
 }

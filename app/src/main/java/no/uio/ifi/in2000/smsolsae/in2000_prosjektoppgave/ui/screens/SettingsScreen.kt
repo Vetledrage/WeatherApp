@@ -104,7 +104,7 @@ fun SettingItem(label: String, isEnabled: Boolean, onToggle: () -> Unit, icon: I
         Icon(
             painter = painterResource(id = icon!!),
             contentDescription = "label",
-            Modifier.size(18.dp)
+            Modifier.size(22.dp)
         )
         
         Spacer(modifier = Modifier.width(5.dp))

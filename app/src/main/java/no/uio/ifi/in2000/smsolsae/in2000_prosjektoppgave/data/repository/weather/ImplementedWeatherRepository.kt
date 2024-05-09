@@ -62,7 +62,7 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         //Todays weather information
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
-        val weatherCode = locationForecast.properties.timeseries[0].data.next_6_hours.summary.get("symbol_code")
+        val weatherCode = locationForecast.properties.timeseries[0].data.next_6_hours.summary["symbol_code"]
         val windspeed = locationForecast.properties.timeseries[0].data.instant.details.wind_speed
         val humidity = locationForecast.properties.timeseries[0].data.instant.details.relative_humidity.toInt()
         val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount
@@ -74,7 +74,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             val nextTemp = locationForecast.properties.timeseries[i].data.instant.details.air_temperature.toInt()
             val time = locationForecast.properties.timeseries[i].time
             val timeFormatted = formatTime(time)
-            val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary.get("symbol_code")
+            val iconId = locationForecast.properties.timeseries[i].data.next_1_hours.summary["symbol_code"]
             tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
@@ -84,7 +84,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         for (i in weekList.indices){
             val nextTemp: Int = weekList[i].data.instant.details.air_temperature.toInt()
             val time = weekList[i].time
-            val symbolCodeWeather = weekList[i].data.next_12_hours.summary.get("symbol_code")
+            val symbolCodeWeather = weekList[i].data.next_12_hours.summary["symbol_code"]
             tempNext7Days.add(TemperatureNext7Days(time, nextTemp, symbolCodeWeather))
         }
 

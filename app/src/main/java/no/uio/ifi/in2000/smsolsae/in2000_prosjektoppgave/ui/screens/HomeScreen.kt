@@ -173,7 +173,6 @@ fun HomeScreen(
                                         contentScale = ContentScale.Crop,
                                     )
 
-
                                     Row(
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         verticalAlignment = Alignment.CenterVertically,
@@ -206,7 +205,6 @@ fun HomeScreen(
                                                 onSearch = {query ->
                                                     val loc = query.replaceFirstChar { it.uppercase() }
                                                     viewModel.setLocationName(loc.split(",")[0])
-
                                                     viewModel.getCoordinates(city = loc)
                                                     showSearchBox = false
                                                 },
@@ -244,13 +242,11 @@ fun HomeScreen(
                                         Spacer(
                                             modifier = Modifier.height(30.dp)
                                         )
-
                                         Row(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .padding(horizontal = 10.dp)
-                                                .offset(y = (300).dp),
-
+                                                .offset(y = (250).dp),
                                             horizontalArrangement = Arrangement.SpaceBetween
                                         ) {//icons changed -
                                             WeatherInfo(R.drawable.ic_sunny, "${data.uvIndex}")

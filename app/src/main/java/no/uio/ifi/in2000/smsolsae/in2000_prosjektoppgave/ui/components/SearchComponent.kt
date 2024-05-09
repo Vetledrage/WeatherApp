@@ -49,36 +49,37 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 
-val citites = listOf(
-    "Oslo, Norway",
-    "Bergen, Norway",
-    "Trondheim, Norway",
-    "Stavanger, Norway",
-    "Drammen, Norway",
-    "Fredrikstad, Norway",
-    "Kristiansand, Norway",
-    "Sandnes, Norway",
-    "Tromsø, Norway",
-    "Sarpsborg, Norway",
-    "Berlin, Germany",
-    "Beijing, China",
-    "Boston, USA",
-    "Ottawa, Canada",
-    "Paris, France",
-    "Prague, Czech Republic",
-    "Perth, Australia",
-    "Porto, Portugal",
-    "Pune, India",
-    "Quito, Ecuador",
-    "Quebec City, Canada",
-    "Quanzhou, China",
-    "Rome, Italy",
-    "Rio de Janeiro, Brazil",
-    "Riyadh, Saudi Arabia",
-    "Reykjavik, Iceland",
-    "Santiago, Chile",
-    "Seoul, South Korea",
-    "Stockholm, Sweden"
+val cities = listOf(
+    "Oslo, Norway", "Bergen, Norway", "Trondheim, Norway",
+    "Stavanger, Norway", "Drammen, Norway", "Fredrikstad, Norway",
+    "Kristiansand, Norway", "Sandnes, Norway", "Tromsø, Norway",
+    "Sarpsborg, Norway", "Berlin, Germany", "Beijing, China",
+    "Boston, USA", "Ottawa, Canada", "Paris, France", "Prague, Czech Republic",
+    "Perth, Australia", "Porto, Portugal", "Pune, India", "Quito, Ecuador",
+    "Quebec City, Canada", "Quanzhou, China", "Rome, Italy", "Rio de Janeiro, Brazil",
+    "Riyadh, Saudi Arabia", "Reykjavik, Iceland", "Santiago, Chile", "Seoul, South Korea",
+    "Stockholm, Sweden", "Sydney, Australia", "Singapore, Singapore", "San Francisco, USA",
+    "Shanghai, China", "Sao Paulo, Brazil", "San Diego, USA", "Tokyo, Japan",
+    "Toronto, Canada", "Taipei, Taiwan", "Tel Aviv, Israel", "Tunis, Tunisia",
+    "Tbilisi, Georgia", "Tallinn, Estonia", "Tampa, USA", "Turin, Italy",
+    "Ulaanbaatar, Mongolia", "Utrecht, Netherlands", "Uppsala, Sweden", "Ushuaia, Argentina",
+    "Vienna, Austria", "Venice, Italy", "Vancouver, Canada", "Valencia, Spain",
+    "Warsaw, Poland", "Wellington, New Zealand", "Washington D.C., USA", "Wuhan, China",
+    "Xiamen, China", "Xi'an, China", "Xalapa, Mexico", "Yokohama, Japan",
+    "Yerevan, Armenia", "Yaounde, Cameroon", "Yogyakarta, Indonesia", "Zurich, Switzerland",
+    "Zagreb, Croatia", "Zanzibar City, Tanzania", "Zaragoza, Spain", "Zagora, Morocco",
+    "Auckland, New Zealand", "Athens, Greece", "Amsterdam, Netherlands", "Albuquerque, USA",
+    "Budapest, Hungary", "Brisbane, Australia", "Bucharest, Romania", "Brussels, Belgium",
+    "Cairo, Egypt", "Copenhagen, Denmark", "Chicago, USA", "Cape Town, South Africa",
+    "Dublin, Ireland", "Dubai, UAE", "Detroit, USA", "Dakar, Senegal",
+    "Edinburgh, UK", "Edmonton, Canada", "El Paso, USA", "Eskisehir, Turkey",
+    "Frankfurt, Germany", "Fukuoka, Japan", "Florence, Italy", "Fiji, Fiji",
+    "Guangzhou, China", "Guatemala City, Guatemala", "Geneva, Switzerland", "Glasgow, UK",
+    "Helsinki, Finland", "Hamburg, Germany", "Ho Chi Minh City, Vietnam", "Hong Kong, China",
+    "Istanbul, Turkey", "Islamabad, Pakistan", "Ibiza, Spain", "Incheon, South Korea",
+    "Jakarta, Indonesia", "Johannesburg, South Africa", "Jerusalem, Israel", "Jaipur, India",
+    "Kuala Lumpur, Malaysia", "Kyoto, Japan", "Kiev, Ukraine", "Kansas City, USA",
+    "Los Angeles, USA", "London, UK", "Lisbon, Portugal", "Luxembourg City, Luxembourg"
 )
 
 /**
@@ -95,7 +96,7 @@ fun SearchLocationDialog(
 ){
     var searchText by remember { mutableStateOf("") }
     val filteredCities = remember(searchText){
-        citites.filter { it.lowercase().contains(searchText.lowercase()) }
+        cities.filter { it.lowercase().contains(searchText.lowercase()) }
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -188,7 +189,7 @@ fun SearchLocationDialog(
                         TextButton(onClick = {
                             if (viewModel.hasLocationPermission(context)) {
                                 viewModel.getCurrentLocation(context)
-                                //onDismiss()
+                                onDismiss()
                             } else {
                                 requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
                             }
