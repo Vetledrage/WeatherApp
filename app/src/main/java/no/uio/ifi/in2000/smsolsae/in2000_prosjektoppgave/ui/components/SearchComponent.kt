@@ -219,19 +219,19 @@ fun SearchLocationDialog(
                         Spacer(modifier = Modifier.height(10.dp))
 
                         TextField(
-                            value = address,
-                            onValueChange = { address = it },
-                            label = { Text("Address", fontSize = 14.sp) },
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        TextField(
                             value = city,
                             onValueChange = { city = it },
                             label = { Text("City", fontSize = 14.sp) },
                         )
+                        Spacer(modifier = Modifier.height(10.dp))
 
+                        TextField(
+                            value = address,
+                            onValueChange = { address = it },
+                            label = { Text("Address", fontSize = 14.sp) },
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
+
 
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
