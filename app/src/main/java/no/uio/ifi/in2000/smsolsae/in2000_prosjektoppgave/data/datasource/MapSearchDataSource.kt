@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.datasource
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -18,7 +19,13 @@ class MapSearchDataSource {
     }
 
 
-    suspend fun fetchMapSearch(city: String) : MapModel{
-        return client.get("$baseUrl/$city.json?limit=1&access_token=$accessToken").body()
+    suspend fun fetchMapSearch(city: String) : MapModel?{
+        return try {
+            val response = client.get("$baseUrl/$city.json?limit=1&access_token=$accessToken")
+            return response.body()
+        }catch (e: Exception){
+            Log.e("MapSearchDataSource", "FEIL ved henting: ${e.message}")
+            null
+        }
     }
 }

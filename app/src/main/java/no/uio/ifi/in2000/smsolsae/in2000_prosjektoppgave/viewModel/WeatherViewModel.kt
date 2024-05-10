@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.location.Location
+import android.util.Log
+import androidx.compose.material3.Text
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -89,6 +92,9 @@ class WeatherViewModel : ViewModel() {
             if (result != null){
                 _coordinatesState.value = Pair(result.second, result.first)
                 updateWeatherInfo(result.second.toString(),  result.first.toString())
+            } else{
+                
+                Log.e("GETCORDINATES", "${_coordinatesState.value}")
             }
         }
     }
@@ -99,7 +105,7 @@ class WeatherViewModel : ViewModel() {
      * @param long longitude
      * @param altitude altitude
      */
-    private fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
+    fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
         getWeatherInfo(lat, long, altitude)
     }
 
@@ -118,11 +124,11 @@ class WeatherViewModel : ViewModel() {
      */
     @SuppressLint("MissingPermission")
     fun getCurrentLocation(context: Context) {
-        println("Inne her")
+
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
-                println("inne på add on $location")
+
                 if (location != null) {
                     val lat = location.latitude
                     val long = location.longitude
@@ -130,6 +136,10 @@ class WeatherViewModel : ViewModel() {
 
                     updateWeatherInfo(lat.toString(), long.toString())
                     updateLocationName(context, lat, long)
+                }else {
+                    _appUiState.update {
+                        AppUiState.Error
+                    }
                 }
             }
             .addOnFailureListener { exception ->

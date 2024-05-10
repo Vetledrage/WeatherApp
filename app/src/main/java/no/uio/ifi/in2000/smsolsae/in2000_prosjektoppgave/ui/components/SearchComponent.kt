@@ -92,7 +92,8 @@ fun SearchLocationDialog(
     viewModel: WeatherViewModel = viewModel(),
     onDismiss : () -> Unit,
     onSearch: (String) -> Unit,
-    context: Context
+    context: Context,
+    errorMessage: String?
 ){
     var searchText by remember { mutableStateOf("") }
     val filteredCities = remember(searchText){
@@ -206,6 +207,21 @@ fun SearchLocationDialog(
                         Header(label = "Search by Address", icon = Icons.Default.Search)
 
                         Spacer(modifier = Modifier.height(20.dp))
+
+                        if (errorMessage != null){
+                            Text(
+                                text = errorMessage!!,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = {  },
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            ) {
+                                Text(text = "Try Again")
+                            }
+                        }
 
                         TextField(
                             value = country,

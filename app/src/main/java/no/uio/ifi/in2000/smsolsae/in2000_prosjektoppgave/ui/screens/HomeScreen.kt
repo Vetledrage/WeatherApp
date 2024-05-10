@@ -25,10 +25,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +32,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,12 +48,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.CustomBox
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.ErrorScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.SearchLocationDialog
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
@@ -91,40 +85,19 @@ fun HomeScreen(
     var showSearchBox by remember { mutableStateOf(false) }
     val locationName by viewModel.locationName.collectAsState()
     val scrollState = rememberScrollState()
-    val snackBar = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-
-    fun showSnackbar(scope: CoroutineScope, snackbarHostState: SnackbarHostState, weatherViewModel: WeatherViewModel){
-        scope.launch {
-            val res = snackbarHostState.showSnackbar(
-                message = "No Internet Conection!",
-                actionLabel = "Try Again!",
-                duration = SnackbarDuration.Indefinite,
-            )
-            when(res) {
-                SnackbarResult.ActionPerformed -> weatherViewModel.getWeatherInfo(
-                    weatherViewModel.coordinatesState.value!!.second.toString(),
-                    weatherViewModel.coordinatesState.value!!.first.toString())
-                SnackbarResult.Dismissed -> {}
-            }
-        }
-    }
-
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        Scaffold(
-            snackbarHost = {SnackbarHost(hostState = snackBar)}
-        ) { padding ->
+
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 when (weatherData) {
                     is AppUiState.Error -> {
-                        showSnackbar(coroutineScope, snackBar, viewModel)
+                        ErrorScreen(errorMsg = "Something bad happend here!", onRetry = {viewModel.updateWeatherInfo("59.11", "10.112")})
                     }
 
                     is AppUiState.Loading -> {
@@ -199,17 +172,27 @@ fun HomeScreen(
                                             )
                                         }
 
+                                        fun onSearch(query: String){
+                                            val loc = query.replaceFirstChar { it.uppercase() }
+                                            val coordinates = viewModel.getCoordinates(city = loc)
+
+                                            if (coordinates != null){
+                                                viewModel.setLocationName(loc.split(",")[0])
+                                                showSearchBox = false
+                                            }else{
+                                                errorMessage = "No result found for $query"
+                                            }
+                                        }
+
                                         if(showSearchBox){
                                             SearchLocationDialog(
                                                 onDismiss = { showSearchBox = false },
                                                 onSearch = {query ->
-                                                    val loc = query.replaceFirstChar { it.uppercase() }
-                                                    viewModel.setLocationName(loc.split(",")[0])
-                                                    viewModel.getCoordinates(city = loc)
-                                                    showSearchBox = false
+                                                    onSearch(query)
                                                 },
                                                 viewModel = viewModel,
-                                                context = context
+                                                context = context,
+                                                errorMessage = errorMessage
                                             )
                                         }
 
@@ -334,7 +317,7 @@ fun HomeScreen(
         }
 
     }
-}
+
 
 @Composable
 fun WeatherItem(context: Context, weather: TemperatureNext12Hours){

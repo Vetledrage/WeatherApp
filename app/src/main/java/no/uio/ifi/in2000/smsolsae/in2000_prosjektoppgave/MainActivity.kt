@@ -25,6 +25,9 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (isNetworkConnected()){
+            performGetData()
+        }
         super.onCreate(savedInstanceState)
         setContent {
             IN2000ProsjektoppgaveTheme {
@@ -44,10 +47,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-            }
-
-            if (isNetworkConnected()){
-                performGetData()
             }
 
         }
