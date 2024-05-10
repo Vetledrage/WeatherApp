@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -93,7 +95,6 @@ fun SearchLocationDialog(
     onDismiss : () -> Unit,
     onSearch: (String) -> Unit,
     context: Context,
-    errorMessage: String?
 ){
     var searchText by remember { mutableStateOf("") }
     val filteredCities = remember(searchText){
@@ -208,20 +209,7 @@ fun SearchLocationDialog(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        if (errorMessage != null){
-                            Text(
-                                text = errorMessage!!,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(
-                                onClick = {  },
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            ) {
-                                Text(text = "Try Again")
-                            }
-                        }
+
 
                         TextField(
                             value = country,

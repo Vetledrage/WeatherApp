@@ -23,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -44,8 +45,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
@@ -85,7 +88,7 @@ fun HomeScreen(
     var showSearchBox by remember { mutableStateOf(false) }
     val locationName by viewModel.locationName.collectAsState()
     val scrollState = rememberScrollState()
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+    val errorMessage by viewModel.errorMessage.collectAsState()
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
@@ -174,13 +177,11 @@ fun HomeScreen(
 
                                         fun onSearch(query: String){
                                             val loc = query.replaceFirstChar { it.uppercase() }
-                                            val coordinates = viewModel.getCoordinates(city = loc)
 
-                                            if (coordinates != null){
+                                            if (errorMessage == null){
+                                                viewModel.getCoordinates(city = loc)
                                                 viewModel.setLocationName(loc.split(",")[0])
                                                 showSearchBox = false
-                                            }else{
-                                                errorMessage = "No result found for $query"
                                             }
                                         }
 
@@ -192,8 +193,39 @@ fun HomeScreen(
                                                 },
                                                 viewModel = viewModel,
                                                 context = context,
-                                                errorMessage = errorMessage
                                             )
+                                        }
+
+                                        if(errorMessage != null){
+                                            viewModel.setLocationName("Oslo")
+                                            Dialog(onDismissRequest = { viewModel.setErrorMesageNull() }) {
+                                                Surface(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    color = Color.White,
+                                                    shape = RoundedCornerShape(8.dp)
+                                                ) {
+                                                    Column(
+                                                        modifier = Modifier.padding(16.dp)
+                                                    ) {
+                                                        Text(
+                                                            text = errorMessage!! + "\nPlease Try Again!",
+                                                            textAlign = TextAlign.Center,
+                                                            style = TextStyle(color = Color.Red),
+                                                            modifier = Modifier.fillMaxWidth()
+                                                        )
+                                                        Spacer(modifier = Modifier.height(16.dp))
+
+                                                        Button(
+                                                            onClick = {
+                                                                viewModel.setErrorMesageNull()
+                                                                showSearchBox = true },
+                                                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                                                        ) {
+                                                            Text(text = "Try Again")
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
 
                                         Text(

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.location.Location
 import android.util.Log
-import androidx.compose.material3.Text
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,6 +46,9 @@ class WeatherViewModel : ViewModel() {
     private val _coordinatesState = MutableStateFlow<Pair<Double, Double>?>(null)
     val coordinatesState: StateFlow<Pair<Double, Double>?> = _coordinatesState.asStateFlow()
 
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
     /**
      * Updates the ui state with new weather info (more information to be added)
      * @param lat latitude
@@ -84,17 +85,21 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    fun setErrorMesageNull(){
+        _errorMessage.value = null
+    }
+
 
     fun getCoordinates(city: String){
         viewModelScope.launch(Dispatchers.IO) {
             val result = mapRepository.getCoordinatesForAddress(city)
 
             if (result != null){
+                setErrorMesageNull()
                 _coordinatesState.value = Pair(result.second, result.first)
                 updateWeatherInfo(result.second.toString(),  result.first.toString())
             } else{
-                
-                Log.e("GETCORDINATES", "${_coordinatesState.value}")
+                _errorMessage.value = "Oops! Cannot get data for this location "
             }
         }
     }
