@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,6 +24,8 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
  * The MainActivity class is the entrypoint of the app. The main()-method. (More information to be added)
  */
 class MainActivity : ComponentActivity() {
+
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         if (isNetworkConnected()){
@@ -40,16 +43,16 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {BottomBar(navController = navController)}
                     ) {
-                        if (isNetworkConnected()){
+
                             RootNavHost(navController = navController, context = this)
-                        }else{
+                        if(!isNetworkConnected()){
                             showNetworkErrorDialog()
                         }
                     }
                 }
             }
-
         }
+        registerNetworkCallback()
 
     }
 
@@ -67,10 +70,27 @@ class MainActivity : ComponentActivity() {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
+    private fun registerNetworkCallback() {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                performGetData()
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                showNetworkErrorDialog()
+            }
+        }
+        connectivityManager.registerDefaultNetworkCallback(networkCallback as ConnectivityManager.NetworkCallback)
+    }
+
     private fun showNetworkErrorDialog() {
         AlertDialog.Builder(this)
             .setTitle("Network Error")
-            .setMessage("Please check your internet connection and try again.")
+            .setMessage("Please connect to internet and try again!")
             .setPositiveButton("OK") { _, _ ->
                 if (!isNetworkConnected()) {
                     showNetworkErrorDialog()
@@ -79,6 +99,20 @@ class MainActivity : ComponentActivity() {
                 }
             }
             .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkCallback()
+    }
+
+    private fun unregisterNetworkCallback() {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        networkCallback?.let {
+            connectivityManager.unregisterNetworkCallback(it)
+        }
     }
 
     private fun performGetData(){
