@@ -26,7 +26,7 @@
 #### If you run the code and change internett after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internett (Not rerun, but cancel then run),will fix this problem.
 
 # Libraries used
-#### Most of the code is very basic code implemeted using Kotlin and Jetpack Compose. We are also using kotlinx for the livedata features. Java and kotlin utils is also great libraries that give us access useful fucntions.
+#### Most of the code is very basic code implemeted using Kotlin and Jetpack Compose. We are also using kotlinx for the livedata features. Java and kotlin utils is also great libraries that give us access useful functions.
 
 # Acknowledgements
 #### Thanks to Metrologisk institutt https://www.met.no for providing the APIs used to access weatherdata. 
