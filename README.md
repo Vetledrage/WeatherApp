@@ -1,22 +1,21 @@
-# team-41
-Said
-Vetle
-Younas
-Radi
-Johannes
-Brede
+# Team-41
+* Said Magomed Aptievitsj Solsaev
+* Vetle Drage
+* Mohammad Younas Hameed
+* Radi Halabi
+* Johannes H. Sletten
+* Brede Kristoffer Hovland Kvam
 
 
-# Pawcast 
-## Case 3. Vær- og farevarsel for yngre brukere
+# Pawcast: 
+## Case 3. Weather- and warnings for younger users
 
 
 #### Pawcast is a weatherApp that is made to inform a younger audience about weather and dangeralerts. Using child friendly designs and fun features we want to attract users from the age 9-25. 
 #### Key features in the app are API calls getting the newest weather info and dageralerts and presenting it. Getting the location of user, but also making it possible for user to choose a specific location.
 
-# installations
-#### You can dowload the App via: 
-#### "hvor koden skal hentes fra"
+# Installations
+#### You can dowload the App via github or via devilry at UIO.
 
 # Running the App
 #### We use Android Studio Iguana to implement and run the App, when dowloading the code, make sure it is run using the program. 
@@ -27,19 +26,14 @@ Brede
 #### If the code is downloaded and Gradle is synced, running the App in Android Studio is how to run. Make sure that you are connected to Wifi. 
 #### If you run the code and change internett after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internett (Not rerun, but cancel then run),will fix this problem.
 
-#### (Kjøre via terminal om det er nødvendig)
-# Contribution
-#### If you find any buggs or have any ideas of improvement on the App we would love to hear your input here (kan ha en kort spøreundersøkelse)
+# Libraries used
+#### Most of the code is very basic code implemeted using Kotlin and Jetpack Compose. We are also using kotlinx for the livedata features. Java and kotlin utils is also great libraries that give us access useful fucntions.
 
 # Credits
-#### Thanks to Metrologisk institutt https://www.met.no for providing the APIs used to present information in our App. 
-#### Thanks to UIO yata yata yata (usiker på hva)
-#### Thanks to all developers: navnene våre.
+#### Thanks to Metrologisk institutt https://www.met.no for providing the APIs used to access weatherdata. 
+#### Thanks to UIO https://www.uio.no for giving us the oppertunity to work and experiment with the APIs with help and guidance. 
+#### Thanks to all developers!
 
-# License 
-#### Har ikke det?
-# Changelog
-#### Changelog: Optionally, include a changelog that lists significant changes in each version of your project. This helps users understand what's new and whether they need to update.
 # Contact us!
 #### ja vet ikke hva vi skal ha her
 
