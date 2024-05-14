@@ -32,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,7 +52,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewMo
 val cities = listOf(
     "Oslo, Norway", "Bergen, Norway", "Trondheim, Norway",
     "Stavanger, Norway", "Drammen, Norway", "Fredrikstad, Norway",
-    "Kristiansand, Norway", "Sandnes, Norway", "Tromsø, Norway",
+    "Kristiansand, Norway", "Sandnes, Norway", "Tromso, Norway",
     "Sarpsborg, Norway", "Berlin, Germany", "Beijing, China",
     "Boston, USA", "Ottawa, Canada", "Paris, France", "Prague, Czech Republic",
     "Perth, Australia", "Porto, Portugal", "Pune, India", "Quito, Ecuador",
@@ -120,6 +118,8 @@ fun SearchLocationDialog(
     var address by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("") }
     var country by remember { mutableStateOf("") }
+    var isCountryEmpty by remember { mutableStateOf(false) }
+    var isCityEmpty by remember { mutableStateOf(false) }
 
 
     Dialog(onDismissRequest = onDismiss) {
@@ -209,20 +209,41 @@ fun SearchLocationDialog(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-
-
                         TextField(
                             value = country,
-                            onValueChange = { country = it },
+                            onValueChange = {
+                                country = it
+                                isCountryEmpty = false
+                            },
                             label = { Text("Country", fontSize = 14.sp) },
                         )
+
+                        if (isCountryEmpty) {
+                            Text(
+                                text = "Country cannot be empty",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
+
                         Spacer(modifier = Modifier.height(10.dp))
 
                         TextField(
                             value = city,
-                            onValueChange = { city = it },
+                            onValueChange = {
+                                city = it
+                                isCityEmpty = false
+                            },
                             label = { Text("City", fontSize = 14.sp) },
                         )
+
+                        if (isCityEmpty) {
+                            Text(
+                                text = "City cannot be empty",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                         Spacer(modifier = Modifier.height(10.dp))
 
                         TextField(
@@ -250,7 +271,20 @@ fun SearchLocationDialog(
                             }
 
                             Button(
-                                onClick = { onSearch("$address, $city, $country") }
+                                onClick = {
+                                    if (country.isEmpty() || city.isEmpty()) {
+
+                                        isCountryEmpty = country.isEmpty()
+                                        isCityEmpty = city.isEmpty()
+                                    } else {
+
+                                        isCountryEmpty = false
+                                        isCityEmpty = false
+
+                                        onSearch("$address, $city, $country")
+                                    }
+
+                                }
                                 ) {
                                 Text(text = "Search")
                                 Spacer(modifier = Modifier.width(5.dp))

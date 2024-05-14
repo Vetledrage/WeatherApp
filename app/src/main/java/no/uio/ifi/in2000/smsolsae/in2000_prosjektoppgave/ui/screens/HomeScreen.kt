@@ -180,7 +180,11 @@ fun HomeScreen(
 
                                             if (errorMessage == null){
                                                 viewModel.getCoordinates(city = loc)
-                                                viewModel.setLocationName(loc.split(",")[0])
+                                                if (query.split(",")[0].isEmpty()){
+                                                    viewModel.setLocationName(loc.split(",")[1])
+                                                }else{
+                                                    viewModel.setLocationName(loc.split(",")[0])
+                                                }
                                                 showSearchBox = false
                                             }
                                         }
