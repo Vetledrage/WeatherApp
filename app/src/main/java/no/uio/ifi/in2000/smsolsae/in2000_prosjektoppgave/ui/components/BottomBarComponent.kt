@@ -72,7 +72,7 @@ fun BottomBar(navController: NavController){
         route = Screen.Settings.route
     )
 
-    val tabBarItems = listOf(homeTab, alertsTab, settingsTab, infoTab)
+    val tabBarItems = listOf(homeTab, alertsTab, infoTab, settingsTab)
 
 
     TabView(barItems = tabBarItems, navController = navController)
