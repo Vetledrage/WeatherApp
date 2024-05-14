@@ -336,7 +336,7 @@ fun HomeScreen(
 
                                     WeatherScrollableRow(context, hourlyWeatherData = hourlyWeatherData)
 
-                                    Spacer(modifier = Modifier.height(30.dp))
+                                    Spacer(modifier = Modifier.height(2.dp))
 
                                     CustomBox(
                                         context = context
