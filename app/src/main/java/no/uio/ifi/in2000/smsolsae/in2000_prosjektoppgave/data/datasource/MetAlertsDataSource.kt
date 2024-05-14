@@ -10,6 +10,13 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.gson.gson
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.Build
 
+
+/**
+ * Data source for the MetAlerts API.
+ *
+ * @param baseUrl The base url for the MetAlerts API
+ *
+ */
 class MetAlertsDataSource(val baseUrl: String) {
     private val client = HttpClient{
         install(ContentNegotiation){
@@ -17,6 +24,12 @@ class MetAlertsDataSource(val baseUrl: String) {
         }
     }
 
+    /**
+     * Makes a proxy call to the specified URL.
+     *
+     * @param url The URL that we make the GET request to.
+     * @return The HTTP response from the GET request.
+     */
     private suspend fun proxyCall(url: String) : HttpResponse{
         return client.get(url){
             headers{
@@ -27,6 +40,11 @@ class MetAlertsDataSource(val baseUrl: String) {
         }
     }
 
+    /**
+     * Fetches the MetAlerts data.
+     *
+     * @return A [Build] object which contains the MetAlerts data.
+     */
     suspend fun fetchMetAlerts() : Build {
         Log.d("FETCHING METALERTS", "Fetcher METALERTS data nå ")
         return proxyCall("$baseUrl/metalerts/2.0/current.json?&lang=en").body()
