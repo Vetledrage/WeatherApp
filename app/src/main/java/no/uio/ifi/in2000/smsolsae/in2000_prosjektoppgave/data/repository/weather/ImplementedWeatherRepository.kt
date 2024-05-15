@@ -12,7 +12,8 @@ import java.util.Locale
 
 
 /**
- * Repository for weather data (More information to be added)
+ * Repository for weather data.
+ * This class implements the WeatherRepository interface and provides methods to fetch and process weather data.
  */
 class ImplementedWeatherRepository : WeatherRepository {
     private val datasource = WeatherDataSource(baseUrl = "https://gw-uio.intark.uh-it.no/in2000/weatherapi")
@@ -20,6 +21,11 @@ class ImplementedWeatherRepository : WeatherRepository {
 
     //Private function to get the Timeseries for only the next 7 days, and to remove the hourly data from each date.
     //Easier to work with like this.
+    /**
+     * Filters the input timeseries list to include only one data point per day (at 12:00 PM) for the next 7 days.
+     * @param timeseriesList List of timeseries data to be filtered.
+     * @return A list of timeseries data filtered to include only one data point per day for the next 7 days.
+     */
     private fun getNext7DaysTimeseries(timeseriesList: List<Timeseries>): List<Timeseries> {
 
         val currentDate = Calendar.getInstance()
@@ -52,10 +58,15 @@ class ImplementedWeatherRepository : WeatherRepository {
         return next7DaysTimeseries
     }
 
-
+    /**
+     * Fetches the weather information for a specific location.
+     * @param latitude Latitude of the location.
+     * @param longitude Longitude of the location.
+     * @param altitude Altitude of the location. (This variable is ooptional).
+     * @return WeatherLocationInfo object containing detailed weather information for the location.
+     */
     override suspend fun getLocationWeather(latitude: String, longitude: String, altitude: String?): WeatherLocationInfo {
         val locationForecast = datasource.fetchLocationForecastData(latitude, longitude, altitude)
-
 
         //Todays weather information
         val temp = locationForecast.properties.timeseries[0].data.instant.details.air_temperature.toInt()
@@ -65,7 +76,7 @@ class ImplementedWeatherRepository : WeatherRepository {
         val rain = locationForecast.properties.timeseries[0].data.next_1_hours.details.precipitation_amount
         val uvIndex = locationForecast.properties.timeseries[0].data.instant.details.ultraviolet_index_clear_sky
 
-
+        //Weather information for the next 12 hours
         val tempNext12h = mutableListOf<TemperatureNext12Hours>()
         for (i in 0 until 12){
             val nextTemp = locationForecast.properties.timeseries[i].data.instant.details.air_temperature.toInt()
@@ -75,6 +86,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             tempNext12h.add(TemperatureNext12Hours(timeFormatted,nextTemp,iconId))
         }
 
+        //Weather information for the next 7 days
         val weekList = getNext7DaysTimeseries(locationForecast.properties.timeseries)
 
         val tempNext7Days = mutableListOf<TemperatureNext7Days>()
@@ -85,7 +97,7 @@ class ImplementedWeatherRepository : WeatherRepository {
             tempNext7Days.add(TemperatureNext7Days(time, nextTemp, symbolCodeWeather))
         }
 
-
+        //Return the weather information for the location
         return WeatherLocationInfo(
             temperature = temp,
             windSpeed = windspeed,
