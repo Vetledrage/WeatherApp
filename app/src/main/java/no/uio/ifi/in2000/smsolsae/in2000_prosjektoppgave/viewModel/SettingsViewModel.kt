@@ -4,10 +4,22 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * ViewModel for managing settings state.
+ */
 class SettingsViewModel : ViewModel() {
+    // Backing property for the settings state using MutableStateFlow
     private val _settingsState = MutableStateFlow(SettingsState())
+
+    /**
+     * Publicly exposed StateFlow for observing the settings state.
+     */
     val settingsState: StateFlow<SettingsState> = _settingsState
 
+    /**
+     * Toggles the setting based on the provided settingId.
+     * @param settingId The ID of the setting to be toggled.
+     */
     fun toggleSetting(settingId: String) {
         _settingsState.value = when (settingId) {
             "dark_mode" -> _settingsState.value.copy(darkModeEnabled = !_settingsState.value.darkModeEnabled)
@@ -24,7 +36,13 @@ class SettingsViewModel : ViewModel() {
 
 }
 
-
+/**
+ * Data class representing the state of settings.
+ * @property darkModeEnabled Indicates if dark mode is enabled.
+ * @property notificationsEnabled Indicates if notifications are enabled.
+ * @property biggerFontSize Indicates if the bigger font size is enabled.
+ * @property textToSpeach Indicates if text-to-speech is enabled.
+ */
 data class SettingsState(
     val darkModeEnabled: Boolean = false,
     val notificationsEnabled: Boolean = false,

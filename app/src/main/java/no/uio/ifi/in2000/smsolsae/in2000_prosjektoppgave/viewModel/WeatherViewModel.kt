@@ -27,50 +27,61 @@ import java.io.IOException
 import java.util.Locale
 
 /**
- * Weather view model. This class fetches weather data based on the user's location. It extends the ViewModel class. (More information to be added)
- *
- *
+ * Weather view model. This class fetches weather data based on the user's location. It extends the ViewModel class.
  */
 class WeatherViewModel : ViewModel() {
     private val repository: WeatherRepository = ImplementedWeatherRepository()
     private val metRepository : AlertsRepository = ImplementedAlertsRepository()
     private val mapRepository: MapBoxRepository = ImplementedMapBoxRepository()
 
+    //Mutable state flow to manage the UI state
     private val _appUiState: MutableStateFlow<AppUiState> = MutableStateFlow(AppUiState.Loading)
+    //State flow to expose the UI state
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
 
-
+    //Mutable state flow to manage the location name
     private val _locationName = MutableStateFlow("Oslo")
+    //State flow to expose the location name
     val locationName: StateFlow<String> = _locationName.asStateFlow()
 
+    //Mutable state flow to manage the coordinates state
     private val _coordinatesState = MutableStateFlow<Pair<Double, Double>?>(null)
+    //State flow to expose the coordinates state
     val coordinatesState: StateFlow<Pair<Double, Double>?> = _coordinatesState.asStateFlow()
 
+    //Mutable state flow to manage error messages
     private val _errorMessage = MutableStateFlow<String?>(null)
+    //State flow to expose error messages
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
     /**
-     * Updates the ui state with new weather info (more information to be added)
-     * @param lat latitude
-     * @param long longitude
-     * @param altitude altitude
+     * Updates the UI state with new weather info.
+     * @param lat Latitude of the location.
+     * @param long Longitude of the location.
+     * @param altitude Altitude of the location (optional).
      */
     fun getWeatherInfo(lat: String, long: String, altitude: String? = null){
         viewModelScope.launch {
             try {
+                //Update UI state to loading
                 _appUiState.update {
                     AppUiState.Loading
                 }
+                //Fetch weather information asynchronously
                 val locationDeferred = viewModelScope.async (Dispatchers.IO) {
                     repository.getLocationWeather(latitude = lat, longitude = long, altitude = altitude)
                 }
                 val locationP = locationDeferred.await()
 
+
+
+                //Fetch alerts information asynchronously
                 val alertsDeffered = viewModelScope.async(Dispatchers.IO) {
                     metRepository.getAlertsInfo()
                 }
                 val alerts = alertsDeffered.await()
 
+                //Update UI state to success with weather and alerts information
                 _appUiState.update {
                     AppUiState.Success(
                         weather = locationP,
@@ -78,6 +89,7 @@ class WeatherViewModel : ViewModel() {
                     )
                 }
             } catch (e: IOException){
+                //Update UI state to error in case of an exception
                 _appUiState.update {
                     AppUiState.Error
                 }
@@ -85,37 +97,49 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Resets the error message to null.
+     */
     fun setErrorMesageNull(){
         _errorMessage.value = null
     }
 
-
+    /**
+     * Fetches coordinates for a given city and updates the state.
+     * @param city The name of the city to get coordinates for.
+     */
     fun getCoordinates(city: String){
         viewModelScope.launch(Dispatchers.IO) {
+            //Fetch coordinates for the given city
             val result = mapRepository.getCoordinatesForAddress(city)
 
             if (result != null){
                 setErrorMesageNull()
                 _coordinatesState.value = Pair(result.second, result.first)
+                //Update weather information based on the new coordinates
                 updateWeatherInfo(result.second.toString(),  result.first.toString())
             } else{
+                //Set error message if coordinates could not be fetched
                 _errorMessage.value = "Oops! Cannot get data for this location "
             }
         }
     }
 
     /**
-     * Updates already existing UI state.
-     * @param lat latitude
-     * @param long longitude
-     * @param altitude altitude
+     * Updates the existing UI state with new weather info.
+     * @param lat Latitude of the location.
+     * @param long Longitude of the location.
+     * @param altitude Altitude of the location (optional).
      */
     fun updateWeatherInfo(lat: String, long: String, altitude: String? = null){
         getWeatherInfo(lat, long, altitude)
     }
 
-
-
+    /**
+     * Checks if the app has location permission.
+     * @param context Context of the application.
+     * @return True if location permission is granted, false otherwise.
+     */
     fun hasLocationPermission(context: Context): Boolean {
         return ContextCompat.checkSelfPermission(
             context,
@@ -124,8 +148,8 @@ class WeatherViewModel : ViewModel() {
     }
 
     /**
-     * Get current location from user and updates the location in the app.
-     * @param context Context
+     * Gets the user's current location and updates the location in the app.
+     * @param context Context of the application.
      */
     @SuppressLint("MissingPermission")
     fun getCurrentLocation(context: Context) {
@@ -139,6 +163,7 @@ class WeatherViewModel : ViewModel() {
                     val long = location.longitude
                     println("$lat, $long")
 
+                    //Update weather and location name based on the current location
                     updateWeatherInfo(lat.toString(), long.toString())
                     updateLocationName(context, lat, long)
                 }else {
@@ -154,10 +179,18 @@ class WeatherViewModel : ViewModel() {
             }
     }
 
+    /**
+     * Updates the location name based on the provided latitude and longitude.
+     * @param context Context of the application.
+     * @param latitude Latitude of the location.
+     * @param longitude Longitude of the location.
+     */
     @Suppress("DEPRECATION")
     private fun updateLocationName(context: Context, latitude: Double, longitude: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+
+                //Use Geocoder to get thr location name from coordinates
                 val geocoder = Geocoder(context, Locale.getDefault())
                 val addresses = geocoder.getFromLocation(latitude, longitude, 1)
                 if (addresses!!.isNotEmpty()) {
@@ -173,14 +206,19 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Fetches the latest alerts information and updates the UI state.
+     */
     fun updateAlerts(){
         viewModelScope.launch {
             try {
+                //Fetch alerts information asynchronously
                 val alertsDeferred = viewModelScope.async(Dispatchers.IO) {
                     metRepository.getAlertsInfo()
                 }
                 val alerts = alertsDeferred.await()
 
+                //Update UI state with new alerts information
                 _appUiState.update { currentState ->
                     when (currentState) {
                         is AppUiState.Success -> currentState.copy(alerts = alerts)
@@ -188,11 +226,16 @@ class WeatherViewModel : ViewModel() {
                     }
                 }
             } catch (e: IOException) {
+                //Update UI state to error in case of an exception
                 _appUiState.update { AppUiState.Error }
             }
         }
     }
 
+    /**
+     * Sets the location name.
+     * @param newLocation The new location name to be set.
+     */
     fun setLocationName(newLocation: String){
         _locationName.value = newLocation
     }
