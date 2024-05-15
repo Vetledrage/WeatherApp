@@ -34,5 +34,5 @@
 #### Thanks to all developers of team41!
 
 # Contact us!
-#### We can be reavhed through our respective UIO emails, which should be available for the examiners. 
+#### We can be reached through our respective UIO emails, which should be available for the examiners. 
 
