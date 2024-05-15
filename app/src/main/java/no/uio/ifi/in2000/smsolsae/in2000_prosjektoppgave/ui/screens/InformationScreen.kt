@@ -28,8 +28,13 @@ import androidx.navigation.NavController
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.BottomBar
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.Header
 
+/**
+ * Composable function to display the Information screen.
+ * @param navController Controller to handle navigation actions.
+ */
 @Composable
 fun InformationScreen(navController: NavController){
+    //List of information terms and their descriptions
     val informationList = listOf(
         "Humidity" to "Humidity refers to how much moisture or water vapor is in the air. When humidity is high, the air feels damp or sticky. When it's low, the air feels dry.",
         "Temperature" to "Temperature measures how hot or cold something is. It's what you feel when you step outside. A high temperature means it's hot, while a low temperature means it's cold.",
@@ -42,10 +47,12 @@ fun InformationScreen(navController: NavController){
         "UV radiation" to "UV radiation is a type of sunlight that we can't see. It can be good for us because it helps our bodies make vitamin D, but too much can hurt our skin and eyes. We need to protect ourselves by wearing sunscreen, hats, and sunglasses when we're outside in the sun. That way, we stay safe and healthy!"
     )
 
+    //State to keep track of the expanded index
     var expandedIndex by remember { mutableIntStateOf(-1) }
 
     Scaffold(
         bottomBar = {
+            //Bottom bar with navigation controls
             BottomBar(navController)
         }
     ) { paddingValues ->
@@ -55,6 +62,7 @@ fun InformationScreen(navController: NavController){
                 .padding(paddingValues)
 
         ) {
+            //Header of the Information screen
             Header(label = "Information", icon = Icons.Default.Info)
 
             LazyColumn {
