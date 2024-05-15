@@ -24,23 +24,25 @@ class ImplementedWeatherRepository : WeatherRepository {
 
         val currentDate = Calendar.getInstance()
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
 
         val next7DaysDate = Calendar.getInstance()
         next7DaysDate.add(Calendar.DAY_OF_YEAR, 8)
 
-
         val next7DaysTimeseries = mutableListOf<Timeseries>()
 
-
+        //Iterate trough the Timeseries
         for (timeseries in timeseriesList) {
 
+            //Convert the time from timeseries to a Calendar object
             val time = Calendar.getInstance().apply {
                 timeInMillis = dateFormat.parse(timeseries.time)?.time ?: 0
             }
 
-            if (time.after(currentDate) && time.before(next7DaysDate)) {
+            //Check if the times are next 7 days and that the time of the day is 12:00
+            if (time.after(currentDate) && time.before(next7DaysDate) && time.get(Calendar.HOUR_OF_DAY) == 12) {
 
+                //Add the time to the timeseries list if not already added
                 if (!next7DaysTimeseries.any { it.time.substring(0, 10) == timeseries.time.substring(0, 10) }) {
                     next7DaysTimeseries.add(timeseries)
                 }
