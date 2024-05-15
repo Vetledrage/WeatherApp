@@ -25,8 +25,8 @@ In our App we are using a viewmodel to handle data. A ViewModel is a livedata cl
 ### Object-Orientated
 In our code we are using Data classes to create objects to save and use the data from the APIs. This is created in the DataSource, collected in the This way obejct oriented principples are used on a good level to create a good fucntioning code
 
-### Low Coupling
-Our system is made up of components which are independent. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system.
+### Low Coupling and high Cohesion
+Our system is made up of components which are independent. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system as well as high cohesion where every single component does a specified task. In the UI screen the components are called. This is a good system that makes sure that the main file does not get messy and testing each component becomes easy. If one component fails only that fails and not the enitre code.
  ```mermaid
 flowchart TD
     C[DataRespository] --> D[ViewModel]
@@ -37,8 +37,6 @@ flowchart TD
     A --> H
     B --> H
 ```
-   
-### High Cohesion
 
 ### API-level
 We choose to use API-level 34. This was due to us wanting a App that was as new and modern as possible. There is however more modern levels, but API 34 was something we were comfortable on. We all have worked on level 34 in the Mandatory Tasks earlier in the semester, therefore 34 was a good level that was both modern, but also something we knew and had worked with.
