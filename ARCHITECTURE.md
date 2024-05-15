@@ -1,14 +1,3 @@
-Beskriver arkitekturen som er benyttet i appen.
-
-Beskrivelse av hvordan viktige objektorienterte prinsipper som
-lav kobling og høy kohesjon samt design patterns som MVVM
-og UDF er ivaretatt i løsningen burde også være med.
-
-Beskriv løsningen beregnet på lesere som skal jobbe med drift,
-vedlikehold og videreutvikling av løsningen. Beskriv hvilke
-teknologier og arkitektur som brukes i løsningen. Beskriv hvilket
-API-nivå (Android versjon) dere har valgt, og hvorfor.
-
 
 # ARCHITECTURE.MD Weather Pawcast
 ### ARCHITECTURE.md is a file where information about the architecture, build and methods in the project/code. There will also be information about the object-oriantated principples, API-level chosen and how other developers can further develop and use the code.
@@ -36,7 +25,21 @@ In our App we are using a viewmodel to handle data. A ViewModel is a livedata cl
 ### Object-Orientated
 In our code we are using Data classes to create objects to save and use the data from the APIs. This is created in the DataSource, collected in the This way obejct oriented principples are used on a good level to create a good fucntioning code
 
+### Low Coupling
+Our system is made up of components which are independent. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system.
+ ```mermaid
+flowchart TD
+    C[DataRespository] --> D[ViewModel]
+    D --> G[Component 1]
+    D --> A[Component 2]
+    D --> B[Component 3]
+    G --> H[UI Screen]
+    A --> H
+    B --> H
+```
+   
+### High Cohesion
+
 ### API-level
 We choose to use API-level 34. This was due to us wanting a App that was as new and modern as possible. There is however more modern levels, but API 34 was something we were comfortable on. We all have worked on level 34 in the Mandatory Tasks earlier in the semester, therefore 34 was a good level that was both modern, but also something we knew and had worked with.
 
-### Further development
