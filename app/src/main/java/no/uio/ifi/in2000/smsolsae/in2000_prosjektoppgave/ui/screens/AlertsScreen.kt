@@ -113,15 +113,13 @@ fun AlertsScreen(navController: NavController, viewModel: WeatherViewModel = vie
                             }
                         }else{
                             NoDataComponent(
-                                text = "No alerts near this location",
+                                text = "There are no alerts for now",
                                 onRetry = {
                                     viewModel.updateAlerts()
-                                //Update the alerts after clicking on button. Later change this to other locations if you want
                                 }
                             )
                         }
                     }
-
                 }
             }
         }
