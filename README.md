@@ -20,7 +20,7 @@
 #### You can download the App via this GitHub project page.
 
 # Running the App
-#### We have used Android Studio Iguana to implement and run the App. When downloading the code, make sure it is ran using this program. 
+#### We have used the Android Studio IDE to implement and run the App. When downloading the code, make sure it is ran using this program. 
 #### https://developer.android.com/studio/releases
 #### No other installations should be necessary. Make sure gradle sync is up to date. 
 
@@ -28,7 +28,7 @@
 #### If you run the code and change internet after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internet (Not rerun, but cancel then run),will fix this problem.
 
 # Libraries used
-#### Most of the code is implemented using Kotlin and Jetpack Compose, and was developed in the AndroidStudio IDE. We are also using kotlinx for the livedata features. 
+#### Most of the code is implemented using Kotlin and Jetpack Compose. We have also used kotlinx for the livedata features. 
 
 ####
 Ktor: A framework for building asynchronous servers and clients in connected systems. This project utilizes ktor-client-core, ktor-client-cio, ktor-serialization-gson, and ktor-client-content-negotiation for network requests and JSON serialization. Version: 2.3.9
