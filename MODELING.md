@@ -183,7 +183,7 @@ Scenario for the Change Location Function +  Show WeatherAlerts Diagram
     - If there are issues during the data fetching process (e.g., API failures, no internet connection), the ViewModel displays an error message to the user.
     - The user has the option to retry fetching the data, which triggers the ViewModel to restart the data fetching process.
  
-This scenario illustrates the flow of user interactions from launching the application to retrieving and displaying weather data and alerts. We choose to showcase more than one usecases in this sequensediagram. Change Location and show weatherscreen. This is since we are trying to represent the relevant main functions that has generally alot of implications and extends features.
+In this scenario we attempt to illustrate the flow of user interactions from launching the application to retrieving and displaying weather data and alerts. We choose to showcase more than one usecases in this sequensediagram. Change Location and show weatherscreen. This is since we are trying to represent the relevant main functions that have generally have alot of implications and extends features.
 ```mermaid
 
     sequenceDiagram
@@ -418,12 +418,12 @@ classDiagram
 ###  Description of Class Diagram with Multiplicity
 
 **Multiplicity Indicators**
-Indicate the nature of relationships between classes, such as "1" --> "1" for direct one-to-one relationships, "*" --> "*" for man-to-many relationships, and "1" --> "*" for one-to-many relationships, which is particularly important for components handling multiple instances of data or features.
+We have used multiplicity indicators to show the relationships between classes, such as "1" --> "1" for direct one-to-one relationships, "*" --> "*" for man-to-many relationships, and "1" --> "*" for one-to-many relationships, which is particularly important for components handling multiple instances of data or features.
 
 **Components and Their Relationships:**
 
 1. **HomeScreen and WeatherScreen**:
-   - The `HomeScreen` directly interacts with the `WeatherScreen`, showing a one-to-one relationship (`"1" --> "1"`), where the `HomeScreen` controls the display of weather data through the `WeatherScreen`.
+   - The `HomeScreen` directly interacts with the `WeatherScreen`, having a one-to-one relationship (`"1" --> "1"`), where the `HomeScreen` controls the display of weather data through the `WeatherScreen`.
 
 2. **AlertScreen**:
    - Connects one-to-one (`"1" --> "1"`) with the `WeatherViewModel` to fetch and display alerts. This relationship indicates that each `AlertScreen` relies entirely on a single instance of `WeatherViewModel` for its data.
@@ -432,7 +432,7 @@ Indicate the nature of relationships between classes, such as "1" --> "1" for di
    - Also shows a one-to-one (`"1" --> "1"`) connection, suggesting that each `WeatherScreen` is paired with a single `WeatherViewModel` to manage and display weather information.
 
 4. **WeatherViewModel**:
-   - Acts as a central node connecting various repositories and utilities. It has one-to-one (`"1" --> "1"`) relationships with `ImplementedWeatherRepository`, `MetAlertsRepository`, `LocationForecastRepositoryImpl`, and `UIComponents`, orchestrating data flow and UI updates.
+   - Acts as a central node connecting various repositories and utilities. It has one-to-one (`"1" --> "1"`) relationships with `ImplementedWeatherRepository`, `MetAlertsRepository`, `LocationForecastRepositoryImpl`, and `UIComponents`, managing data flow and UI updates.
 
 5. **Repositories and DataSources**:
    - Both `LocationForecastRepositoryImpl` and `MetAlertsRepository` maintain one-to-one (`"1" --> "1"`) relationships with their respective data sources, `LocationForecastDataSource` and `MetAlertsDataSource`, to fetch data from external APIs using `HttpClient`.
