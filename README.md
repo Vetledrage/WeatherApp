@@ -14,7 +14,20 @@
 #### Key features in the app showcase the newest weather information and danger alerts using a bear-inspired design. Where users can check the weather at their current location, or choose another specified location.
 
 # Documentation
-#### This project also contains the markdown files ARCHITECTURE.md and MODELING.md, and further documentation about the project is detailed in the project report.
+#### This project also contains the markdown files ARCHITECTURE.md and MODELING.md, and further documentation about the project is detailed in the project report. We have also included documentation for our code, which can be found under app/documentation. To generate the documentation for the code yourself, we've provided a short guide:
+#### Here is a concise guide on how to generate documentation for our project in kdoc. We utilize the Dokka library for this purpose, which is already included as a dependency in our project, so there is no need for you to add it manually.
+
+### Prequisites: 
+#### Ensure that you have the JDK installed. The JDK is required to generate the documentation. If you do not have it installed, you can download it from this site: https://www.oracle.com/java/technologies/downloads/
+
+### Steps to generate documentation:
+#### 1) Open Android Studio
+#### 2) Access the terminal in Android Studio
+#### 3) To generate the documentation in the HTML-format: type the following command: ./gradlew dokkaHtml
+#### OR: If you prefer to generate documentation in Markdown format, enter: ./gradlew dokkaGfm
+
+#### This will initiate the process to generate the documentation. The generated documentation can be found locally in the app/build/documentation directory.
+#### For more detailed information, please visit the official Dokka documentation: https://kotlinlang.org/docs/dokka-gradle.html#apply-dokka
 
 # Installations
 #### You can download the App via this GitHub project page.
