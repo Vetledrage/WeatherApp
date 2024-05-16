@@ -68,7 +68,7 @@
 
 ### FlowChart: Graphical representaion of actionflow in certain use cases
 
-The flowchart outlines the sequence of operations and decision points for a weather application that handles various user scenarios, including location permissions, internet connectivity, and user-driven actions like changing location and viewing weather alerts. Here are the steps:
+The flowchart outlines the sequence of operations and decision points for our weather application. We attempt to illustrate various user scenarios (at least those we think are the most important), including location permissions, internet connectivity, and user-driven actions like changing location and viewing weather alerts. Please note that we have not attempted to strictly follow an activity diagram format, since this is not an activity diagram, but rather a custom flowchart that we have used to aid us in illustrating normal usage of the application. Here are the steps we have attempted to illustrate in our flowchart:
 
 1. **Start App**: The application initiates when the user opens it.
    
@@ -103,7 +103,7 @@ The flowchart outlines the sequence of operations and decision points for a weat
    - **Location Change**: If there's an error during the location change (e.g., the city searched by the user doesn't exist), the error is handled by showing a popup error message indicating that the location is not found, please try again, and will be sent back to the search section.
 
 
-The flowchart comprehensively illustrates the operational flow of a weather application, highlighting how it manages data retrieval, user inputs, and system errors to ensure a seamless user experience.
+In the flowchart will attempt to illustrates the operational flow of our weather application: how it manages the data retrieval, user inputs, and eventual system errors that could emerge.
 
 ```mermaid
 flowchart TD
@@ -451,17 +451,5 @@ Indicate the nature of relationships between classes, such as "1" --> "1" for di
    - `UIComponents` utilizes `MapModel` in a one-to-many relationship (`"1" --> "*"`) to display various geographical data, which aggregates multiple `MapFeatures`, further containing multiple `MapGeometry`.
    - `PropertiesAlert` links to multiple `Resources` (`"1" --> "*"`) indicating multiple resources are associated with a single alert property for external data links.
 
-In the class diagram and corresponding discussion, we specifically focused on core functionalities of the weather application such as data retrieval, display, and alert management, intentionally omitting details about the Settings and Information screens. This selective focus is aimed at clarifying and emphasizing the system's critical operational pathways, ensuring a straightforward understanding of essential processes.
+#### We have chosen not to describe the Settings and Information screen in detail here because they are more isolated classes. They do not directly interact with important parts of the application. 
 
-### Reasons for not Omitting Settings and Information Screen Details:
-
-1. **Simplification for Clarity**:
-   - Including peripheral screens like Settings and Information could complicate the diagram, detracting from the clear depiction of core processes involved in weather data handling.
-
-2. **Relevance to Core Functionalities**:
-   - Settings and Information screens do not directly interact with key data handling mechanisms. Their functionalities, often static and configurational, are less impactful on the system's primary operations—weather reporting and alerting.
-
-3. **Focus on System Dynamics**:
-   - The diagram emphasizes dynamic aspects such as data flow, component dependencies, and interactions, which are critical for understanding the system's operational efficiency and for facilitating enhancements.
-
-This approach reflects to show specific parts of the system without the complexity of its entirety.
