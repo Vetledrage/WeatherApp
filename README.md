@@ -1,3 +1,4 @@
+Younas Hameed
 # Team-41
 * Said Magomed Aptievitsj Solsaev
 * Vetle Drage
@@ -11,33 +12,39 @@
 
 #### Weather PawCast is a weather app made to inform a younger audience about weather and danger alerts. Using child friendly designs and fun features we hope to attract users in the age range 9 to 25.
 
-#### Key features in the app are API calls getting the newest weather info and dageralerts and presenting it. Getting the location of user, but also making it possible for user to choose a specific location.
+#### Key features in the app are API calls getting the newest weather info and dangeralerts and presenting it. Getting the location of user, but also making it possible for user to choose a specific location.
+
+# Documentation
+#### This project also contains the markdown files Architecture.md and MODELING.md, and further documentation
+#### about the project is detailed in the project-report handed in.
 
 # Installations
 #### You can download the App via this GitHub project page or via devilry at UIO.
 
 # Running the App
-#### We have used Android Studio Iguana to implement and run the App. When dowloading the code, make sure it is ran using this program. 
+#### We have used Android Studio Iguana to implement and run the App. When downloading the code, make sure it is ran using this program. 
 #### https://developer.android.com/studio/releases
-#### No other installations should be neccesary. Make sure gradle sync is up to date. 
+#### No other installations should be necessary. Make sure gradle sync is up to date. 
 
-# Usage 
 #### If the code is downloaded and gradle is synced, you can run the App in Android Studio. Make sure that you are connected to Wi-Fi. 
-#### If you run the code and change internett after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internett (Not rerun, but cancel then run),will fix this problem.
+#### If you run the code and change internet after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internet (Not rerun, but cancel then run),will fix this problem.
 
 # Libraries used
+<<<<<<< HEAD
+#### Most of the code is very basic code implemented using Kotlin and Jetpack Compose. We are also using kotlinx for the livedata features. Java and kotlin utils is also great libraries that give us access useful functions.
+=======
 ####
 Ktor: A framework for building asynchronous servers and clients in connected systems. This project utilizes ktor-client-core, ktor-client-cio, ktor-serialization-gson, and ktor-client-content-negotiation for network requests and JSON serialization. Version: 2.3.9
 
 Modules Used:
 
-  •	ktor-client-core: Core module for Ktor client.
+  • ktor-client-core: Core module for Ktor client.
 
-  •	ktor-client-cio: HTTP client engine based on CIO.
+  • ktor-client-cio: HTTP client engine based on CIO.
   
-  •	ktor-serialization-gson: Serialization support using Gson.
+  • ktor-serialization-gson: Serialization support using Gson.
   
-  •	ktor-client-content-negotiation: Support for content negotiation.
+  • ktor-client-content-negotiation: Support for content negotiation.
 
 AndroidX Core KTX: Provides Kotlin extensions for common framework APIs, making Android development more concise and idiomatic. Version: 1.13.0
 
@@ -68,9 +75,8 @@ Dokka: A documentation engine for Kotlin, used to generate documentation in HTML
 
 # Acknowledgements
 #### Thanks to Metrologisk institutt https://www.met.no for providing the APIs used to access weatherdata. 
-#### Thanks to UIO https://www.uio.no for giving us the oppertunity to work and experiment with these APIs, as well as providing us with help and guidance. 
+#### Thanks to UIO https://www.uio.no for giving us the opportunity to work and experiment with these APIs, as well as providing us with help and guidance. 
 #### Thanks to all developers of team41!
 
 # Contact us!
 #### We can be reached through our respective UIO emails, which should be available for the examiners. 
-
