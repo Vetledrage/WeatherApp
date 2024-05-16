@@ -18,10 +18,13 @@
 4. The system uses the GeoLocation API to convert the location name to geographical coordinates.
 5. The system confirms the location change and displays weather information for the new location.
 
-**Alternative Flow:**
-2.1 If the location entered by the user does not exist, the system informs the user that the location could not be found and takes them back to the mainscreen (WeatherScreen).
+**Alternative Flow: Back to Homescreen** 
+2.1 If the location entered by the user does not exist, the system informs the user that the location could not be found and takes them back to the Homescreen (WeatherScreen).
+2.2 if the user denies to share user location, the system will automaticly go to Homescreen where Oslo is the standard location. 
 
-![UsecaseScenarioLocation](https://media.github.uio.no/user/8084/files/16fa640f-a564-4be8-8a51-8fcf1500ec4f)
+![image](https://media.github.uio.no/user/8084/files/0cfbb0fb-4e2b-4415-9257-ccfcff1cd6c8)
+
+
 
 
 ### 2. Textual Description of Use Case: Look for Alerts in a Specific Location
@@ -118,15 +121,17 @@ flowchart TD
     J -->|Search city| L[Manual Search]
     K --> M[Navigate To Weather Alerts]
     L --> K
-    M --> O[Weather Alerts Screen]
+    M --> O[Weather Alerts Scren]
     
     O --> P[Display Weather Alerts]
     H -.-> Q[Error Handling in Weather Fetch]
     O -.-> R[Alerts Empty Handling]
     L -.-> S[Error Handling in Location Change]
-    S -.-> I
+    S -.-> J
 
  
+
+  
 
   
 ```
@@ -178,9 +183,10 @@ Scenario for the Change Location Function +  Show WeatherAlerts Diagram
     - If there are issues during the data fetching process (e.g., API failures, no internet connection), the ViewModel displays an error message to the user.
     - The user has the option to retry fetching the data, which triggers the ViewModel to restart the data fetching process.
  
-This scenario illustrates the flow of user interactions from launching the application to retrieving and displaying weather data and alerts. 
+This scenario illustrates the flow of user interactions from launching the application to retrieving and displaying weather data and alerts. We choose to showcase more than one usecases in this sequensediagram. Change Location and show weatherscreen. This is since we are trying to represent the relevant main functions that has generally alot of implications and extends features.
 ```mermaid
-sequenceDiagram
+
+    sequenceDiagram
     participant U as User
     participant VM as ViewModel
     participant H as LocationProvider
@@ -208,6 +214,7 @@ sequenceDiagram
         VM ->> DS: Request Weather Alerts
         DS->>MA: Fetch Weather Alerts
         MA-->>VM: Return Alerts Data
+        VM->>U: Display Weather Information
         
     alt Location Search
         U->>VM: Search Location
@@ -223,7 +230,7 @@ sequenceDiagram
     alt Show WeatherAlerts
     U ->> VM: User goes to Alertscreen
    
-    MA-->>VM: Return Alerts Data
+    VM->>VM:  Get Alerts Data if any(Already been fetched)
     VM->>U: Display Alerts
     end
 
@@ -246,12 +253,7 @@ sequenceDiagram
         U->>VM: Retry
 
     end
-    alt Error 
-        U->>VM: no Internett connection
-        VM-->>U: Display error Message ask to try again
-        U->>VM: Retry
-
-    end
+    
 
 ```
 ### Class Diagram
