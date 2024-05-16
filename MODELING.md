@@ -183,7 +183,7 @@ Scenario for the Change Location Function +  Show WeatherAlerts Diagram
     - If there are issues during the data fetching process (e.g., API failures, no internet connection), the ViewModel displays an error message to the user.
     - The user has the option to retry fetching the data, which triggers the ViewModel to restart the data fetching process.
  
-This scenario illustrates the flow of user interactions from launching the application to retrieving and displaying weather data and alerts. 
+This scenario illustrates the flow of user interactions from launching the application to retrieving and displaying weather data and alerts. We choose to showcase more than one usecases in this sequensediagram. Change Location and show weatherscreen. This is since we are trying to represent the relevant main functions that has generally alot of implications and extends features.
 ```mermaid
 
     sequenceDiagram
