@@ -1,13 +1,13 @@
 
 # ARCHITECTURE.MD Weather Pawcast
-### ARCHITECTURE.md is a file where information about the architecture, build and methods in the project/code. There will also be information about the object-oriantated principples, API-level chosen and how other developers can further develop and use the code.
+### ARCHITECTURE.md is a file containing information about the architecture, build and methods in the project/code. There will also be information about object-oriented principles and the chosen API-level.
 
 ## ARCHITECTURE: 
 ### Datasource and Respositories:
-We are using API calls from a JSON source from MetAlerts and MapBox. Theese are collected in DataSources. Later the data is collected by the DataRespositories where using Interfaces we develop functions that collect the data and later sort them into  the Data Classes. Theese respositories is where the data is called and used by the viewmodel. 
+We are using API calls from a JSON source from MetAlerts and MapBox. Theese are collected in DataSources. Later the data is collected by the DataRespositories using Interfaces, we have developed, to collect the data and later sort them into the Data classes. The data is called in the respositories and is used by the viewmodel. 
 
 ### ViewModel
-In our App we are using a viewmodel to handle data. A ViewModel is a livedata class that calls on the respositories and and save them in a UI-state. Then we can handle and use the data as we want, while the UI-state handles where and what is done so the Data will update live. This means that instead of loading in the page every time, the page is saved/remembered. An example is when you set your location in the App, if you then change screen and then back the location will NOT reset, it is saved.
+In our App we are using a viewmodel to handle data. A ViewModel is a livedata class that calls on the respositories and save them in a UI-state. We can then handle the data, while the UI-state handles every action so the data will be updated live. This means that instead of loading the screen every time, the screen state is remembered. For example, when you set your location in the app and then change screens; if you then return to the original screen, the location will stay the same.
 
 ```mermaid
     flowchart TD
@@ -22,11 +22,9 @@ In our App we are using a viewmodel to handle data. A ViewModel is a livedata cl
     G --> J[Component3]
     G --> K[Component4]  
 ```
-### Object-Orientated
-In our code we are using Data classes to create objects to save and use the data from the APIs. This is created in the DataSource, collected in the This way obejct oriented principples are used on a good level to create a good fucntioning code
 
-### Low Coupling and high Cohesion
-Our system is made up of components which are independent. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system as well as high cohesion where every single component does a specified task. In the UI screen the components are called. This is a good system that makes sure that the main file does not get messy and testing each component becomes easy. If one component fails only that fails and not the enitre code.
+### Coupling and Cohesion
+We have tried to make our system's components more independent to achieve lower coupling. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system as well as high cohesion where every single component does a specified task. In the UI screen the components are called. This is a good system that makes sure that the main file does not get messy and testing each component becomes easy. If one component fails only that fails and not the enitre code.
  ```mermaid
 flowchart TD
     C[DataRespository] --> D[ViewModel]
@@ -39,5 +37,5 @@ flowchart TD
 ```
 
 ### API-level
-We choose to use API-level 34. This was due to us wanting a App that was as new and modern as possible. There is however more modern levels, but API 34 was something we were comfortable on. We all have worked on level 34 in the Mandatory Tasks earlier in the semester, therefore 34 was a good level that was both modern, but also something we knew and had worked with.
+We choose to develop the app using API-level 34, but it can run on as low a level as 28. We chose this API level as it is amongst the newer API-levels, known to be stable, and the team already have experince developing on this level.
 
