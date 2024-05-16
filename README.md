@@ -28,10 +28,15 @@
 # Libraries used
 ####
 Ktor: A framework for building asynchronous servers and clients in connected systems. This project utilizes ktor-client-core, ktor-client-cio, ktor-serialization-gson, and ktor-client-content-negotiation for network requests and JSON serialization. Version: 2.3.9
+
 Modules Used:
+
   •	ktor-client-core: Core module for Ktor client.
+
   •	ktor-client-cio: HTTP client engine based on CIO.
+  
   •	ktor-serialization-gson: Serialization support using Gson.
+  
   •	ktor-client-content-negotiation: Support for content negotiation.
 
 AndroidX Core KTX: Provides Kotlin extensions for common framework APIs, making Android development more concise and idiomatic. Version: 1.13.0
