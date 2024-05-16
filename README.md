@@ -14,7 +14,7 @@
 #### Key features in the app showcase the newest weather information and danger alerts using a bear-inspired design. Where users can check the weather at their current location, or choose another specified location.
 
 # Documentation
-#### This project also contains the markdown files ARCHITECTURE.md and MODELING.md, and further documentation about the project is detailed in the project report. We have also included documentation for our code, which can be found under app/documentation. To generate the documentation for the code yourself, we've provided a short guide:
+#### This project also contains the markdown files ARCHITECTURE.md and MODELING.md, and further documentation about the project is detailed in the project report. We have also included documentation for our code, which can be found under app/documentation. To generate the documentation for the code yourself (if you for example make changes to the app and want to update the documentation), we've provided a short guide:
 #### Here is a concise guide on how to generate documentation for our project in kdoc. We utilize the Dokka library for this purpose, which is already included as a dependency in our project, so there is no need for you to add it manually.
 
 ### Prequisites: 
