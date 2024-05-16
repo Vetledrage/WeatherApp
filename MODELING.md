@@ -1,10 +1,7 @@
-Beskrivelse og diagrammer, vi anbefaler å generere dem med
-Mermaid som vist på forelesning. Se kravene til modellering
-lenger ned.
 
 
-Usecase diagram
-### 1. Textual Description of Use Case: Change Location
+### Usecase diagram
+**1. Textual Description of Use Case: Change Location **
 
 **Name:** Change Location
 
