@@ -1,7 +1,7 @@
 
 
 ### Usecase diagram
-**1. Textual Description of Use Case: Change Location **
+**1. Textual Description of Use Case: Change Location**
 
 **Name:** Change Location
 
@@ -63,7 +63,7 @@
 
 
 
-### FLowChart: Graphical representaion of actionflow in certain use cases
+### FlowChart: Graphical representaion of actionflow in certain use cases
 
 The flowchart outlines the sequence of operations and decision points for a weather application that handles various user scenarios, including location permissions, internet connectivity, and user-driven actions like changing location and viewing weather alerts. Here are the steps:
 
@@ -131,7 +131,7 @@ flowchart TD
   
 ```
 
-### SequenseDiargram
+### SequenceDiargram
 Scenario for the Change Location Function +  Show WeatherAlerts Diagram 
 
 1. **Application Start**:
