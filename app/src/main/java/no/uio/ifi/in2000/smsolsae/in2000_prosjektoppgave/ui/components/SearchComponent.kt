@@ -83,7 +83,12 @@ val cities = listOf(
 )
 
 /**
- * Function for searching for a location. (More information to be added)
+ * Function for searching for a location.
+ * @param viewModel the view model to use
+ * @param onDismiss Ondismiss action
+ * @param onSearch On search
+ * @param context The context to use
+ *
  *
  */
 

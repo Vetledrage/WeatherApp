@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Composable function for showing Error message if any
+ * @param errorMsg The error message to display
+ * @param onRetry What to do when "try again" is clicked
  */
 @Composable
 fun ErrorScreen(errorMsg: String, onRetry: () -> Unit){

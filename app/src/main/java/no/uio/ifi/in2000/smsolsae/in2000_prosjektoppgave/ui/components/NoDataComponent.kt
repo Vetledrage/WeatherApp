@@ -30,6 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
+/**
+ * This component is displayed when no data from metalerts could be fetched
+ * @param text The text to display
+ * @param onRetry What to do if "try agian" is clicked
+ */
 @Composable
 fun NoDataComponent(text: String, onRetry: () -> Unit){
     val infiniteTransition = rememberInfiniteTransition(label = "inf Transition")

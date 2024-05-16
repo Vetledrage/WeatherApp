@@ -33,8 +33,8 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AlertInfo
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.formatAlertsDate
 
 /**
- * Composable function for showing an box with alerts on the screen (More information to be added)
- * @param alert A list containting Alert objects.
+ * Composable function for showing an box with alerts on the screen
+ * @param alert A mutable list containting AlertInfo-objects.
  */
 @Composable
 fun AlertsBox(alert: MutableList<AlertInfo>){

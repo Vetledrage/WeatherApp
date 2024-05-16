@@ -21,7 +21,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.theme.IN2000Prosjekt
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.viewModel.WeatherViewModel
 
 /**
- * The MainActivity class is the entrypoint of the app. The main()-method. (More information to be added)
+ * The MainActivity class is the entrypoint of the app. Akin to the main()-method in Java.
  */
 class MainActivity : ComponentActivity() {
 
@@ -57,6 +57,10 @@ class MainActivity : ComponentActivity() {
     }
 
     //To handle if the network is not connected.
+    /**
+     * Function to handle if network is not connected
+     * @return
+     */
     private fun isNetworkConnected(): Boolean{
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -87,6 +91,9 @@ class MainActivity : ComponentActivity() {
         connectivityManager.registerDefaultNetworkCallback(networkCallback as ConnectivityManager.NetworkCallback)
     }
 
+    /**
+     * Function to display network error dialog
+     */
     private fun showNetworkErrorDialog() {
         AlertDialog.Builder(this)
             .setTitle("Network Error")
