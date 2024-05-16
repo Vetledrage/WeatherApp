@@ -19,7 +19,7 @@
 5. The system confirms the location change and displays weather information for the new location.
 
 **Alternative Flow: Back to Homescreen** 
-2.1 If the location entered by the user does not exist, the system informs the user that the location could not be found and takes them back to the Homescreen (WeatherScreen).
+2.1 If the location entered by the user does not exist, the system informs the user that the location could not be found and takes them back to the Homescreen (WeatherScreen). (This is what we meant with the extends relation between the two use cases "change location" and "back to homescreen".
 2.2 if the user denies to share user location, the system will automaticly go to Homescreen where Oslo is the standard location. 
 
 ![image](https://media.github.uio.no/user/8084/files/0cfbb0fb-4e2b-4415-9257-ccfcff1cd6c8)
