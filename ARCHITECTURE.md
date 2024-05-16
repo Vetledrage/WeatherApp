@@ -44,6 +44,13 @@ In our App we are using a viewmodel to handle data. A ViewModel is a livedata cl
 
 ### Principles for Object oriented development: Coupling and Cohesion
 We have tried to make our system's components more independent to achieve lower coupling. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system as well as high cohesion where every single component does a specified task. In the UI screen the components are called. This is a good system that makes sure that the main file does not get messy and testing each component becomes easy. If one component fails only that fails and not the enitre code.
+
+
+
+With some minor changes
+
+We have tried to make our system's components more independent of each other to achieve lower coupling. An advantage of lower coupling is that, if a single component fails, it will not necessarily affect the rest of the app. In other words, should one component fail, only that component fails, and not the enitre code. The code will also generally be easier to read and understand. In our app, we have attempted to ensure low coupling by, among other things, ensuring that the UI-components generally only depend on the information provided from the view model. We have also attempted to achieve high cohesion (making sure that our classes have clearly delimited responsibilites). This we have tried to do by trying to, within reason, give our  classes small, concrete and delimited responsibilites. 
+
  ```mermaid
 flowchart TD
     C[DataRespository] --> D[ViewModel]
