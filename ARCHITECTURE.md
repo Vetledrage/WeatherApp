@@ -17,16 +17,34 @@ The model diagram provided is a simplified architectural representation of the w
 
 The diagram simplifies the application's architecture by focusing on major functionalities and components like data fetching, view model operations, and UI interactions. It omits deeper details of lower-level operations or secondary UI components, focusing instead on how the main components interact and depend on each other.
 
-For a more detailed understanding of data classes and finer architectural details, the model refers to the `MODELLING.md` file. This file in the github repo likely includes comprehensive data about class attributes, methods, and detailed relationships which are too granular for the high-level overview provided in the diagram. 
+For a more detailed understanding of data classes and finer architectural details, the model refers to the `MODELLING.md` file. This file in the github repo includes more comprehensive modelling and information about the app, with for example class diagrams and sequence diagrams.
 
-This representation is streamlined to aid quick understanding and efficient overview without overwhelming with too much detail.
+This representation is streamlined to aid quick understanding and efficient overview without too much detail.
 
+#### Design Patterns
+We have tried to adhere to the MVVM design pattern (Model View Viewmodel) in the development of our application. This is the design pattern that is also recommended by Google for developing apps for the Android platform. In brief, MVVM is a design pattern that helps us separate the underlying application logic from the graphical user interface. One can say that it consists in separating the app in three parts: the model, the view and the viewmodel. The view is what is actually shown on the screen. The model is the part that contains the data: data sources and repositories. The viewmodel can be said to be the bridge between the view and the model. It is responsible for receiving the data from the model, making relevant data ready for display by the view layer. 
+In our application we have tried to separate these three layers. In our application code, we have a data-package (responsible for the data of the application. It contains the data sources and repositories, a ui-package, which contains the code for the graphical user interface, and a viewmodel package, which contains the code for the view model.
+
+We have also attempted to adhere to the UDF design pattern. In few words, the UDF design pattern means that we the data should flow in only one direction, and the events which does changes to the data flows in the opposite direction, as described in Google's guide to architecture (https://developer.android.com/topic/architecture). In our app, the weather data is first prepared in the data-package, sent to the viewmodel, and then finally made ready for the UI. However, if the user wants to for instance change location, to get weather data for an other location, that request is passed back and down to the datasource, which then again fetches new weather data based on this new location, passed back to the viewmodel, and finally prepared and ready to be displayed by the UI again. Below we have a simple figure for illustrating the general relationshiop between a viewmodel and the repository and the UI. 
+
+ ```mermaid
+flowchart TD
+    C[DataRespository] --> D[ViewModel]
+    D --> G[Component 1]
+    D --> A[Component 2]
+    D --> B[Component 3]
+    G --> H[UI Screen]
+    A --> H
+    B --> H
+```
+
+#### Below we will delve more into the details of the datasources, repositories and viewmodel in our application.
 
 ### Datasource and Respositories:
 We are using API calls from a JSON source from MetAlerts and MapBox. Theese are collected in DataSources. Later the data is collected by the DataRespositories using Interfaces, we have developed, to collect the data and later sort them into the Data classes. The data is called in the respositories and is used by the viewmodel. 
 
 ### ViewModel
-In our App we are using a viewmodel to handle data. A ViewModel is a livedata class that calls on the respositories and save them in a UI-state. We can then handle the data, while the UI-state handles every action so the data will be updated live. This means that instead of loading the screen every time, the screen state is remembered. For example, when you set your location in the app and then change screens; if you then return to the original screen, the location will stay the same.
+In our App we are using a viewmodel to handle data. A ViewModel is a livedata class that calls on the respositories and save them in a UI-state. We can then handle the data, while the UI-state handles every action so the data will be updated live. This means that instead of loading the screen every time, the screen state is remembered. For example, when you set your location in the app and then change screens; if you then return to the original screen, the location will stay the same. Below is a figure where we attempt to illustrate the view model in our app and what is connected to the view model
 
 ```mermaid
     flowchart TD
@@ -43,42 +61,14 @@ In our App we are using a viewmodel to handle data. A ViewModel is a livedata cl
 ```
 
 ### Principles for Object oriented development: Coupling and Cohesion
-We have tried to make our system's components more independent to achieve lower coupling. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system as well as high cohesion where every single component does a specified task. In the UI screen the components are called. This is a good system that makes sure that the main file does not get messy and testing each component becomes easy. If one component fails only that fails and not the enitre code.
+
+We have tried to make our system's components more independent of each other to achieve lower coupling. An advantage of lower coupling is that, if a single component fails, it will not necessarily affect the rest of the app. In other words, should one component fail, only that component fails, and not the enitre code. The code will also generally be easier to read and understand. In our app, we have attempted to ensure low coupling by, among other things, ensuring that the UI-components generally only depend on the information provided from the view model. We have also attempted to achieve high cohesion (making sure that our classes have clearly delimited responsibilites). This we have tried to do by trying to, within reason, give our  classes small, concrete and concrete responsibilites: the data sources and repositories are responsible for the fetching of weather data, and the UI-components are respnsible for the UI only. 
 
 
 
-With some minor changes
-
-We have tried to make our system's components more independent of each other to achieve lower coupling. An advantage of lower coupling is that, if a single component fails, it will not necessarily affect the rest of the app. In other words, should one component fail, only that component fails, and not the enitre code. The code will also generally be easier to read and understand. In our app, we have attempted to ensure low coupling by, among other things, ensuring that the UI-components generally only depend on the information provided from the view model. We have also attempted to achieve high cohesion (making sure that our classes have clearly delimited responsibilites). This we have tried to do by trying to, within reason, give our  classes small, concrete and delimited responsibilites: the data sources and repositories are responsible for the fetching of weather data, and the UI-components are respnsible for the UI only. 
-
- ```mermaid
-flowchart TD
-    C[DataRespository] --> D[ViewModel]
-    D --> G[Component 1]
-    D --> A[Component 2]
-    D --> B[Component 3]
-    G --> H[UI Screen]
-    A --> H
-    B --> H
-```
-#### Design Patterns
-We have tried to adhere to the MVVM design pattern (Model View Viewmodel) in the development of our application. This is the design pattern that is also recommended by Google for developing apps for the Android platform. In brief, MVVM is a design pattern that helps us separate the underlying application logic from the graphical user interface. One can say that it consists in separating the app in three parts: the model, the view and the viewmodel. The view is what is actually shown on the screen. The model is the part that contains the data: data sources and repositories. The viewmodel can be said to be the bridge between the view and the model. It is responsible for receiving the data from the model, making relevant data ready for display by the view layer. 
-In our application we have tried to separate these three layers. In our application code, we have a data-package (responsible for the data of the application. It contains the data sources and repositories, a ui-package, which contains the code for the graphical user interface, and a viewmodel package, which contains the code for the view model.
-
-We have also attempted to adhere to the UDF design pattern. In few words, the UDF design pattern means that we the data should flow in only one direction, and the events which does changes to the data flows in the opposite direction, as described in Google's guide to architecture (https://developer.android.com/topic/architecture). In our app, the weather data is first prepared in the data-package, sent to the viewmodel, and then finally made ready for the UI. However, if the user wants to for instance change location, to get weather data for an other location, that request is passed back and down to the datasource, which then again fetches new weather data based on this new location, passed back to the viewmodel, and finally prepared and ready to be displayed by the UI again.
 
 
 ### Solution to our operation, maintenance and further development
-
-It is evident that prioritizing user needs and preferences is paramount in software development. Our commitment to continuous improvement ensures that our product remains dynamic and responsive to evolving user expectations.
-
-Our application offers a comprehensive array of services designed to enhance user experience. From providing real-time weather updates to delivering targeted weather alerts through MetAlerts, our platform serves as a reliable resource for users. Recognizing the importance of engaging our primary demographic, aged 13-25, we have incorporated an informative screen tailored to their interests and requirements.
-
-While the current version of the settings screen lays the foundation for user customization, we recognize its potential for further refinement. Our vision includes implementing universal settings, allowing users to personalize every aspect of their experience, from font sizes to imagery. Additionally, we aim to introduce a dark mode feature, catering to individuals with visual sensitivities and enhancing readability. By prioritizing accessibility, we strive to align with WCAG requirements, fostering a more inclusive and user-friendly environment.
-
-Furthermore, we acknowledge the importance of optimizing the app for landscape mode, ensuring seamless usability across different device orientations. Our commitment to ongoing development underscores our dedication to delivering a robust and user-centric application.
-
-//With some minor changes
 
 We recognize that there are indeed possible new features and improvements that could be added to our app to better the user experience. For someone that would like to improve or add new features to the app, the settings feature would be a nice place to start. One could for instance add settings for changing the font size, a dark mode feature. An other important future improvement could be that of ensuring that the app adheres the the WCAG requirements, for example with opportunities for users to a text-to-speech feature for all the functions in the app. An third possibility could be to add the possibility to use landscape mode to our app. Currently, our app only compatible with portrait mode.
 
