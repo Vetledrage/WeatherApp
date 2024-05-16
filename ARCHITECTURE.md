@@ -71,6 +71,8 @@ While the current version of the settings screen lays the foundation for user cu
 
 Furthermore, we acknowledge the importance of optimizing the app for landscape mode, ensuring seamless usability across different device orientations. Our commitment to ongoing development underscores our dedication to delivering a robust and user-centric application.
 
+The app has many comments in the code which can be of help to for example eventual new developers who want to further develop and maintain the application. Many of the comments are written in kdoc format, but we have also added comments describing what individual lines of code do, where we think it can ease the understanding of the code. In the build/documentation folder, we have also provided generated documentation (generated with the documentation engine Dokka) in both html and markdown format (akin to Javadoc for Java).
+
 ### API-level
 We choose to develop the app using API-level 34, but it can run on as low a level as 28. We chose this API level as it is amongst the newer API-levels, known to be stable, and the team already have experince developing on this level.
 
