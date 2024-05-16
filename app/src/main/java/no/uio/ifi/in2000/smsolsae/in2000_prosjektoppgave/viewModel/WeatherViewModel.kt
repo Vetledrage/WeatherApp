@@ -43,13 +43,7 @@ class WeatherViewModel : ViewModel() {
     //State flow to expose the location name
     val locationName: StateFlow<String> = _locationName.asStateFlow()
 
-<<<<<<< Updated upstream
-    //Mutable state flow to manage the coordinates state
-    private val _coordinatesState = MutableStateFlow<Pair<Double, Double>?>(null)
-    //State flow to expose the coordinates state
-    val coordinatesState: StateFlow<Pair<Double, Double>?> = _coordinatesState.asStateFlow()
-=======
->>>>>>> Stashed changes
+
 
     //Mutable state flow to manage error messages
     private val _errorMessage = MutableStateFlow<String?>(null)
@@ -117,11 +111,7 @@ class WeatherViewModel : ViewModel() {
 
             if (result != null){
                 setErrorMesageNull()
-<<<<<<< Updated upstream
-                _coordinatesState.value = Pair(result.second, result.first)
-                //Update weather information based on the new coordinates
-=======
->>>>>>> Stashed changes
+
                 updateWeatherInfo(result.second.toString(),  result.first.toString())
             } else{
                 //Set error message if coordinates could not be fetched

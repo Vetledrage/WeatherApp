@@ -44,8 +44,8 @@ data class WhenMet(
  * @property area The area of the alert.
  * @property awarenessResponse The response awareness.
  * @property awarenessSeriousness The seriousness awareness.
- * @property awareness_level The level of awareness.
- * @property awareness_type The type of awareness.
+ * @property awarenessLevel The level of awareness.
+ * @property awarenessType The type of awareness.
  * @property certainty The certainty of the alert.
  * @property consequences The consequences of the alert.
  * @property county The list of county codes.
