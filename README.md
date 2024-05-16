@@ -1,4 +1,3 @@
-Younas Hameed
 # Team-41
 * Said Magomed Aptievitsj Solsaev
 * Vetle Drage
@@ -30,9 +29,8 @@ Younas Hameed
 #### If you run the code and change internet after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internet (Not rerun, but cancel then run),will fix this problem.
 
 # Libraries used
-<<<<<<< HEAD
 #### Most of the code is very basic code implemented using Kotlin and Jetpack Compose. We are also using kotlinx for the livedata features. Java and kotlin utils is also great libraries that give us access useful functions.
-=======
+
 ####
 Ktor: A framework for building asynchronous servers and clients in connected systems. This project utilizes ktor-client-core, ktor-client-cio, ktor-serialization-gson, and ktor-client-content-negotiation for network requests and JSON serialization. Version: 2.3.9
 
