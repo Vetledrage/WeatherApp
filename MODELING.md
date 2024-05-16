@@ -414,51 +414,55 @@ classDiagram
 
 
 ```
-The class diagram depicts the architecture and relationships between components within a weather application, specifically focusing on data fetching, processing, and displaying.
-
-### Multiplicity Indicators
-
-- Indicate the nature of relationships between classes, such as `"1" --> "1"` for direct one-to-one relationships and `"1" --> "*"` for one-to-many relationships, which is particularly important for components handling multiple instances of data or features.
-
-### Components and Relationships
 
 
+###  Description of Class Diagram with Multiplicity
 
-2. **StartScreenViewModel**:
-   - Orchestrates data fetching operations by interfacing with the `LocationForecastRepositoryImpl` to manage state and data for the start screen.
+**Multiplicity Indicators**
+Indicate the nature of relationships between classes, such as "1" --> "1" for direct one-to-one relationships and "1" --> "*" for one-to-many relationships, which is particularly important for components handling multiple instances of data or features.
 
-3. **LocationForecastRepositoryImpl**:
-   - Connects to the `LocationForecastDataSource` which retrieves weather data, leveraging the integrated `HttpClient` to perform HTTP requests.
+**Components and Their Relationships:**
 
-4. **LocationForecastDataSource** and **MetAlertsDataSource**:
-   - These data sources handle the actual data fetching from weather and alerts APIs, respectively. Both utilize an embedded `HttpClient` to fetch data from specified URLs.
+1. **HomeScreen and WeatherScreen**:
+   - The `HomeScreen` directly interacts with the `WeatherScreen`, showing a one-to-one relationship (`"1" --> "1"`), where the `HomeScreen` controls the display of weather data through the `WeatherScreen`.
 
-5. **ImplementedWeatherRepository**:
-   - Manages complex weather data operations such as fetching current weather or forecasts for upcoming days through the `WeatherDataSource`.
+2. **AlertScreen**:
+   - Connects one-to-one (`"1" --> "1"`) with the `WeatherViewModel` to fetch and display alerts. This relationship indicates that each `AlertScreen` relies entirely on a single instance of `WeatherViewModel` for its data.
 
-6. **WeatherDataSource**:
-   - Fetches detailed weather data and is responsible for making API calls to obtain current and forecasted weather conditions.
+3. **WeatherScreen and WeatherViewModel**:
+   - Also shows a one-to-one (`"1" --> "1"`) connection, suggesting that each `WeatherScreen` is paired with a single `WeatherViewModel` to manage and display weather information.
 
-7. **Utility Classes (Utils and TimeManager)**:
-   - `Utils` offers helper functions for formatting dates, times, and icons, while `TimeManager` provides current time and formatting capabilities.
+4. **WeatherViewModel**:
+   - Acts as a central node connecting various repositories and utilities. It has one-to-one (`"1" --> "1"`) relationships with `ImplementedWeatherRepository`, `MetAlertsRepository`, `LocationForecastRepositoryImpl`, and `UIComponents`, orchestrating data flow and UI updates.
 
-8. **UIComponents**:
-   - Handles the display functionalities of the application, showing weather data and alerts on the UI.
+5. **Repositories and DataSources**:
+   - Both `LocationForecastRepositoryImpl` and `MetAlertsRepository` maintain one-to-one (`"1" --> "1"`) relationships with their respective data sources, `LocationForecastDataSource` and `MetAlertsDataSource`, to fetch data from external APIs using `HttpClient`.
 
-### Data Structures and Flow
+6. **ImplementedWeatherRepository and WeatherDataSource**:
+   - Showcases a one-to-one (`"1" --> "1"`) relationship, with the repository managing operations like fetching current weather or extended forecasts through the `WeatherDataSource`.
 
-9. **Geometry, Timeseries, Data, Details**:
-   - These classes represent different aspects of the weather data, from geographical coordinates (`Geometry`) to detailed time-based weather data (`Timeseries` and `Data`).
+7. **Utility and Data Handling Classes**:
+   - `UIComponents` connects to `Utils` with a one-to-many relationship (`"*" --> "1"`), indicating multiple UI components utilize a single utility manager for various display functions.
+   - `Utils` connects one-to-one (`"1" --> "1"`) with `TimeManager`, utilizing it for time-related functions.
 
-10. **Features and PropertiesAlert**:
-   - `Features` encapsulates weather data including `Geometry`, while `PropertiesAlert` holds detailed alert information, both used extensively across the application.
+8. **Data Structure Relationships**:
+   - `WeatherDataSource` handles multiple `Features` (`"1" --> "*"`) which in turn manage geometrical data (`Geometry`) and alert properties (`PropertiesAlert`) with specific multiplicities (`"1" --> "1"` and `"1" --> "*"`, respectively).
 
-11. **MapModel and Related Classes**:
-   - Manage mapping functionalities, with `MapModel` containing `MapFeatures`, which in turn holds `MapGeometry` elements for geographical representations.
+9. **Mapping and Resource Management**:
+   - `UIComponents` utilizes `MapModel` in a one-to-many relationship (`"1" --> "*"`) to display various geographical data, which aggregates multiple `MapFeatures`, further containing multiple `MapGeometry`.
+   - `PropertiesAlert` links to multiple `Resources` (`"1" --> "*"`) indicating multiple resources are associated with a single alert property for external data links.
 
-12. **Resources**:
-   - Utilized within `PropertiesAlert` to link external resources like URLs or documents related to weather alerts.
+In the class diagram and corresponding discussion, we specifically focused on core functionalities of the weather application such as data retrieval, display, and alert management, intentionally omitting details about the Settings and Information screens. This selective focus is aimed at clarifying and emphasizing the system's critical operational pathways, ensuring a straightforward understanding of essential processes.
 
+### Reasons for not Omitting Settings and Information Screen Details:
 
+1. **Simplification for Clarity**:
+   - Including peripheral screens like Settings and Information could complicate the diagram, detracting from the clear depiction of core processes involved in weather data handling.
 
+2. **Relevance to Core Functionalities**:
+   - Settings and Information screens do not directly interact with key data handling mechanisms. Their functionalities, often static and configurational, are less impactful on the system's primary operations—weather reporting and alerting.
 
+3. **Focus on System Dynamics**:
+   - The diagram emphasizes dynamic aspects such as data flow, component dependencies, and interactions, which are critical for understanding the system's operational efficiency and for facilitating enhancements.
+
+This approach reflects to show specific parts of the system without the complexity of its entirety.
