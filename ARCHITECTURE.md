@@ -78,6 +78,10 @@ While the current version of the settings screen lays the foundation for user cu
 
 Furthermore, we acknowledge the importance of optimizing the app for landscape mode, ensuring seamless usability across different device orientations. Our commitment to ongoing development underscores our dedication to delivering a robust and user-centric application.
 
+//With some minor changes
+
+We recognize that there are indeed possible new features and improvements that could be added to our app to better the user experience. For someone that would like to improve or add new features to the app, the settings feature would be a nice place to start. One could for instance add settings for changing the font size, a dark mode feature. An other important future improvement could be that of ensuring that the app adheres the the WCAG requirements, for example with opportunities for users to a text-to-speech feature for all the functions in the app. An third possibility could be to add the possibility to use landscape mode to our app. Currently, our app only compatible with portrait mode.
+
 The app has many comments in the code which can be of help to for example eventual new developers who want to further develop and maintain the application. Many of the comments are written in kdoc format, but we have also added comments describing what individual lines of code do, where we think it can ease the understanding of the code. In the build/documentation folder, we have also provided generated documentation (generated with the documentation engine Dokka) in both html and markdown format (akin to Javadoc for Java).
 
 ### API-level
