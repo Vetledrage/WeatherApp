@@ -42,7 +42,7 @@ In our App we are using a viewmodel to handle data. A ViewModel is a livedata cl
     G --> K[Component4]  
 ```
 
-### Coupling and Cohesion
+### Principles for Object oriented development: Coupling and Cohesion
 We have tried to make our system's components more independent to achieve lower coupling. They get their info from the viewmodel and is called in the UI screen, however the components are called seperate and will thereafter fail seperate. This means that we have a low coupling system as well as high cohesion where every single component does a specified task. In the UI screen the components are called. This is a good system that makes sure that the main file does not get messy and testing each component becomes easy. If one component fails only that fails and not the enitre code.
  ```mermaid
 flowchart TD
