@@ -38,7 +38,7 @@ data class Properties(
  * @property units The units of measurement for the data.
  */
 data class Meta(
-    val updated_at: String,
+    val updatedAt: String,
     val units: Map<String, String>
 )
 
@@ -61,9 +61,9 @@ data class Timeseries(
  */
 data class Data(
     val instant : Instant,
-    val next_12_hours: Next12,
-    val next_1_hours : Next1,
-    val next_6_hours: Next6
+    val next12Hours: Next12,
+    val next6Hours: Next6,
+    val next1Hours : Next1,
 )
 
 /**
@@ -116,10 +116,10 @@ data class Next6(
  */
 data class Details(
     var time : String,
-    var symbol_code : String,
-    var air_temperature : Float,
-    var precipitation_amount: Float,
-    var relative_humidity: Float,
-    var ultraviolet_index_clear_sky: Float,
-    var wind_speed: Float,
+    var symbolCode : String,
+    var airTemperature : Float,
+    var precipitationAmount: Float,
+    var relativeHumidity: Float,
+    var ultravioletIndexClearSky: Float,
+    var windSpeed: Float,
 )

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.MapBox.ImplementedMapBoxRepository
-import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.MapBox.MapBoxRepository
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.mapbox.ImplementedMapBoxRepository
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.mapbox.MapBoxRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metalerts.AlertsRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.metalerts.ImplementedAlertsRepository
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.data.repository.weather.ImplementedWeatherRepository
@@ -44,10 +43,13 @@ class WeatherViewModel : ViewModel() {
     //State flow to expose the location name
     val locationName: StateFlow<String> = _locationName.asStateFlow()
 
+<<<<<<< Updated upstream
     //Mutable state flow to manage the coordinates state
     private val _coordinatesState = MutableStateFlow<Pair<Double, Double>?>(null)
     //State flow to expose the coordinates state
     val coordinatesState: StateFlow<Pair<Double, Double>?> = _coordinatesState.asStateFlow()
+=======
+>>>>>>> Stashed changes
 
     //Mutable state flow to manage error messages
     private val _errorMessage = MutableStateFlow<String?>(null)
@@ -115,8 +117,11 @@ class WeatherViewModel : ViewModel() {
 
             if (result != null){
                 setErrorMesageNull()
+<<<<<<< Updated upstream
                 _coordinatesState.value = Pair(result.second, result.first)
                 //Update weather information based on the new coordinates
+=======
+>>>>>>> Stashed changes
                 updateWeatherInfo(result.second.toString(),  result.first.toString())
             } else{
                 //Set error message if coordinates could not be fetched

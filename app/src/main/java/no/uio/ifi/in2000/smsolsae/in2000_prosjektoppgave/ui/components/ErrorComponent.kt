@@ -11,6 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+
+/**
+ * Composable function for showing Error message if any
+ */
 @Composable
 fun ErrorScreen(errorMsg: String, onRetry: () -> Unit){
     Column(

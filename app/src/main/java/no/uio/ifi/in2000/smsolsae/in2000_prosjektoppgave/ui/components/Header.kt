@@ -19,6 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
+/**
+ * Composable function for showing header on the screens
+ */
 @Composable
 fun Header(label: String, icon: ImageVector){
     Row(

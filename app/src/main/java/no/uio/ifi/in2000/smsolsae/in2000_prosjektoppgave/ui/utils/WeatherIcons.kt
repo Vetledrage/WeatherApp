@@ -21,7 +21,7 @@ fun getWeatherIcon(context: Context, symbolCode: String?): Int {
     return if (resId != 0){
         resId
     }else{
-        R.drawable.clearsky_day
+        R.drawable.bell_solid //If there is something wrong and the icon does not exist returns a warning bell
     }
 }
 

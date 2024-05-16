@@ -29,7 +29,7 @@ class DataSourceTest {
     fun testWeatherApi() = runBlocking {
         val res = weatherApi.fetchLocationForecastData("59.9139", "10.7522")
 
-        assertEquals("[10.7522, 59.9139, 5.0]", res.geometry?.coordinates.toString())
+        assertEquals("[10.7522, 59.9139, 5.0]", res.geometry.coordinates.toString())
         assertNotNull(res.type)
         assertNotNull(res.geometry)
         assertNotNull(res.properties)
@@ -39,9 +39,9 @@ class DataSourceTest {
     fun testSearchApi() = runBlocking {
         val res = searchApi.fetchMapSearch("Oslo, Norway")
 
-        assertEquals("[10.7389701, 59.9133301]", res.features.get(0).geometry?.coordinates.toString())
-        assertEquals("Point", res.features.get(0).geometry?.type.toString())
-        assertEquals("Feature", res.features.get(0).type.toString())
+        assertEquals("[10.7389701, 59.9133301]", res!!.features[0].geometry?.coordinates.toString())
+        assertEquals("Point", res.features[0].geometry?.type.toString())
+        assertEquals("Feature", res.features[0].type.toString())
         assertNotNull(res.features)
         assertNotNull(res.query)
     }

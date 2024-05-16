@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.ErrorScreen
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.LoadingAnimation
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.AppUiState
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state.TemperatureNext12Hours
@@ -77,6 +78,12 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
 
     Surface(modifier = Modifier.fillMaxSize()) {
         when (weatherData){
+
+            is AppUiState.Error -> {
+                ErrorScreen(errorMsg = "Something bad happend here!", onRetry = {viewModel.updateWeatherInfo("59.11", "10.112")})
+
+            }
+
             is AppUiState.Loading -> {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,9 +93,7 @@ fun WeatherScreen(navController: NavController, viewModel: WeatherViewModel = vi
                     LoadingAnimation(text = "Loading Data...")
                 }
             }
-            is AppUiState.Error -> {
-                Text(text = "Error in getting the data...")
-            }
+
             is AppUiState.Success ->{
                 Scaffold(
                     topBar = {
