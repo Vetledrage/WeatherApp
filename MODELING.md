@@ -416,7 +416,7 @@ classDiagram
 ###  Description of Class Diagram with Multiplicity
 
 **Multiplicity Indicators**
-Indicate the nature of relationships between classes, such as "1" --> "1" for direct one-to-one relationships and "1" --> "*" for one-to-many relationships, which is particularly important for components handling multiple instances of data or features.
+Indicate the nature of relationships between classes, such as "1" --> "1" for direct one-to-one relationships, "*" --> "*" for man-to-many relationships, and "1" --> "*" for one-to-many relationships, which is particularly important for components handling multiple instances of data or features.
 
 **Components and Their Relationships:**
 
