@@ -36,15 +36,20 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.components.Header
 fun InformationScreen(navController: NavController){
     //List of information terms and their descriptions
     val informationList = listOf(
-        "Humidity" to "Humidity refers to how much moisture or water vapor is in the air. When humidity is high, the air feels damp or sticky. When it's low, the air feels dry.",
-        "Temperature" to "Temperature measures how hot or cold something is. It's what you feel when you step outside. A high temperature means it's hot, while a low temperature means it's cold.",
-        "Wind Speed" to "Wind speed tells us how fast the air is moving. When it's windy, you feel the air blowing on your face. The faster the wind speed, the stronger the wind feels.",
-        "Rainfall" to "Rainfall is when water falls from the sky in the form of raindrops. It's what makes the ground wet and plants grow. Heavy rainfall means a lot of rain is falling, while light rainfall means just a little.",
-        "Cloud Cover" to "Cloud cover refers to how much of the sky is covered by clouds. When there are a lot of clouds, the sky looks gray and you might not see the sun. When there are few clouds, the sky looks clear and sunny.",
-        "Pressure" to "Pressure is the force of the air pushing down on the Earth's surface. High pressure usually means fair weather, while low pressure can bring storms and rain.",
-        "Sunshine" to "Sunshine measures how much sunlight is reaching the ground. When it's sunny, the sky is bright and you feel warm. When it's cloudy, there's less sunshine.",
-        "Visibility" to "Visibility tells us how far we can see clearly. Good visibility means you can see far ahead, while poor visibility means things are blurry or hard to see because of fog, rain, or snow.",
-        "UV radiation" to "UV radiation is a type of sunlight that we can't see. It can be good for us because it helps our bodies make vitamin D, but too much can hurt our skin and eyes. We need to protect ourselves by wearing sunscreen, hats, and sunglasses when we're outside in the sun. That way, we stay safe and healthy!"
+        "Humidity" to "Humidity refers to how much moisture or water vapor is in the air. When humidity is high, the air feels damp. When it's low, the air feels dry. \n\nHumidity is often measured with percentages. These percentage values refer to how much water vapor is in the air relative to the maximum capacity at a given temperature. This is called relative humidity.",
+        "Temperature" to "Temperature measures how hot or cold something is. It's what you feel when you step outside. The higher the temperature the hotter it is. A low temperature, especially below 0, means it's cold.",
+        "Wind Speed" to "Wind speed tells us how fast the air is moving. The higher the wind speed, the stronger the wind feels.",
+        "Rainfall" to "Rainfall is when water falls from the sky in the form of raindrops. Heavy rainfall means a lot of rain is falling, while light rainfall means just a little.",
+        "Cloud Cover" to "Cloud cover refers to how much of the sky is covered by clouds. When there are a lot of clouds, the sky looks gray and you might not see the sun. When there are few clouds, the sky looks clear and the sun shines through.",
+        "Pressure" to "Pressure, or atmospheric pressure, is the force of the air pushing down on the Earth's surface. High pressure usually means there will be fair weather, while low pressure can bring storms and rain.",
+        "Sunshine" to "Sunshine refers to how much sunlight is reaching the ground down on earth. When it's sunny, the sky is bright and you feel warm. When it's cloudy, there's less sunshine.",
+        "Visibility" to "Visibility tells us how far we can see clearly. Good visibility means you can see far ahead, while poor visibility means things are blurry or hard to see because of things like fog, rain, or snow.",
+        "UV radiation" to "UV radiation is a type of sunlight that human eyes can't see. It can be good for us because it helps our bodies make vitamin D, but too much UV radiation can hurt our skin and eyes. It is very important that we protect ourselves by wearing sunscreen, hats, and sunglasses when we're outside in the sun. That way, we stay safe and healthy!",
+        "UV index" to "The UV index is a scale that measures the intensity of UV radiation. The scale is measured from 0 and upwards, where higher values indicate larger risks of skin and eye damage or irritation. \n\n" +
+                "Here are the World Health Organization’s UV index recommendations: \n" +
+                "0 to 2: You can safely enjoy being outside!\n" +
+                "3 to 7: Seek shade during midday hours! Slip on a shirt, slop on sunscreen and slap on hat!\n" +
+                "8+: Avoid being outside during midday hours! Make sure you seek shade! Shirt, sunscreen and hat are a must!\n"
     )
 
     //State to keep track of the expanded index
