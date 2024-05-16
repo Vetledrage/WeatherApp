@@ -2,7 +2,11 @@
 # ARCHITECTURE.MD Weather Pawcast
 ### ARCHITECTURE.md is a file containing information about the architecture, build and methods in the project/code. There will also be information about object-oriented principles and the chosen API-level.
 
-## ARCHITECTURE: 
+## ARCHITECTURE USED IN THE APP:
+
+
+
+
 ### Datasource and Respositories:
 We are using API calls from a JSON source from MetAlerts and MapBox. Theese are collected in DataSources. Later the data is collected by the DataRespositories using Interfaces, we have developed, to collect the data and later sort them into the Data classes. The data is called in the respositories and is used by the viewmodel. 
 
@@ -35,7 +39,18 @@ flowchart TD
     A --> H
     B --> H
 ```
+### Solution to our operation, maintenance and further development
+
+It is evident that prioritizing user needs and preferences is paramount in software development. Our commitment to continuous improvement ensures that our product remains dynamic and responsive to evolving user expectations.
+
+Our application offers a comprehensive array of services designed to enhance user experience. From providing real-time weather updates to delivering targeted weather alerts through MetAlerts, our platform serves as a reliable resource for users. Recognizing the importance of engaging our primary demographic, aged 13-25, we have incorporated an informative screen tailored to their interests and requirements.
+
+While the current version of the settings screen lays the foundation for user customization, we recognize its potential for further refinement. Our vision includes implementing universal settings, allowing users to personalize every aspect of their experience, from font sizes to imagery. Additionally, we aim to introduce a dark mode feature, catering to individuals with visual sensitivities and enhancing readability. By prioritizing accessibility, we strive to align with WCAG requirements, fostering a more inclusive and user-friendly environment.
+
+Furthermore, we acknowledge the importance of optimizing the app for landscape mode, ensuring seamless usability across different device orientations. Our commitment to ongoing development underscores our dedication to delivering a robust and user-centric application.
 
 ### API-level
 We choose to develop the app using API-level 34, but it can run on as low a level as 28. We chose this API level as it is amongst the newer API-levels, known to be stable, and the team already have experince developing on this level.
+
+
 
