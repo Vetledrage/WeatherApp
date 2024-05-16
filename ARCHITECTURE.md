@@ -2,9 +2,24 @@
 # ARCHITECTURE.MD Weather Pawcast
 ### ARCHITECTURE.md is a file containing information about the architecture, build and methods in the project/code. There will also be information about object-oriented principles and the chosen API-level.
 
-## ARCHITECTURE USED IN THE APP:
+## ARCHITECTURE:
+
+## ARCHITECTURE Model
+![image](https://media.github.uio.no/user/8084/files/2099c9e9-31d0-4cc3-9689-919338d4dbbb)
+
+The model diagram provided is a simplified architectural representation of the weather application, highlighting key components and their relationships.
+
+1. **Main Components and Flow**:
+   - **MainActivity** acts as the main entry point, directing to various screens like **AlertScreen**, **HomeScreen**, **InformationScreen**, and **SettingsScreen**.
+   - **WeatherScreen** and **WeatherViewModel** are central to handling weather-related functionalities. **WeatherViewModel** aggregates data from **MetAlertsRepository** and **LocationForecastRepository** to provide the weather and alert data.
+   - **MetAlertsRepository** and **LocationForecastRepository** fetch data from respective **DataSources**, which further interact with APIs to retrieve **MetAlertData** and **LocationForecastData**.
 
 
+The diagram simplifies the application's architecture by focusing on major functionalities and components like data fetching, view model operations, and UI interactions. It omits deeper details of lower-level operations or secondary UI components, focusing instead on how the main components interact and depend on each other.
+
+For a more detailed understanding of data classes and finer architectural details, the model refers to the `MODELLING.md` file. This file in the github repo likely includes comprehensive data about class attributes, methods, and detailed relationships which are too granular for the high-level overview provided in the diagram. 
+
+This representation is streamlined to aid quick understanding and efficient overview without overwhelming with too much detail.
 
 
 ### Datasource and Respositories:
