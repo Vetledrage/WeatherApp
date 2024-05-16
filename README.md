@@ -26,7 +26,7 @@
 #### If you run the code and change internett after, running again could make the API calls fail. Therefore terminating the App then running it again on the new internett (Not rerun, but cancel then run),will fix this problem.
 
 # Libraries used
-#### Libraries Used
+####
 Ktor: A framework for building asynchronous servers and clients in connected systems. This project utilizes ktor-client-core, ktor-client-cio, ktor-serialization-gson, and ktor-client-content-negotiation for network requests and JSON serialization. Version: 2.3.9
 Modules Used:
   •	ktor-client-core: Core module for Ktor client.
@@ -35,17 +35,29 @@ Modules Used:
   •	ktor-client-content-negotiation: Support for content negotiation.
 
 AndroidX Core KTX: Provides Kotlin extensions for common framework APIs, making Android development more concise and idiomatic. Version: 1.13.0
+
 AndroidX Lifecycle Runtime KTX: Kotlin extensions for Android lifecycle components, which helps in managing UI-related data in a lifecycle-conscious way. Version: 2.7.0
+
 AndroidX Activity Compose: Integration of Jetpack Compose with Android activity lifecycle. Version: 1.9.0
+
 AndroidX Compose: Modern toolkit for building native UI. Various modules from Compose are used, including UI, graphics, tooling preview, and Material3. Version: Compose BOM 2024.04.01
+
 AndroidX ConstraintLayout: Layout library for creating complex and responsive UI designs. Version: 2.1.4. Compose Version: 1.0.1
+
 AndroidX Navigation Compose: Integration of Jetpack Navigation with Compose for navigating between screens. Version: 2.7.7
+
 Google Play Services Location: Provides APIs for location services. Version: 21.2.0
+
 Google Accompanist Permissions: Provides utilities for handling permissions in Jetpack Compose. Version: 0.35.0-alpha
+
 JUnit: Framework for writing and running tests. Version: 4.13.2
+
 AndroidX Test Ext JUnit: Extensions for JUnit to run Android tests. Version: 1.1.5
+
 AndroidX Test Espresso: Testing framework for writing concise and reliable UI tests. Version: 3.5.1
+
 Lottie Compose: A library for parsing and rendering Lottie animations. Version: 4.0.0
+
 Dokka: A documentation engine for Kotlin, used to generate documentation in HTML and Markdown formats. Version: 1.9.20
 
 
