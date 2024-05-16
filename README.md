@@ -14,7 +14,7 @@
 #### Key features in the app are API calls getting the newest weather info and dangeralerts and presenting it. Getting the location of user, but also making it possible for user to choose a specific location.
 
 # Documentation
-#### This project also contains the markdown files Architecture.md and MODELING.md, and further documentation
+#### This project also contains the markdown files ARCHITECTURE.md and MODELING.md, and further documentation
 #### about the project is detailed in the project-report handed in.
 
 # Installations
