@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Composable function for showing header on the screens
+ * @param label The label used in the header
+ * @param icon The icon to use
  */
 @Composable
 fun Header(label: String, icon: ImageVector){
