@@ -1,7 +1,7 @@
 package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.ui_state
 
 /**
- * Represents weather info for a specific location (more information to be added)
+ * Represents weather info for a specific location
  * @property temperature temperature in celcius
  * @property weatherCode string representing the current weather condition
  * @property rain current rain level in millimeters

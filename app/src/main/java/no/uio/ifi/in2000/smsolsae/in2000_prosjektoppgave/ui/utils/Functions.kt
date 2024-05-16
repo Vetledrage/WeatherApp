@@ -60,6 +60,11 @@ fun formatAlertsDate(date: String) : String{
 }
 
 //hente dag bassert på dato
+/**
+ * Fetches the day based on input date
+ * @param date The date we want to get the day for
+ * @return The day for the input date
+ */
 fun getDay(date: String): String{
     val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US) // Bruker Locale.US for engelsk
 
@@ -76,6 +81,10 @@ fun getDay(date: String): String{
 
 //Returnerer nåværende dato og tid.
 
+/**
+ * Returns current time an date
+ * @return Current time and date
+ */
 fun getLiveDateTime(): String {
     val dateFormat = SimpleDateFormat("dd.MMMM HH:mm", Locale.getDefault())
     return dateFormat.format(Calendar.getInstance().time)

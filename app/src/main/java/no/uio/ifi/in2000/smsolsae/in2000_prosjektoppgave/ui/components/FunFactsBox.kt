@@ -32,7 +32,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.ui.utils.DailyFactManag
 
 
 /**
- * Composable function used mainly for showing fun facts (More information to be added)
+ * Composable function used mainly for showing fun facts
  * @param context The context of the app.
  */
 @Composable

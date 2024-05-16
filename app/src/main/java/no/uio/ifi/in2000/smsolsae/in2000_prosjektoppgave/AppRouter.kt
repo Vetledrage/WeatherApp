@@ -4,7 +4,7 @@ package no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave
 
 /**
  * Class with routes to the different screens. It is an object because we are only making one
- * for the whole application. (More information to be added).
+ * for the whole application.
  *
  * @property WEATHER Weather Screen string
  * @property HOME Home Screen string
@@ -21,7 +21,7 @@ private object Route{
 }
 
 /**
- * Class which contains the screens. (More information to be added)
+ * Class which contains the screens.
  *
  * @param route: The screen object receives the name of the route as a String.
  */

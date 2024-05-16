@@ -12,6 +12,12 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.R
 
+/**
+ * Function to display weather animations based on the provided weather condition.
+ *
+ * @param weather A string representing the current weather condition. The function
+ * maps various weather conditions to specific animation resources.
+ */
 @Composable
 fun WeatherAnimation(weather: String) {
     val animationSpec = when(weather) {

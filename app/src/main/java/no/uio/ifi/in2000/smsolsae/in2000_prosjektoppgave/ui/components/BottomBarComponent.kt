@@ -28,7 +28,7 @@ import no.uio.ifi.in2000.smsolsae.in2000_prosjektoppgave.Screen
  * @property title the title of the tab
  * @property selectedIcon Icon when selected
  * @property unselectedIcon Icon when unselected
- * @property badgeAmount Amount of badges (More information to be added)
+ * @property badgeAmount Amount of badges
  * @property route Route to the screen we come to by clicking on this TabBarItem
  */
 data class TabBarItem(
@@ -79,7 +79,7 @@ fun BottomBar(navController: NavController){
 }
 
 /**
- * Helper method for BottomBar. (More information to be added)
+ * Helper method for BottomBar.
  * @param barItems a list of tab bar items
  * @param navController navcontroller for standard navigation
  */

@@ -53,6 +53,7 @@ fun weatherType(weatherCode: String): String{
 /**
  * Composable function for displaying the bear image.
  * @param bear The string representing the bear to be displayed.
+ * @return The bear image to display
  */
 @Composable //mange endringer på format,
 fun getBearImageResource(bear: String): Int {
