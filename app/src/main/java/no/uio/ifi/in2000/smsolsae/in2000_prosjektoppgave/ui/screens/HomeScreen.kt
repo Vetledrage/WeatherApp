@@ -278,7 +278,7 @@ fun HomeScreen(
                                             horizontalAlignment = Alignment.CenterHorizontally
                                         ) {
                                             Row(
-                                                modifier = Modifier.size(150.dp)
+                                                modifier = Modifier.size(150.dp).offset(y = (-20).dp)
                                             ){
                                                 WeatherAnimation(weather = data.weatherCode)
                                             }

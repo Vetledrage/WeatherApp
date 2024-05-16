@@ -40,8 +40,8 @@ class ImplementedAlertsRepository : AlertsRepository {
             consequence = prop?.consequences
             recomendation = prop?.instruction
             description = prop?.description
-            alertType = prop?.awarenessType
-            alertLevel = prop?.awarenessLevel
+            alertType = prop?.awareness_type
+            alertLevel = prop?.awareness_level
             timeInterval = it.time?.interval
 
             //Create an AlertInfo object with the extracted properties

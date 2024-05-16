@@ -34,11 +34,11 @@ data class Properties(
 
 /**
  * Represents metadata information.
- * @property updatedAt The timestamp when the data was last updated.
+ * @property updated_at The timestamp when the data was last updated.
  * @property units The units of measurement for the data.
  */
 data class Meta(
-    val updatedAt: String,
+    val updated_at: String,
     val units: Map<String, String>
 )
 
@@ -55,15 +55,15 @@ data class Timeseries(
 /**
  * Represents detailed weather data.
  * @property instant The instantaneous weather details.
- * @property next12Hours The weather summary and details for the next 12 hours.
- * @property next1Hours The weather summary and details for the next 1 hour.
- * @property next6Hours The weather summary and details for the next 6 hours.
+ * @property next_12_hours The weather summary and details for the next 12 hours.
+ * @property next_1_hours The weather summary and details for the next 1 hour.
+ * @property next_6_hours The weather summary and details for the next 6 hours.
  */
 data class Data(
     val instant : Instant,
-    val next12Hours: Next12,
-    val next6Hours: Next6,
-    val next1Hours : Next1,
+    val next_12_hours: Next12,
+    val next_1_hours : Next1,
+    val next_6_hours: Next6,
 )
 
 /**
@@ -107,19 +107,19 @@ data class Next6(
 /**
  * Represents detailed weather information.
  * @property time The time of the weather data.
- * @property symbolCode The symbol code representing the weather condition.
- * @property airTemperature The air temperature.
- * @property precipitationAmount The amount of precipitation.
- * @property relativeHumidity The relative humidity.
- * @property ultravioletIndexClearSky The UV index for clear sky.
- * @property windSpeed The wind speed.
+ * @property symbol_code The symbol code representing the weather condition.
+ * @property air_temperature The air temperature.
+ * @property precipitation_amount The amount of precipitation.
+ * @property relative_humidity The relative humidity.
+ * @property ultraviolet_index_clear_sky The UV index for clear sky.
+ * @property wind_speed The wind speed.
  */
 data class Details(
     var time : String,
-    var symbolCode : String,
-    var airTemperature : Float,
-    var precipitationAmount: Float,
-    var relativeHumidity: Float,
-    var ultravioletIndexClearSky: Float,
-    var windSpeed: Float,
+    var symbol_code : String,
+    var air_temperature : Float,
+    var precipitation_amount: Float,
+    var relative_humidity: Float,
+    var ultraviolet_index_clear_sky: Float,
+    var wind_speed: Float,
 )
