@@ -23,7 +23,8 @@ Usecase diagram
 
 **Alternative Flow:**
 2.1 If the location entered by the user does not exist, the system informs the user that the location could not be found and takes them back to the mainscreen (WeatherScreen).
-![image](https://media.github.uio.no/user/8084/files/9e417801-ec5d-4e22-ba2d-b95225ee809a)
+
+![UsecaseScenarioLocation](https://media.github.uio.no/user/8084/files/16fa640f-a564-4be8-8a51-8fcf1500ec4f)
 
 
 ### 2. Textual Description of Use Case: Look for Alerts in a Specific Location
@@ -88,18 +89,19 @@ The flowchart outlines the sequence of operations and decision points for a weat
 6. **Change Location**:
    - The user can choose to change the location for which they want weather information. They have two options:
       Choose from a list: Selects a new location from a predefined list and updates the display accordingly.
-      Search city: Performs a manual search for a city. If the city is found, it updates the location and shows the weather; if not, error handling is triggered.
+      Search address: Performs a manual search for a address. If the city is found, it updates the location and shows the weather; if not, error handling is triggered.
 
 7. **Navigate To Weather Alerts**:
-   - After updating the location, the user can navigate to a screen that displays weather alerts specific to that location.
+   - After updating the location, the user can navigate to a screen that displays weather alerts for all locations that METalerts have data for in Norway.
 
 8. **Display Weather Alerts**:
-   - The weather alerts screen shows relevant alerts. If no alerts are available for the location, the app handles this scenario by possibly displaying a message or taking other appropriate actions.
+   - The weather alerts screen shows relevant alerts. If no alerts are available for the location, the app handles this scenario by displaying a message. If there are no alerts at all in Norway that METalerts sends data for, then there will be a message that tells “there are no alerts for the time being, and the user will have a option to try again and if  they try again the data will be loaded again and if alerts it will show if not it will be the same message.
 
 9. **Error Handling**:
    - **Weather Fetch**: If there's an error in fetching the weather data, the system handles this error internally.
-   - **Alerts Empty Handling**: If no alerts are available for the selected location, the system manages this condition.
-   - **Location Change**: If there's an error during the location change (e.g., the city searched by the user doesn't exist), the system prompts an error message and allows the user to retry.
+   - **Alerts Empty Handling**: If no alerts are available for the selected location, then there will be a message that tells “there are no alerts for the time being, try again"
+   - **Location Change**: If there's an error during the location change (e.g., the city searched by the user doesn't exist), the error is handled by showing a popup error message indicating that the location is not found, please try again, and will be sent back to the search section.
+
 
 The flowchart comprehensively illustrates the operational flow of a weather application, highlighting how it manages data retrieval, user inputs, and system errors to ensure a seamless user experience.
 
@@ -132,7 +134,7 @@ flowchart TD
   
 ```
 
-**SequenseDiargram**
+### SequenseDiargram
 Scenario for the Change Location Function +  Show WeatherAlerts Diagram 
 
 1. **Application Start**:
@@ -156,7 +158,7 @@ Scenario for the Change Location Function +  Show WeatherAlerts Diagram
    - The user enters the location name in the search interface provided by the ViewModel.
 
 7. **MapBox API Interaction for Location Search:**
-   - The ViewModel sends the search query to the MapBox API to retrieve the geographic coordinates (longitude and latitude) of the searched location.
+   - The WeatherDataSource sends the search query to the MapBox API to retrieve the geographic coordinates (longitude and latitude) of the searched location.
    - The MapBox API processes the request and returns the coordinates to the ViewModel.
 
 8. **Weather Data Fetching:**
@@ -166,7 +168,7 @@ Scenario for the Change Location Function +  Show WeatherAlerts Diagram
 
 9. **Displaying Weather Information:**
    - The WeatherDataSource sends the fetched weather data to the ViewModel.
-   - The ViewModel processes and formats the weather data, displaying it on the user interface for the user to view.
+   - The ViewModel getsto be processes and formats the weather data, displaying it on the user interface for the user to view.
 
 10. **Fetching Weather Alerts:**
     - Simultaneously, the ViewModel requests weather alerts from the MetAlerts API for the current or searched location.
@@ -186,51 +188,97 @@ sequenceDiagram
     participant VM as ViewModel
     participant H as LocationProvider
     participant DS as WeatherDataSource
+    participant MBox as MapBox API
     participant LFA as LocationForecast API
     participant MA as MetAlerts API
-    participant MBox as MapBox API
+    
+    
 
     U->>VM: Start Application
     VM->>VM: Initialize
+    
     VM->>U: Request Location Permission
     U->>VM: Grant Permission
     alt Permission Granted
         VM->>H: Get User Location
-        H-->>VM: Return Location Data
+    
     else Permission Denied
-        VM->>VM: Use Default Location
+        VM->>H: Use Default Location Oslo
     end
+        H->>DS: Request Location with Coordinates
+        DS->>LFA: Fetch Weather Data with given cordinates
+        LFA-->>VM: Return Weather Data
+        VM ->> DS: Request Weather Alerts
+        DS->>MA: Fetch Weather Alerts
+        MA-->>VM: Return Alerts Data
+        
     alt Location Search
         U->>VM: Search Location
-        VM->>MBox: Request Coordinates
+        VM->> MBox: Request Address
         MBox-->>VM: Return Coordinates
-    end
-    VM->>DS: Request Weather Data with Coordinates
-    DS->>H: Call LocationForecast API
-    H->>LFA: Fetch Weather Data
-    LFA-->>H: Return Weather Data
-    H-->>DS: Provide Weather Data
-    DS-->>VM: Return Weather Data
-    VM->>U: Display Weather Information
+        VM ->> DS: Send cordinates to DataSource
+        DS ->> LFA: Fetch Weather Data with given cordianates
 
-    VM->>MA: Fetch Weather Alerts
+        LFA-->>VM: Return WeatherData
+        VM->>U: Display Weather Information
+    end
+
+    alt Show WeatherAlerts
+    U ->> VM: User goes to Alertscreen
+   
     MA-->>VM: Return Alerts Data
     VM->>U: Display Alerts
-
-    alt Error Handling
-        VM->>U: Display Error
-        U->>VM: Retry
-        VM->>DS: Request Weather Data
     end
+
+    alt No alerts
+        VM->>U: Send message no alerts try again
+        U->>VM: Retry
+        VM->>VM:  Get Alerts Data if any(Already been fetched)
+        VM-->>U: Display Alerts Data
+    end
+
+    alt Error Address
+        U->>VM: Address Not found
+        VM-->>U: Display error Message ask to try again
+        U->>VM: Retry
+
+    end
+    alt Error Internett Connection
+        U->>VM: no Internett connection
+        VM-->>U: Display error Message ask to try again
+        U->>VM: Retry
+
+    end
+    alt Error 
+        U->>VM: no Internett connection
+        VM-->>U: Display error Message ask to try again
+        U->>VM: Retry
+
+    end
+
 ```
 ### Class Diagram
 ```mermaid 
 classDiagram
-    class MainActivity {
-        +startScreen()
-        +warningScreen()
+    class Alertsscreen {
+        +displayAlerts()
     }
-    class StartScreenViewModel {
+    class HomeScreen {
+        +showWeatherdataScreen()
+    }
+    class WeatherScreen{
+        +displayWeather()
+    }
+    class SettingViewmodel{
+
+    } 
+    class InformationScreen{
+
+    }
+    class SettingsScreen{
+
+    }
+    class WeatherViewModel {
         +LocationForecastRepositoryImpl locationRepo
         +locationUiState StateFlow
         getData()
@@ -338,10 +386,14 @@ classDiagram
         +mimeType String
         +url String
     }
-
-    MainActivity "1" --> "1" StartScreenViewModel
-    MainActivity "1" --> "1" MetAlertsRepository
-    StartScreenViewModel "1" --> "1" LocationForecastRepositoryImpl
+    SettingsScreen "1" --> "1" SettingViewmodel
+    HomeScreen "1" --> "1" WeatherScreen
+    Alertsscreen "1" --> "1" WeatherViewModel
+    WeatherScreen "1" --> "1" WeatherViewModel
+    WeatherViewModel "1" --> "1" ImplementedWeatherRepository
+    WeatherViewModel "1" --> "1" UIComponents
+    WeatherViewModel "1" --> "1" MetAlertsRepository
+    WeatherViewModel "1" --> "1" LocationForecastRepositoryImpl
     LocationForecastRepositoryImpl "1" --> "1" LocationForecastDataSource
     MetAlertsRepository "1" --> "1" MetAlertsDataSource
     ImplementedWeatherRepository "1" --> "1" WeatherDataSource
@@ -370,8 +422,7 @@ The class diagram depicts the architecture and relationships between components 
 
 ### Components and Relationships
 
-1. **MainActivity**:
-   - The central activity that manages major UI operations such as initializing and switching between the start screen and warning views.
+
 
 2. **StartScreenViewModel**:
    - Orchestrates data fetching operations by interfacing with the `LocationForecastRepositoryImpl` to manage state and data for the start screen.
@@ -407,5 +458,7 @@ The class diagram depicts the architecture and relationships between components 
 
 12. **Resources**:
    - Utilized within `PropertiesAlert` to link external resources like URLs or documents related to weather alerts.
+
+
 
 
